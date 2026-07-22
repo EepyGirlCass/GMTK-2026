@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Settings="*uid://cx2kbjygwmkcy"
 Menu="uid://3ypv3308bhc8"
+TimeScale="*uid://7jm0lttchsj0"
 
 [display]
 
