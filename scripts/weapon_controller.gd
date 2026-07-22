@@ -1,6 +1,8 @@
 class_name WeaponController
 extends Node3D
 
+@onready var particles: Node3D = $"../../Particles"
+
 @onready var player: Player = $".."
 
 enum WeaponID {SHOTGUN, NAILGUN}
@@ -47,6 +49,7 @@ func _process(delta: float) -> void:
 	
 	
 func select_weapon(weapon_id: WeaponID):
+	if weapon_reload_time > 0 : return
 	current_weapon_ID = weapon_id
 	print(weapon_dict[current_weapon_ID], "id")
 	
@@ -96,23 +99,25 @@ func lower_ammo(amount:int):
 	
 func fire_bullet(amount:int, damage:int, spread:float):
 	for i in amount:
-		fire_hitscan(player.camera_pivot.global_position, spread)
+		fire_hitscan(player.gun_shot_point.global_position, spread)
 
+	
 func spend_time(amount:float):
-	player.subtract_time(amount)
+	player.change_time_with_message(amount)
 
 func fire_hitscan(start_pos : Vector3, spread_angle : float):
 	# 1. Setup the Physics Space
+	print('a')
 	var space_state = get_world_3d().direct_space_state
 	
 	# 2. Calculate the Trajectory
 	# We start with the camera's forward vector for accuracy
-	var camera_transform = player.camera_pivot.global_transform
-	var base_dir = -player.camera_pivot.global_transform.basis.z # Forward in Godot is -Z
+	var camera_transform = player.gun_shot_point.global_transform
+	var base_dir = -player.gun_shot_point.global_transform.basis.z # Forward in Godot is -Z
 	
 	# Apply the random spread cone
-	var spread_dir = base_dir.rotated(player.camera_pivot.global_transform.basis.x, deg_to_rad(randf_range(-spread_angle, spread_angle)))
-	spread_dir = spread_dir.rotated(player.camera_pivot.global_transform.basis.y, deg_to_rad(randf_range(-spread_angle, spread_angle)))
+	var spread_dir = base_dir.rotated(player.gun_shot_point.global_transform.basis.x, deg_to_rad(randf_range(-spread_angle, spread_angle)))
+	spread_dir = spread_dir.rotated(player.gun_shot_point.global_transform.basis.y, deg_to_rad(randf_range(-spread_angle, spread_angle)))
 	
 
 	var bullet_range = 1000.0
@@ -123,3 +128,14 @@ func fire_hitscan(start_pos : Vector3, spread_angle : float):
 	query.exclude = [player, self] # Don't shoot yourself
 	
 	var result = space_state.intersect_ray(query)
+	
+	var gun_tracer : GunTracer = preload("res://scenes/gun_tracer.tscn").instantiate()
+	gun_tracer.start_pos = start_pos
+	
+	print(ray_end)
+	var collider = null
+	if result:
+		gun_tracer.end_pos = result.position
+	else:
+		gun_tracer.end_pos = ray_end
+	particles.add_child(gun_tracer)

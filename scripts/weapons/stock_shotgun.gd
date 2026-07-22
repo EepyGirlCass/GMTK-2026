@@ -10,7 +10,7 @@ func _init() -> void:
 		6,		#clip_size : int,
 		-1,		#shot_cost : float,
 		8,		#bullet_amount : float,
-		30,		#shot_spread : float,
+		9,		#shot_spread : float,
 		1		#fire_speed : float,
 		)
 
