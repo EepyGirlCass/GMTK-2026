@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://55e50qdymbp1"]
+
+[ext_resource type="Script" uid="uid://dwv8khx1hune1" path="res://scripts/player_ui.gd" id="1_jkj6h"]
+[ext_resource type="Texture2D" uid="uid://c62cs0p6r37b0" path="res://icon.svg" id="2_sk4pr"]
+[ext_resource type="Shader" uid="uid://d050avdq3lue5" path="res://scripts/shaders/reload_circle.gdshader" id="3_48xfa"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_guxnq"]
+bg_color = Color(0.9525445, 0.19520909, 0.2222574, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_guxnq"]
+font_size = 90
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jkj6h"]
+font_size = 90
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8isll"]
+shader = ExtResource("3_48xfa")
+shader_parameter/width = 0.22
+shader_parameter/gradient_ease = 11.96
+shader_parameter/fill_ratio = 0.8
+
+[node name="PlayerUI" type="Control" unique_id=1038248244]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jkj6h")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1523904795]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 928.0
+offset_right = 643.0
+offset_bottom = 985.0
+theme_override_font_sizes/font_size = 29
+theme_override_styles/fill = SubResource("StyleBoxFlat_guxnq")
+
+[node name="Timer" type="Label" parent="." unique_id=1062394957]
+layout_mode = 0
+offset_left = 1280.0
+offset_top = 832.0
+offset_right = 1802.0
+offset_bottom = 1035.0
+label_settings = SubResource("LabelSettings_guxnq")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AmmoCount" type="Label" parent="." unique_id=378188247]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 704.0
+offset_right = 618.0
+offset_bottom = 907.0
+label_settings = SubResource("LabelSettings_jkj6h")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Crosshair" type="TextureRect" parent="." unique_id=1354138477]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -7.5
+offset_top = -7.5
+offset_right = 7.5
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_sk4pr")
+expand_mode = 1
+
+[node name="TimerMessages" type="Control" parent="." unique_id=709480013]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ReloadCircle" type="TextureRect" parent="." unique_id=1304401142]
+material = SubResource("ShaderMaterial_8isll")
+layout_mode = 0
+offset_left = 896.0
+offset_top = 480.0
+offset_right = 1024.0
+offset_bottom = 608.0
+texture = ExtResource("2_sk4pr")
