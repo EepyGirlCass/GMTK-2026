@@ -6,3 +6,5 @@ extends Control
 @onready var ammo_count: Label = $AmmoCount
 @onready var timer_messages: Control = $TimerMessages
 @onready var reload_circle: TextureRect = $ReloadCircle
+@onready var dash_bar_container: HBoxContainer = $DashBarContainer
+@onready var speed: Label = $speed

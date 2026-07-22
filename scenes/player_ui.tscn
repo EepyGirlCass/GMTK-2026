@@ -91,3 +91,21 @@ offset_top = 480.0
 offset_right = 1024.0
 offset_bottom = 608.0
 texture = ExtResource("2_sk4pr")
+
+[node name="DashBarContainer" type="HBoxContainer" parent="." unique_id=175181754]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.067
+anchor_bottom = 0.178
+offset_left = 64.0
+offset_top = 896.0
+offset_right = 511.36
+offset_bottom = 735.76
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="speed" type="Label" parent="." unique_id=1700342517]
+layout_mode = 0
+offset_left = 32.0
+offset_right = 224.0
+offset_bottom = 160.0

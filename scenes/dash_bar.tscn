@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://rsri0ek20iac"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gwlgw"]
+bg_color = Color(0.017702105, 0.35090587, 0.6138565, 1)
+
+[node name="DashBar" type="ProgressBar" unique_id=728983813]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/fill = SubResource("StyleBoxFlat_gwlgw")
+show_percentage = false
