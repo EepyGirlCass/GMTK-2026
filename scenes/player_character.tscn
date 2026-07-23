@@ -3,17 +3,17 @@
 [ext_resource type="Script" uid="uid://c5dy4oa7ycc0a" path="res://scripts/player_character.gd" id="1_56udc"]
 [ext_resource type="Script" uid="uid://bm0xcylrla3h2" path="res://scripts/camera_3d.gd" id="2_6r27q"]
 [ext_resource type="PackedScene" uid="uid://55e50qdymbp1" path="res://scenes/player_ui.tscn" id="3_kww55"]
-[ext_resource type="Script" uid="uid://bnstef4i8h6n2" path="res://scripts/weapon_controller.gd" id="4_4h0vy"]
 [ext_resource type="Script" uid="uid://dop1sh8spiki4" path="res://scripts/abilities_controller.gd" id="5_uj7mf"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_6r27q"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kww55"]
 
-[node name="Player" type="CharacterBody3D" unique_id=2106942201]
+[node name="Player" type="CharacterBody3D" unique_id=250732500]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_56udc")
+metadata/_custom_type_script = "uid://c5dy4oa7ycc0a"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1743416757]
 mesh = SubResource("CapsuleMesh_6r27q")
@@ -25,15 +25,13 @@ shape = SubResource("CapsuleShape3D_kww55")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33284542, -0.49379015)
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot" unique_id=490687393]
+current = true
 script = ExtResource("2_6r27q")
 
 [node name="gun_shot_point" type="Node3D" parent="CameraPivot" unique_id=88076736]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2683594, 0)
 
 [node name="PlayerUI" parent="." unique_id=1038248244 instance=ExtResource("3_kww55")]
-
-[node name="WeaponController" type="Node3D" parent="." unique_id=713508780]
-script = ExtResource("4_4h0vy")
 
 [node name="AbilitiesController" type="Node" parent="." unique_id=1784290977]
 script = ExtResource("5_uj7mf")

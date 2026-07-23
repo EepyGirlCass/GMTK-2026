@@ -12,7 +12,7 @@ var current_enemy_type
 
 func _physics_process(delta: float) -> void:
 	
-	delta *= GameTime.scale
+	delta *= GameTime.time_scale
 
 	look_at(Vector3(
 		player.global_position.x,

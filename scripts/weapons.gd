@@ -20,7 +20,7 @@ var started_reload_time: float = 0
 var finished_reload_time: float = 0
 var reloading: bool = false
 
-var player: Player
+var weapon_owner: Character
 static var particles: Node3D
 
 # return if a shot happened
@@ -28,10 +28,7 @@ static var particles: Node3D
 
 
 func _ready():
-	player = $".."
-	particles = $Particles
-	
-	assert(player.name == "Player", "Weapon %s must be parented to the player!" % [name])
+	particles = get_node("/root/Main/Particles")
 
 
 func _update():
@@ -81,16 +78,16 @@ func shoot_hitscan() -> float:
 		for i in range(bullet_amount):
 			fire_hitscan(global_position, bullet_spread)
 	else:
-		player.reload_active_weapon()
+		start_reload()
 	return shoot_cooldown
 
 
 func fire_hitscan(start_pos : Vector3, spread_degrees : float):
 	# 1. Setup the Physics Space
-	var space_state = get_world_3d().direct_space_state
+	var space_state := weapon_owner.get_world_3d().direct_space_state
 	
 	# 2. Calculate the Trajectory
-	var bullet_dir = -player.gun_shot_point.global_transform.basis.z # Forward in Godot is -Z
+	var bullet_dir: Vector3 = -weapon_owner.gun_shot_point.global_transform.basis.z # Forward in Godot is -Z
 	
 	if not is_zero_approx(bullet_spread):
 		# Apply the random spread cone
@@ -102,14 +99,14 @@ func fire_hitscan(start_pos : Vector3, spread_degrees : float):
 					randf_range(-1.0, 1.0),
 					randf_range(-1.0, 1.0)
 				)
-		var rotation_vec := bullet_dir.cross(random_vec)
+		var rotation_vec := bullet_dir.cross(random_vec).normalized()
 		bullet_dir = bullet_dir.rotated(rotation_vec, randf() * deg_to_rad(spread_degrees))
 	
 	var ray_end = start_pos + (bullet_dir * bullet_range) 
 	
 	# 3. Create the Query
 	var query = PhysicsRayQueryParameters3D.create(start_pos, ray_end)
-	query.exclude = [player, self] # Don't shoot yourself
+	query.exclude = [weapon_owner, self] # Don't shoot yourself
 	
 	var result = space_state.intersect_ray(query)
 	
@@ -124,11 +121,15 @@ func fire_hitscan(start_pos : Vector3, spread_degrees : float):
 				result.collider.take_damage(bullet_damage)
 	else:
 		gun_tracer.end_pos = ray_end
-	particles.add_child(gun_tracer)
+	weapon_owner.get_node("../Particles").add_child(gun_tracer)
 
 
 class Shotgun extends Weapon:
-	func _init():
+	@warning_ignore("shadowed_variable_base_class")
+	func _init(weapon_owner: Character):
+		self.weapon_owner = weapon_owner
+		weapon_owner.add_child(self)
+		
 		reload_duration = 1.25
 		reload_amount = -1 # full clip
 		
@@ -147,7 +148,11 @@ class Shotgun extends Weapon:
 
 
 class Nailgun extends Weapon:
-	func _init():
+	@warning_ignore("shadowed_variable_base_class")
+	func _init(weapon_owner: Character):
+		self.weapon_owner = weapon_owner
+		weapon_owner.add_child(self)
+		
 		reload_duration = 0
 		reload_amount = 0 # no reload
 		

@@ -6,19 +6,7 @@ var stride_distance: float
 var speed: float
 
 
-var weapons: Array[WeaponInfo]
+var weapons: Array[Weapon]
 var current_weapon_idx: int = 0
-var current_weapon: WeaponInfo:
+var current_weapon: Weapon:
 	get: return weapons[current_weapon_idx]
-
-class WeaponInfo:
-	var weapon: Weapon
-	var shoot_time: float = 0
-	var reload_time: float = 0
-	
-	@warning_ignore("shadowed_variable")
-	func _init(weapon: Weapon):
-		self.weapon = weapon
-	
-	func Shoot() -> bool:
-		

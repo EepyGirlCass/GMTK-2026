@@ -1,15 +1,8 @@
 class_name Player
-extends CharacterBody3D
+extends Character
 
 
 const SPEED = 12.5
-
-
-var time_remaining : float = 360
-var health : float = 1
-var time_scale : float = 1
-var ammo_count : int = 1
-var max_ammo : int = 1
 
 var is_sliding : bool = false
 var slide_dir : Vector2
@@ -31,7 +24,6 @@ var current_jumps : int = 0
 var time_drain_multiplier:float=1
 var time_drain_multiplier_ui:float=1
 @onready var player_ui: PlayerUI = $PlayerUI
-@onready var weapon_controller: WeaponController = $WeaponController
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var gun_shot_point: Node3D = $CameraPivot/gun_shot_point
 @onready var abilities_controller: AbilitiesController = $AbilitiesController
@@ -44,8 +36,11 @@ func _ready() -> void:
 	update_dash_ability(abilities_controller.dash_ability_values[abilities_controller.current_dash]["amount"],
 	abilities_controller.dash_ability_values[abilities_controller.current_dash]["cooldown"] )
 	
-func _physics_process(delta: float) -> void:
+	weapons.append(Weapon.Shotgun.new(self))
+	weapons.append(Weapon.Nailgun.new(self))
 	
+func _physics_process(delta: float) -> void:
+	current_weapon.shoot()
 	time_drain_multiplier = 1
 	if health > 1:
 		time_drain_multiplier = lerp(1.0, .50 , health/4)
@@ -57,13 +52,13 @@ func _physics_process(delta: float) -> void:
 	if is_sliding: 
 		time_drain_multiplier *= current_slide_values["multiplier"]
 	
-	new_delta = delta * time_scale * time_drain_multiplier
+	delta *= GameTime.time_scale * time_drain_multiplier
 	
 	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
 	
 	change_timer(-new_delta)
 	
-	GameTime.scale = 1 * time_drain_multiplier
+	GameTime.time_scale = 1 * time_drain_multiplier
 	
 	
 	# Ignore gravity while dashing so upward Y isn't immediately killed
@@ -101,7 +96,7 @@ func _physics_process(delta: float) -> void:
 			velocity.z = slide_dir.y * slide_speed
 		else:
 			# Standard WASD movement
-			var input_dir := Input.get_vector("A", "D", "W", "S")
+			var input_dir := Input.get_vector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward")
 			var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 			if direction:
 				velocity.x = direction.x * SPEED
@@ -150,7 +145,7 @@ func dash():
 	dashes_charged -= 1
 	
 
-	var input_dir := Input.get_vector("A", "D", "W", "S")
+	var input_dir := Input.get_vector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward")
 	
 	var dash_dir_3d : Vector3
 	if input_dir != Vector2.ZERO:
@@ -188,15 +183,15 @@ func update_dash_ability(amount:int, cooldown:float):
 		player_ui.dash_bar_container.add_child(dash_bar)
 	
 func change_timer(amount) -> void:
-	time_remaining += amount
+	GameTime.time_timer += amount
 
 func update_ui() -> void:
-	player_ui.timer.text = convert_float_to_time(time_remaining)
+	player_ui.timer.text = convert_float_to_time(GameTime.time_timer)
 	player_ui.health_bar.value = health * 100
-	if max_ammo == -1:
+	if current_weapon.ammo_max_clip == 0:
 		player_ui.ammo_count.text = ""
 	else:
-		player_ui.ammo_count.text = str(ammo_count, "/", max_ammo)
+		player_ui.ammo_count.text = str(current_weapon.ammo_clip, "/", current_weapon.ammo_max_clip)
 	
 	var current_recharge_pct : float = 0.0
 	if dash_cooldown > 0:
@@ -218,6 +213,7 @@ func update_ui() -> void:
 	
 func convert_float_to_time(time: float) -> String:
 	var total_seconds: int = max(0, int(time))
+	@warning_ignore("integer_division")
 	var minutes: int = total_seconds / 60
 	var seconds: int = total_seconds % 60
 	
@@ -242,9 +238,9 @@ func _input(event: InputEvent) -> void:
 		$CameraPivot.rotation.x -= event.relative.y * .0025
 		$CameraPivot.rotation.x = clamp($CameraPivot.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 	
-	if Input.is_action_just_pressed("Ctrl"):
+	if Input.is_action_just_pressed("Slide"):
 		is_sliding = true
-		var input_dir := Input.get_vector("A", "D", "W", "S")
+		var input_dir := Input.get_vector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward")
 		var slide_dir_3d : Vector3
 		
 		if input_dir != Vector2.ZERO:
@@ -257,8 +253,8 @@ func _input(event: InputEvent) -> void:
 			
 		slide_dir = Vector2(slide_dir_3d.x, slide_dir_3d.z)
 
-	if Input.is_action_just_released("Ctrl"):
+	if Input.is_action_just_released("Slide"):
 		is_sliding = false
 	
-	if Input.is_action_just_pressed("Shift"):
+	if Input.is_action_just_pressed("Dash"):
 		dash()
