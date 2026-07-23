@@ -4,7 +4,8 @@ var sprite_coords := Vector2i(0, 0)
 var sprite_rect: Rect2i:
 	get: return Rect2i(sprite_coords, Vector2i(128, 256))
 
-@onready var camera: Camera3D = $Player/CameraPivot/Camera3D
+
+@onready var player: Player = $"../../../Player"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -14,7 +15,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	var h_mirror = false
-	var h_angle = Vector2(camera.global_position.x, camera.global_position.y).angle_to(Vector2(global_position.x, global_position.y))
+	var h_angle = Vector2(player.camera_3d.global_position.x, player.camera_3d.global_position.y).angle_to(Vector2(global_position.x, global_position.y))
 	var yaw = global_rotation.y
 	var h_visual_angle = h_angle - yaw
 	# 0 to 2PI, 0 to 8
