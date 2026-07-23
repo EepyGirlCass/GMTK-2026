@@ -1,0 +1,165 @@
+@abstract class_name Weapon
+extends Node3D
+
+var reload_duration : float
+var reload_amount : int
+
+var ammo_max_clip : int
+var ammo_clip : int
+
+var shoot_cooldown : float
+var shoot_cost : float
+var bullet_spread : float
+var bullet_damage : float
+var bullet_crit_mult : float
+var bullet_amount : int
+var bullet_range : float = 1000.0
+
+var can_shoot_time: float = 0
+var started_reload_time: float = 0
+var finished_reload_time: float = 0
+var reloading: bool = false
+
+var player: Player
+static var particles: Node3D
+
+# return if a shot happened
+@abstract func shoot() -> bool
+
+
+func _ready():
+	player = $".."
+	particles = $Particles
+	
+	assert(player.name == "Player", "Weapon %s must be parented to the player!" % [name])
+
+
+func _update():
+	if GameTime.time > finished_reload_time and reloading:
+		reloading = false
+		# auto restart incremental reloads
+		if not reload():
+			start_reload()
+
+
+# return reload started
+func start_reload() -> bool:
+	# no reload
+	if reload_amount == 0:
+		return false
+	
+	# already reloading
+	if reloading:
+		return false
+	
+	# full clip
+	if ammo_clip == ammo_max_clip:
+		return false
+	
+	reloading = true
+	started_reload_time = GameTime.time
+	finished_reload_time = GameTime.time + reload_duration
+	return true
+
+
+# return is fully reloaded
+func reload() -> bool:
+	match reload_amount:
+		-1: # whole clip
+			ammo_clip = ammo_max_clip
+			return true
+		0: # no clip
+			return true
+		_: # incremental reload
+			ammo_clip = mini(ammo_max_clip, ammo_clip + reload_amount)
+			return ammo_clip == ammo_max_clip
+
+
+func shoot_hitscan() -> float:
+	if ammo_clip > 0:
+		ammo_clip -= 1
+		for i in range(bullet_amount):
+			fire_hitscan(global_position, bullet_spread)
+	else:
+		player.reload_active_weapon()
+	return shoot_cooldown
+
+
+func fire_hitscan(start_pos : Vector3, spread_degrees : float):
+	# 1. Setup the Physics Space
+	var space_state = get_world_3d().direct_space_state
+	
+	# 2. Calculate the Trajectory
+	var bullet_dir = -player.gun_shot_point.global_transform.basis.z # Forward in Godot is -Z
+	
+	if not is_zero_approx(bullet_spread):
+		# Apply the random spread cone
+		# Generate a random vector to rotate about (uniformly distributed)
+		var random_vec := Vector3.ONE
+		while random_vec.length() > 1.0:
+			random_vec = Vector3(
+					randf_range(-1.0, 1.0),
+					randf_range(-1.0, 1.0),
+					randf_range(-1.0, 1.0)
+				)
+		var rotation_vec := bullet_dir.cross(random_vec)
+		bullet_dir = bullet_dir.rotated(rotation_vec, randf() * deg_to_rad(spread_degrees))
+	
+	var ray_end = start_pos + (bullet_dir * bullet_range) 
+	
+	# 3. Create the Query
+	var query = PhysicsRayQueryParameters3D.create(start_pos, ray_end)
+	query.exclude = [player, self] # Don't shoot yourself
+	
+	var result = space_state.intersect_ray(query)
+	
+	var gun_tracer : GunTracer = preload("res://scenes/gun_tracer.tscn").instantiate()
+	gun_tracer.start_pos = start_pos
+	
+	if result:
+		gun_tracer.end_pos = result.position
+		# TODO: make this actual code
+		if result.collider is CharacterBody3D:
+			if result.collider.has_method("take_damage"):
+				result.collider.take_damage(bullet_damage)
+	else:
+		gun_tracer.end_pos = ray_end
+	particles.add_child(gun_tracer)
+
+
+class Shotgun extends Weapon:
+	func _init():
+		reload_duration = 1.25
+		reload_amount = -1 # full clip
+		
+		ammo_max_clip = 6
+		ammo_clip = 6
+		
+		shoot_cooldown = 1
+		shoot_cost = 1
+		bullet_spread = 9
+		bullet_damage = 10
+		bullet_crit_mult = 1.1
+		bullet_amount = 8
+	
+	func shoot():
+		return shoot_hitscan()
+
+
+class Nailgun extends Weapon:
+	func _init():
+		reload_duration = 0
+		reload_amount = 0 # no reload
+		
+		ammo_max_clip = 0
+		ammo_clip = 0
+		
+		shoot_cooldown = 0.1
+		shoot_cost = 0.125
+		bullet_spread = 1
+		bullet_damage = 3
+		bullet_crit_mult = 2
+		bullet_amount = 1
+	
+	func shoot():
+		return shoot_hitscan()

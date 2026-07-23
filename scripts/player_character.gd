@@ -63,7 +63,7 @@ func _physics_process(delta: float) -> void:
 	
 	change_timer(-new_delta)
 	
-	TimeScale.scale = 1 * time_drain_multiplier
+	GameTime.scale = 1 * time_drain_multiplier
 	
 	
 	# Ignore gravity while dashing so upward Y isn't immediately killed
