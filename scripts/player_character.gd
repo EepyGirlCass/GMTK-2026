@@ -55,7 +55,7 @@ func _physics_process(delta: float) -> void:
 	if is_sliding: 
 		time_drain_multiplier *= current_slide_values["multiplier"]
 	
-	delta *= GameTime.time_scale * time_drain_multiplier
+	#delta *= GameTime.time_scale * time_drain_multiplier
 	
 	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
 	
@@ -130,7 +130,13 @@ func _physics_process(delta: float) -> void:
 				dash_cooldown_timer = 0
 				
 	update_ui()
-	
+
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("Attack"):
+		if current_weapon.shoot():
+			change_time_with_message(-current_weapon.shoot_cost)
+
+
 func jump():
 	var current_jump_values = abilities_controller.jump_ability_values[abilities_controller.current_jump]
 	var jump_height = current_jump_values["height"]
@@ -191,6 +197,7 @@ func change_timer(amount) -> void:
 func update_ui() -> void:
 	player_ui.timer.text = convert_float_to_time(GameTime.time_timer)
 	player_ui.health_bar.value = health * 100
+	
 	if current_weapon.ammo_max_clip == 0:
 		player_ui.ammo_count.text = ""
 	else:
@@ -213,6 +220,11 @@ func update_ui() -> void:
 	player_ui.speed.text = str(velocity)
 	
 	player_ui.drain_multiplier.text = str("x", roundf(time_drain_multiplier_ui*1000)*.001 )
+	
+	var reload_time_remaining : float =  (current_weapon.finished_reload_time - GameTime.time) / current_weapon.reload_duration
+	#print(current_weapon.finished_reload_time - GameTime.time)
+	var reload_circle_mat : ShaderMaterial = player_ui.reload_circle.material as ShaderMaterial
+	reload_circle_mat.set_shader_parameter("fill_ratio", reload_time_remaining)
 	
 func convert_float_to_time(time: float) -> String:
 	var total_seconds: int = max(0, int(time))
@@ -262,20 +274,20 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Dash"):
 		dash()
 	
-	if Input.is_action_pressed("Attack"):
-		current_weapon.shoot()
+
 	
-	if Input.is_action_just_pressed("1"):
-		current_weapon = weapons[0]
-	if Input.is_action_just_pressed("2"):
-		current_weapon = weapons[1]
-	if Input.is_action_just_pressed("3"):
-		current_weapon = weapons[2]
-	if Input.is_action_just_pressed("4"):
-		current_weapon = weapons[3]
-	if Input.is_action_just_pressed("5"):
-		current_weapon = weapons[4]
+	if Input.is_action_just_pressed("Slot1"):
+		current_weapon_idx = 0
+	if Input.is_action_just_pressed("Slot2"):
+		current_weapon_idx = 1
+	if Input.is_action_just_pressed("Slot3"):
+		current_weapon_idx = 2
+	if Input.is_action_just_pressed("Slot4"):
+		current_weapon_idx = 3
+	if Input.is_action_just_pressed("Slot5"):
+		current_weapon_idx = 4
 	if Input.is_action_just_pressed("Pause"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if Input.is_action_just_pressed("Reload"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		current_weapon.start_reload()

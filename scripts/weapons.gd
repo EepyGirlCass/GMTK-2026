@@ -31,7 +31,7 @@ func _ready():
 	particles = get_node("/root/Main/Particles")
 
 
-func _update():
+func _process(_delta: float) -> void:
 	if GameTime.time > finished_reload_time and reloading:
 		reloading = false
 		# auto restart incremental reloads
@@ -48,15 +48,17 @@ func start_reload() -> bool:
 	# no reload
 	if reload_amount == 0:
 		return false
+	print('1')
 	
 	# already reloading
 	if reloading:
 		return false
+	print('2')
 	
 	# full clip
 	if ammo_clip == ammo_max_clip:
 		return false
-	
+	print('a')
 	reloading = true
 	started_reload_time = GameTime.time
 	finished_reload_time = GameTime.time + reload_duration
@@ -80,10 +82,14 @@ func reload() -> bool:
 func shoot_hitscan() -> float:
 	if GameTime.time < can_shoot_time:
 		return false
-		
-	if ammo_clip <= 0:
+	
+	if ammo_clip <= 0 and not ammo_max_clip <= 0:
 		start_reload()
 		return false
+	
+	
+	
+	can_shoot_time = GameTime.time + shoot_cooldown
 	
 	ammo_clip -= 1
 	for i in range(bullet_amount):
@@ -166,7 +172,7 @@ class Nailgun extends Weapon:
 		reload_amount = 0 # no reload
 		
 		ammo_max_clip = 0
-		ammo_clip = 0
+		ammo_clip = -1
 		
 		shoot_cooldown = 0.1
 		shoot_cost = 0.125
@@ -176,4 +182,5 @@ class Nailgun extends Weapon:
 		bullet_amount = 1
 	
 	func shoot():
+		
 		return shoot_hitscan()
