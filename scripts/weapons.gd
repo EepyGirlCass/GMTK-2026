@@ -39,6 +39,10 @@ func _update():
 			start_reload()
 
 
+func get_reload_progress() -> float:
+	return (GameTime.time - started_reload_time) / (finished_reload_time - started_reload_time)
+
+
 # return reload started
 func start_reload() -> bool:
 	# no reload
@@ -72,14 +76,19 @@ func reload() -> bool:
 			return ammo_clip == ammo_max_clip
 
 
+# return if a shot happened
 func shoot_hitscan() -> float:
-	if ammo_clip > 0:
-		ammo_clip -= 1
-		for i in range(bullet_amount):
-			fire_hitscan(global_position, bullet_spread)
-	else:
+	if GameTime.time < can_shoot_time:
+		return false
+		
+	if ammo_clip <= 0:
 		start_reload()
-	return shoot_cooldown
+		return false
+	
+	ammo_clip -= 1
+	for i in range(bullet_amount):
+		fire_hitscan(global_position, bullet_spread)
+	return true
 
 
 func fire_hitscan(start_pos : Vector3, spread_degrees : float):
