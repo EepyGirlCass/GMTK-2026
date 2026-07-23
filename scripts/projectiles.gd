@@ -1,30 +1,33 @@
-@abstract
-class_name Projectile
-extends Node3D
+@abstract class_name Projectile
+extends BillboardSprite3D
 
-var model : Mesh
 var gravity : float
 var hitbox : Vector3
+
+var lifetime : float
+var expire_time : float
+
 var source_weapon : Weapon
 var source_character : Character
-var damage : float
+
 var velocity : Vector3
 
+var speed : float
 
-
-@abstract func on_hit(body:Node3D)
+@abstract func on_hit(body: Node3D)
 
 func _ready() -> void:
-	var proj_mesh := MeshInstance3D.new()
-	proj_mesh.mesh = model
-	add_child(proj_mesh)
+	super()
 	var area_3D := Area3D.new()
 	add_child(area_3D)
+	
 	area_3D.set_collision_mask_value(1, true)
 	area_3D.set_collision_mask_value(2, false)
 	area_3D.set_collision_mask_value(3, true)
+	
 	var collider := CollisionShape3D.new()
 	area_3D.add_child(collider)
+	
 	var collider_box = BoxShape3D.new()
 	collider.shape = collider_box
 	collider_box.size = hitbox
@@ -32,27 +35,43 @@ func _ready() -> void:
 	area_3D.connect("body_entered", on_hit)
 
 func _process(delta: float) -> void:
+	if GameTime.paused: return
 	delta *= GameTime.time_scale
 	
-	velocity.y -= gravity * delta
+	if GameTime.time > expire_time:
+		queue_free()
+		return
 	
+	velocity.y -= gravity * delta
 	position += velocity * delta
+	
+	super(delta)
 
 func _init(direction : Vector3) -> void:
 	velocity = Vector3(1, 0, 0) * direction
 	
 class Nail extends Projectile:
 	
-	func _init(direction : Vector3) -> void:
-		velocity = Vector3(1, 1, 1) * direction * 25
-		hitbox = Vector3(.5, .5, .5) * .1
+	@warning_ignore("shadowed_variable_base_class")
+	func _init(source_weapon : Weapon, direction : Vector3) -> void:
+		texture = preload("res://assets/nail_atlas.png")
+		sprite_tile_size = Vector2i(32, 32)
 		
-		model = BoxMesh.new()
-		model.size = hitbox
-		gravity = 1
-		damage = 1
+		Weapon.projectiles.add_child(self)
+		
+		speed = 50
+		gravity = 10
+		lifetime = 5
+		hitbox = Vector3.ONE * .05
+		
+		expire_time = GameTime.time + lifetime
+		self.source_weapon = source_weapon
+		source_character = source_weapon.weapon_owner
+		velocity = direction * speed # + source_character.velocity
+		global_position = source_character.bullet_start + direction * 0.0625
+		global_rotation = source_weapon.global_rotation
 		
 	func on_hit(body:Node3D):
 		if body is EnemyController:
-			body.take_damage(damage)
+			body.take_damage(source_weapon.bullet_damage)
 		queue_free()

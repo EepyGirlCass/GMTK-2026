@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://csehikqjwq7e5"]
 
-[ext_resource type="Script" uid="uid://c5dy4oa7ycc0a" path="res://scripts/player_character.gd" id="1_56udc"]
+[ext_resource type="Script" uid="uid://c5dy4oa7ycc0a" path="res://scripts/player.gd" id="1_56udc"]
 [ext_resource type="Script" uid="uid://bm0xcylrla3h2" path="res://scripts/camera_3d.gd" id="2_6r27q"]
 [ext_resource type="PackedScene" uid="uid://55e50qdymbp1" path="res://scenes/player_ui.tscn" id="3_kww55"]
 [ext_resource type="Script" uid="uid://dop1sh8spiki4" path="res://scripts/abilities_controller.gd" id="5_uj7mf"]
@@ -22,14 +22,14 @@ mesh = SubResource("CapsuleMesh_6r27q")
 shape = SubResource("CapsuleShape3D_kww55")
 
 [node name="CameraPivot" type="Node3D" parent="." unique_id=653079789]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33284542, -0.49379015)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.5)
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot" unique_id=490687393]
 current = true
 script = ExtResource("2_6r27q")
 
 [node name="GunShotPoint" type="Node3D" parent="CameraPivot" unique_id=88076736]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2683594, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
 [node name="PlayerUI" parent="." unique_id=1038248244 instance=ExtResource("3_kww55")]
 

@@ -15,7 +15,7 @@ var bullet_crit_mult : float
 var bullet_amount : int
 var bullet_range : float = 1000.0
 
-var weapon_projectile
+var projectile
 
 var can_shoot_time: float = 0
 var started_reload_time: float = 0
@@ -28,7 +28,6 @@ static var projectiles: Node3D
 
 # return if a shot happened
 @abstract func shoot() -> bool
-
 
 
 func _ready():
@@ -44,6 +43,7 @@ func _process(_delta: float) -> void:
 
 
 func get_reload_progress() -> float:
+	if not reloading: return 0
 	return (GameTime.time - started_reload_time) / (finished_reload_time - started_reload_time)
 
 
@@ -52,17 +52,15 @@ func start_reload() -> bool:
 	# no reload
 	if reload_amount == 0:
 		return false
-	print('1')
 	
 	# already reloading
 	if reloading:
 		return false
-	print('2')
 	
 	# full clip
 	if ammo_clip == ammo_max_clip:
 		return false
-	print('a')
+	
 	reloading = true
 	started_reload_time = GameTime.time
 	finished_reload_time = GameTime.time + reload_duration
@@ -88,21 +86,24 @@ func shoot_hitscan() -> float:
 		return false
 	
 	if reloading: 
-		return false
-	
-	if ammo_clip <= 0 and not ammo_max_clip <= 0:
-		start_reload()
-		return false
+		if ammo_clip > 0:
+			reloading = false
+		else:
+			return false
 	
 	can_shoot_time = GameTime.time + shoot_cooldown
 	
 	ammo_clip -= 1
 	for i in range(bullet_amount):
-		fire_hitscan(global_position, bullet_spread)
+		fire_hitscan()
+	
+	if ammo_clip <= 0 and not reload_amount == 0:
+		start_reload()
+	
 	return true
 
 
-func fire_hitscan(start_pos : Vector3, spread_degrees : float):
+func fire_hitscan():
 	# 1. Setup the Physics Space
 	var space_state := weapon_owner.get_world_3d().direct_space_state
 	
@@ -120,18 +121,18 @@ func fire_hitscan(start_pos : Vector3, spread_degrees : float):
 					randf_range(-1.0, 1.0)
 				)
 		var rotation_vec := bullet_dir.cross(random_vec).normalized()
-		bullet_dir = bullet_dir.rotated(rotation_vec, randf() * deg_to_rad(spread_degrees))
+		bullet_dir = bullet_dir.rotated(rotation_vec, randf() * deg_to_rad(bullet_spread))
 	
-	var ray_end = start_pos + (bullet_dir * bullet_range) 
+	var ray_end = weapon_owner.bullet_start + (bullet_dir * bullet_range) 
 	
 	# 3. Create the Query
-	var query = PhysicsRayQueryParameters3D.create(start_pos, ray_end)
+	var query = PhysicsRayQueryParameters3D.create(weapon_owner.bullet_start, ray_end)
 	query.exclude = [weapon_owner, self] # Don't shoot yourself
 	
 	var result = space_state.intersect_ray(query)
 	
 	var gun_tracer : GunTracer = preload("res://scenes/gun_tracer.tscn").instantiate()
-	gun_tracer.start_pos = start_pos
+	gun_tracer.start_pos = weapon_owner.bullet_start
 	
 	if result:
 		gun_tracer.end_pos = result.position
@@ -143,25 +144,28 @@ func fire_hitscan(start_pos : Vector3, spread_degrees : float):
 		gun_tracer.end_pos = ray_end
 	weapon_owner.get_node("../Particles").add_child(gun_tracer)
 
-func shoot_projectiles() -> bool:
+func shoot_projectile() -> bool:
 	if GameTime.time < can_shoot_time:
 		return false
 	
 	if reloading: 
-		return false
-	
-	if ammo_clip <= 0 and not ammo_max_clip <= 0:
-		start_reload()
-		return false
+		if ammo_clip > 0:
+			reloading = false
+		else:
+			return false
 	
 	can_shoot_time = GameTime.time + shoot_cooldown
 	
 	ammo_clip -= 1
 	for i in range(bullet_amount):
-		fire_projectile(weapon_projectile ,weapon_owner.bullet_start.global_position, bullet_spread)
+		fire_projectile()
+	
+	if ammo_clip <= 0 and not reload_amount == 0:
+		start_reload()
+	
 	return true
 
-func fire_projectile(projectile, start_pos : Vector3, spread_degrees : float):
+func fire_projectile():
 	# 2. Calculate the Trajectory
 	var bullet_dir: Vector3 = -weapon_owner.gun_shot_point.global_transform.basis.z # Forward in Godot is -Z
 	
@@ -176,17 +180,13 @@ func fire_projectile(projectile, start_pos : Vector3, spread_degrees : float):
 					randf_range(-1.0, 1.0)
 				)
 		var rotation_vec := bullet_dir.cross(random_vec).normalized()
-		bullet_dir = bullet_dir.rotated(rotation_vec, randf() * deg_to_rad(spread_degrees))
+		bullet_dir = bullet_dir.rotated(rotation_vec, randf() * deg_to_rad(bullet_spread))
 	
-	var projectile_entity = projectile.new(bullet_dir.normalized())
-	projectiles.add_child(projectile_entity)
-	projectile_entity.global_position = start_pos
-	projectile_entity.global_rotation = global_rotation
+	projectile.new(self, bullet_dir.normalized())
 	
 class Shotgun extends Weapon:
-	@warning_ignore("shadowed_variable_base_class")
-	func _init(weapon_owner: Character):
-		self.weapon_owner = weapon_owner
+	func _init(character_owner: Character):
+		weapon_owner = character_owner
 		weapon_owner.add_child(self)
 		
 		reload_duration = 1.25
@@ -205,18 +205,35 @@ class Shotgun extends Weapon:
 	func shoot():
 		return shoot_hitscan()
 
+class Buckshot extends Shotgun:
+	func _init(character_owner: Character):
+		super(character_owner)
+		
+		projectile = Projectile.Nail
+		
+		reload_duration = 0.5
+		reload_amount = 2
+		
+		ammo_max_clip = 12
+		ammo_clip = 12
+		
+		shoot_cooldown = 0.25
+		bullet_damage = 0.1
+		bullet_amount = 16
+	
+	func shoot():
+		return shoot_projectile()
+
 
 class Nailgun extends Weapon:
-	@warning_ignore("shadowed_variable_base_class")
-	func _init(weapon_owner: Character):
-		self.weapon_owner = weapon_owner
+	func _init(character_owner: Character):
+		weapon_owner = character_owner
 		weapon_owner.add_child(self)
 		
-		reload_duration = 0
 		reload_amount = 0 # no reload
-		weapon_projectile = Projectile.Nail
-		ammo_max_clip = 0
-		ammo_clip = -1
+		
+		projectile = Projectile.Nail
+		
 		shoot_cooldown = 0.1
 		shoot_cost = 0.125
 		bullet_spread = 1
@@ -226,4 +243,4 @@ class Nailgun extends Weapon:
 	
 	func shoot():
 		
-		return shoot_projectiles()
+		return shoot_projectile()

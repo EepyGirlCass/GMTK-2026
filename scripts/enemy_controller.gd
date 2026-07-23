@@ -13,12 +13,13 @@ var current_enemy_type
 func _physics_process(delta: float) -> void:
 	
 	delta *= GameTime.time_scale
+	#$EnemySprite.look_at(Vector3(0, 0, 0))
 	
-	$EnemySprite.look_at(Vector3(
-		player.global_position.x,
-		global_position.y,
-		player.global_position.z
-	))
+	#$EnemySprite.look_at(Vector3(
+		#player.global_position.x,
+		#global_position.y,
+		#player.global_position.z
+	#))
 		
 	navigation_agent_3d.target_position = player.global_position
 	

@@ -44,8 +44,9 @@ func _ready() -> void:
 	
 	weapons.append(Weapon.Shotgun.new(self))
 	weapons.append(Weapon.Nailgun.new(self))
+	weapons.append(Weapon.Buckshot.new(self))
 	
-	bullet_start = gun_shot_point
+	bullet_start_node = gun_shot_point
 	
 	GameTime.time_timer = 360
 func _physics_process(delta: float) -> void:
@@ -229,10 +230,9 @@ func update_ui() -> void:
 	
 	player_ui.drain_multiplier.text = str("x", roundf(time_drain_multiplier_ui*1000)*.001 )
 	
-	var reload_time_remaining : float =  (current_weapon.finished_reload_time - GameTime.time) / current_weapon.reload_duration
 	#print(current_weapon.finished_reload_time - GameTime.time)
 	var reload_circle_mat : ShaderMaterial = player_ui.reload_circle.material as ShaderMaterial
-	reload_circle_mat.set_shader_parameter("fill_ratio", reload_time_remaining)
+	reload_circle_mat.set_shader_parameter("fill_ratio", current_weapon.get_reload_progress())
 	
 func convert_float_to_time(time: float) -> String:
 	var total_seconds: int = max(0, int(time))

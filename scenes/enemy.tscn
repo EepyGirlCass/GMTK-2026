@@ -24,6 +24,10 @@ texture = ExtResource("4_c4w8v")
 region_rect = Rect2(0, 512, 128, 256)
 script = ExtResource("4_5uy6h")
 sprite_tile_size = Vector2i(128, 256)
+animations = Dictionary[StringName, int]({
+&"idle": 1,
+&"walk": 3
+})
 metadata/_custom_type_script = "uid://c1nljkc6e7imm"
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=886923165]
