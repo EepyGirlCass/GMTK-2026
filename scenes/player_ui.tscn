@@ -12,6 +12,11 @@ font_size = 90
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_uj7mf"]
+font_size = 29
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_jkj6h"]
 font_size = 90
 outline_size = 6
@@ -36,8 +41,8 @@ script = ExtResource("1_jkj6h")
 layout_mode = 0
 offset_left = 64.0
 offset_top = 928.0
-offset_right = 643.0
-offset_bottom = 985.0
+offset_right = 640.0
+offset_bottom = 992.0
 theme_override_font_sizes/font_size = 29
 theme_override_styles/fill = SubResource("StyleBoxFlat_guxnq")
 
@@ -48,6 +53,16 @@ offset_top = 832.0
 offset_right = 1802.0
 offset_bottom = 1035.0
 label_settings = SubResource("LabelSettings_guxnq")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DrainMultiplier" type="Label" parent="." unique_id=973890949]
+layout_mode = 0
+offset_left = 1184.0
+offset_top = 928.0
+offset_right = 1312.0
+offset_bottom = 992.0
+label_settings = SubResource("LabelSettings_uj7mf")
 horizontal_alignment = 1
 vertical_alignment = 1
 

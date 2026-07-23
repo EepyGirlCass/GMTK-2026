@@ -27,6 +27,9 @@ var new_delta : float
 
 var jump_amount : int = 3
 var current_jumps : int = 0
+
+var time_drain_multiplier:float=1
+var time_drain_multiplier_ui:float=1
 @onready var player_ui: PlayerUI = $PlayerUI
 @onready var weapon_controller: WeaponController = $WeaponController
 @onready var camera_pivot: Node3D = $CameraPivot
@@ -43,18 +46,20 @@ func _ready() -> void:
 	
 func _physics_process(delta: float) -> void:
 	
-	var drain_multiplier : float = 1
+	time_drain_multiplier = 1
 	if health > 1:
-		drain_multiplier = lerp(1.0, .50 , health/4)
+		time_drain_multiplier = lerp(1.0, .50 , health/4)
 	if health < 1:
-		drain_multiplier = lerp(5.0, 1.0, health/1)
+		time_drain_multiplier = lerp(5.0, 1.0, health/1)
 		
 	var current_slide_values = abilities_controller.slide_ability_values[abilities_controller.current_slide]
 	var slide_speed : float = current_slide_values["speed"]
 	if is_sliding: 
-		drain_multiplier *= current_slide_values["multiplier"]
+		time_drain_multiplier *= current_slide_values["multiplier"]
 	
-	new_delta = delta * time_scale * drain_multiplier
+	new_delta = delta * time_scale * time_drain_multiplier
+	
+	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
 	
 	change_timer(-new_delta)
 	
@@ -117,7 +122,7 @@ func _physics_process(delta: float) -> void:
 	
 	# Cooldown timer logic
 	if max_dashes != dashes_charged:
-		dash_cooldown_timer -= new_delta
+		dash_cooldown_timer -= delta
 		if dash_cooldown_timer <= 0:
 			dashes_charged += 1
 			if dashes_charged < max_dashes:
@@ -207,6 +212,9 @@ func update_ui() -> void:
 			bar.value = 0
 	
 	player_ui.speed.text = str(velocity)
+	
+	player_ui.drain_multiplier.text = str("x", roundf(time_drain_multiplier_ui*1000)*.001 )
+	
 func convert_float_to_time(time: float) -> String:
 	var total_seconds: int = max(0, int(time))
 	var minutes: int = total_seconds / 60

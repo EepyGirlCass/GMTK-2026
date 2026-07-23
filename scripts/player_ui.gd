@@ -8,3 +8,4 @@ extends Control
 @onready var reload_circle: TextureRect = $ReloadCircle
 @onready var dash_bar_container: HBoxContainer = $DashBarContainer
 @onready var speed: Label = $speed
+@onready var drain_multiplier: Label = $DrainMultiplier

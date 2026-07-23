@@ -6,7 +6,7 @@ func _init() -> void:
 
 	initialise_values(
 		10,		#damage : int,
-		1.25,		#reload_speed : float,
+		1.25,	#reload_speed : float,
 		6,		#clip_size : int,
 		-1,		#shot_cost : float,
 		8,		#bullet_amount : float,
@@ -37,12 +37,15 @@ func initialise_values(
 
 func shoot():
 
+	if weapon_controller.weapon_cooldown > 0:
+		return
+	if weapon_controller.weapon_reload_time > 0:
+		return
 	if weapon_controller.weapon_ammo <= 0:
 		reload()
 		return
 
-	if weapon_controller.weapon_cooldown > 0:
-		return
+
 	if weapon_controller.weapon_reload_time > 0:
 		return
 	if weapon_controller.weapon_ammo < 0:
