@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://u2bh0id3lcta"]
 
 [ext_resource type="Script" uid="uid://c3xx8cja05m35" path="res://scripts/enemy_controller.gd" id="1_md0e3"]
-[ext_resource type="Script" uid="uid://c1nljkc6e7imm" path="res://scenes/enemy_sprite.gd" id="4_5uy6h"]
+[ext_resource type="Script" uid="uid://c1nljkc6e7imm" path="res://scripts/enemy_sprite.gd" id="4_5uy6h"]
 [ext_resource type="Texture2D" uid="uid://b6i28en06sqwi" path="res://assets/skeleton_atlas.png" id="4_c4w8v"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aqpbq"]
