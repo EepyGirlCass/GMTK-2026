@@ -61,6 +61,5 @@ shape = SubResource("ConcavePolygonShape3D_ig7tw")
 [node name="Enemies" type="Node3D" parent="." unique_id=63575663]
 
 [node name="Enemy" parent="Enemies" unique_id=1393046475 instance=ExtResource("3_sugp2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9073486e-06, 2.9888515, -37.096245)
 
 [node name="Projectiles" type="Node3D" parent="." unique_id=1608317585]

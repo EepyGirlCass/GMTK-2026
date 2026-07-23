@@ -1,17 +1,20 @@
+class_name BillboardSprite3D
 extends Sprite3D
+
+@export var sprite_tile_size := Vector2i(64, 64)
 
 var sprite_coords := Vector2i(0, 0)
 var sprite_rect: Rect2i:
-	get: return Rect2i(Vector2i(sprite_coords.x * 128, sprite_coords.y * 256), Vector2i(128, 256))
+	get: return Rect2i(Vector2i(sprite_coords.x * sprite_tile_size.x, sprite_coords.y * sprite_tile_size.y), sprite_tile_size)
 
 
-@onready var player: Player = $"../../../Player"
+@onready var player: Player = GlobalPlayer.player
 @onready var camera_position: Vector3:
 	get: return player.camera_3d.global_position
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	region_enabled = true
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

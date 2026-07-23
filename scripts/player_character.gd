@@ -33,6 +33,7 @@ func _init() -> void:
 	health = 1
 
 func _ready() -> void:
+	GlobalPlayer.player = self
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
 	update_dash_ability(abilities_controller.dash_ability_values[abilities_controller.current_dash]["amount"],
