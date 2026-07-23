@@ -4,6 +4,8 @@ extends Character
 
 const SPEED = 12.5
 
+var in_menu : bool
+
 var is_sliding : bool = false
 var slide_dir : Vector2
 
@@ -29,6 +31,7 @@ var time_drain_multiplier_ui:float=1
 @onready var camera_3d: Camera = $CameraPivot/Camera3D
 @onready var gun_shot_point: Node3D = $CameraPivot/GunShotPoint
 
+
 func _init() -> void:
 	health = 1
 
@@ -46,6 +49,8 @@ func _ready() -> void:
 	GameTime.time_timer = 360
 func _physics_process(delta: float) -> void:
 	
+	if in_menu: return
+	
 	time_drain_multiplier = 1
 	if health > 1:
 		time_drain_multiplier = lerp(1.0, .50 , health/4)
@@ -61,7 +66,6 @@ func _physics_process(delta: float) -> void:
 	
 	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
 	
-	change_timer(-delta)
 	
 	GameTime.time_scale = 1 * time_drain_multiplier
 	
@@ -133,11 +137,12 @@ func _physics_process(delta: float) -> void:
 				
 	update_ui()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
+	if in_menu: return
 	if Input.is_action_pressed("Attack"):
 		if current_weapon.shoot():
 			change_time_with_message(-current_weapon.shoot_cost)
-
+	
 
 func jump():
 	var current_jump_values = abilities_controller.jump_ability_values[abilities_controller.current_jump]
@@ -250,6 +255,12 @@ func change_time_with_message(amount:float):
 		timer_label.global_position.x -= 100
 
 func _input(event: InputEvent) -> void:
+	
+	if in_menu:
+		if Input.is_action_just_pressed("Pause"):
+			player_ui.shop_ui._on_button_pressed()
+		return
+	
 	if event is InputEventMouseMotion:
 		rotation.y -= event.relative.x * .0025
 		$CameraPivot.rotation.x -= event.relative.y * .0025
@@ -290,6 +301,13 @@ func _input(event: InputEvent) -> void:
 		current_weapon_idx = 4
 	if Input.is_action_just_pressed("Pause"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		open_shop()
 	if Input.is_action_just_pressed("Reload"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		current_weapon.start_reload()
+
+
+func open_shop():
+	in_menu = true
+	GameTime.paused = true
+	player_ui.shop_ui.show()

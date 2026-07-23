@@ -197,8 +197,8 @@ class Shotgun extends Weapon:
 		
 		shoot_cooldown = 1
 		shoot_cost = 1
-		bullet_spread = 9
-		bullet_damage = 10
+		bullet_spread = 6
+		bullet_damage = 2
 		bullet_crit_mult = 1.1
 		bullet_amount = 8
 	

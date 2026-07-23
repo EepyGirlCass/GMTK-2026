@@ -1,6 +1,7 @@
 class_name PlayerUI
 extends Control
 
+
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var timer: Label = $Timer
 @onready var ammo_count: Label = $AmmoCount
@@ -9,3 +10,4 @@ extends Control
 @onready var dash_bar_container: HBoxContainer = $DashBarContainer
 @onready var speed: Label = $speed
 @onready var drain_multiplier: Label = $DrainMultiplier
+@onready var shop_ui: Shop = $ShopUI
