@@ -12,7 +12,7 @@ var jump_ability_values : Dictionary = {
 }
 
 var slide_ability_values : Dictionary = {
-	SlideAbilityID.BASIC_SLIDE : {"multiplier" : 0.175, "speed" : 15}
+	SlideAbilityID.BASIC_SLIDE : {"multiplier" : 0.5, "speed" : 15}
 }
 
 var dash_ability_values : Dictionary = {

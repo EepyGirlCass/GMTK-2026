@@ -63,6 +63,7 @@ func _physics_process(delta: float) -> void:
 	
 	change_timer(-new_delta)
 	
+	TimeScale.scale = 1 * time_drain_multiplier
 	
 	
 	# Ignore gravity while dashing so upward Y isn't immediately killed
@@ -115,7 +116,7 @@ func _physics_process(delta: float) -> void:
 	
 	if is_sliding:
 		$CollisionShape3D.shape.height = lerp($CollisionShape3D.shape.height, .50, 20 * delta)
-		camera_3d.fov = lerp(camera_3d.fov, 140.0, delta)
+		camera_3d.fov = lerp(camera_3d.fov, 110.0, delta)
 	else:
 		$CollisionShape3D.shape.height = lerp($CollisionShape3D.shape.height, 2.0, 20 * delta)
 		camera_3d.fov = lerp(camera_3d.fov, 90.0, delta)
@@ -226,12 +227,15 @@ func convert_float_to_time(time: float) -> String:
 
 func change_time_with_message(amount:float):
 	change_timer(amount)
-	var subtract_label := TimerMessage.new()
-	subtract_label.amount = amount
-	player_ui.timer_messages.add_child(subtract_label)
-	subtract_label.global_position.y = player_ui.timer.global_position.y
-	subtract_label.global_position.x = player_ui.timer.global_position.x + player_ui.timer.size.x/4
-	
+	var timer_label := TimerMessage.new()
+	timer_label.amount = amount
+	player_ui.timer_messages.add_child(timer_label)
+
+	timer_label.global_position.y = player_ui.timer.global_position.y
+	timer_label.global_position.x = player_ui.timer.global_position.x + player_ui.timer.size.x/2
+	if amount > 0:
+		timer_label.global_position.x -= 100
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		rotation.y -= event.relative.x * .0025
