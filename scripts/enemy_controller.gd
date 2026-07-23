@@ -5,7 +5,7 @@ extends CharacterBody3D
 @onready var player: Player = $"../../Player"
 
 var health : float = 10
-var speed: float = 400.0
+var speed: float = 40
 var time_reward : float = 1
 
 var current_enemy_type
@@ -13,7 +13,7 @@ var current_enemy_type
 func _physics_process(delta: float) -> void:
 	
 	delta *= GameTime.time_scale
-
+	
 	$EnemySprite.look_at(Vector3(
 		player.global_position.x,
 		global_position.y,
