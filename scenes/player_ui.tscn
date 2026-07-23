@@ -3,14 +3,15 @@
 [ext_resource type="Script" uid="uid://dwv8khx1hune1" path="res://scripts/player_ui.gd" id="1_jkj6h"]
 [ext_resource type="Texture2D" uid="uid://c62cs0p6r37b0" path="res://icon.svg" id="2_sk4pr"]
 [ext_resource type="Shader" uid="uid://d050avdq3lue5" path="res://scripts/shaders/reload_circle.gdshader" id="3_48xfa"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_guxnq"]
-bg_color = Color(0.9525445, 0.19520909, 0.2222574, 1)
+[ext_resource type="PackedScene" uid="uid://c6b8adscv5ee1" path="res://scenes/shop_ui.tscn" id="4_8isll"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_guxnq"]
 font_size = 90
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_guxnq"]
+bg_color = Color(0.9525445, 0.19520909, 0.2222574, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_uj7mf"]
 font_size = 29
@@ -37,15 +38,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jkj6h")
 
-[node name="HealthBar" type="ProgressBar" parent="." unique_id=1523904795]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 928.0
-offset_right = 640.0
-offset_bottom = 992.0
-theme_override_font_sizes/font_size = 29
-theme_override_styles/fill = SubResource("StyleBoxFlat_guxnq")
-
 [node name="Timer" type="Label" parent="." unique_id=1062394957]
 layout_mode = 0
 offset_left = 1280.0
@@ -55,6 +47,19 @@ offset_bottom = 1035.0
 label_settings = SubResource("LabelSettings_guxnq")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ShopUI" parent="." unique_id=1378547139 instance=ExtResource("4_8isll")]
+visible = false
+layout_mode = 1
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1523904795]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 928.0
+offset_right = 640.0
+offset_bottom = 992.0
+theme_override_font_sizes/font_size = 29
+theme_override_styles/fill = SubResource("StyleBoxFlat_guxnq")
 
 [node name="DrainMultiplier" type="Label" parent="." unique_id=973890949]
 layout_mode = 0

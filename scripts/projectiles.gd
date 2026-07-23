@@ -44,7 +44,7 @@ func _init(direction : Vector3) -> void:
 class Nail extends Projectile:
 	
 	func _init(direction : Vector3) -> void:
-		velocity = Vector3(1, 1, 1) * direction * 15
+		velocity = Vector3(1, 1, 1) * direction * 25
 		hitbox = Vector3(.5, .5, .5) * .1
 		
 		model = BoxMesh.new()

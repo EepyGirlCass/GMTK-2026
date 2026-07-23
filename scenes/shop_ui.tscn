@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://c6b8adscv5ee1"]
+
+[ext_resource type="Script" uid="uid://drvis4ki3ljo6" path="res://scripts/shop.gd" id="1_oixfk"]
+[ext_resource type="Texture2D" uid="uid://bx2fi5s78b1um" path="res://assets/close_43dp_FFFFFF_FILL0_wght400_GRAD0_opsz40.png" id="2_18xnp"]
+
+[node name="ShopUI" type="Control" unique_id=1378547139]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oixfk")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=263730343]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=213538123]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="TabContainer" type="TabContainer" parent="PanelContainer/MarginContainer" unique_id=32621995]
+layout_mode = 2
+theme_override_constants/side_margin = 44
+theme_override_constants/tab_separation = 45
+theme_override_font_sizes/font_size = 55
+current_tab = 0
+
+[node name="Abilities" type="Control" parent="PanelContainer/MarginContainer/TabContainer" unique_id=296922594]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Weapons" type="Control" parent="PanelContainer/MarginContainer/TabContainer" unique_id=1632048321]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Button" type="Button" parent="." unique_id=1947735997]
+layout_mode = 0
+offset_left = 1760.0
+offset_top = 32.0
+offset_right = 1856.0
+offset_bottom = 128.0
+icon = ExtResource("2_18xnp")
+icon_alignment = 1
+expand_icon = true
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
