@@ -1,18 +1,10 @@
 [gd_scene format=3 uid="uid://u2bh0id3lcta"]
 
-[ext_resource type="Texture2D" uid="uid://c62cs0p6r37b0" path="res://icon.svg" id="1_7p1mj"]
 [ext_resource type="Script" uid="uid://c3xx8cja05m35" path="res://scripts/enemy_controller.gd" id="1_md0e3"]
-[ext_resource type="Shader" uid="uid://rjwdqc60gto3" path="res://scripts/shaders/enemy_flash.gdshader" id="2_4ra3w"]
+[ext_resource type="Script" uid="uid://c1nljkc6e7imm" path="res://scenes/enemy_sprite.gd" id="4_5uy6h"]
+[ext_resource type="Texture2D" uid="uid://b6i28en06sqwi" path="res://assets/skeleton_atlas.png" id="4_c4w8v"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aqpbq"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_md0e3"]
-resource_local_to_scene = true
-render_priority = 0
-shader = ExtResource("2_4ra3w")
-shader_parameter/texture_albedo = ExtResource("1_7p1mj")
-shader_parameter/flash_modifier = 0.0
-shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_aqpbq"]
 radius = 1.5
@@ -26,10 +18,12 @@ script = ExtResource("1_md0e3")
 shape = SubResource("CapsuleShape3D_aqpbq")
 
 [node name="EnemySprite" type="Sprite3D" parent="." unique_id=1619772985]
-material_override = SubResource("ShaderMaterial_md0e3")
 modulate = Color(1.353256, 1.353256, 1.353256, 1)
-billboard = 2
-texture = ExtResource("1_7p1mj")
+billboard = 1
+texture = ExtResource("4_c4w8v")
+region_enabled = true
+region_rect = Rect2(0, 512, 128, 256)
+script = ExtResource("4_5uy6h")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=886923165]
 

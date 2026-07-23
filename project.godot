@@ -16,7 +16,7 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 
 [autoload]
 
-Settings="*uid://cx2kbjygwmkcy"
+Settings="uid://cx2kbjygwmkcy"
 Menu="uid://3ypv3308bhc8"
 GameTime="*uid://7jm0lttchsj0"
 
