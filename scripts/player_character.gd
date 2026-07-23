@@ -25,9 +25,9 @@ var time_drain_multiplier:float=1
 var time_drain_multiplier_ui:float=1
 @onready var player_ui: PlayerUI = $PlayerUI
 @onready var camera_pivot: Node3D = $CameraPivot
-@onready var gun_shot_point: Node3D = $CameraPivot/gun_shot_point
 @onready var abilities_controller: AbilitiesController = $AbilitiesController
 @onready var camera_3d: Camera = $CameraPivot/Camera3D
+@onready var gun_shot_point: Node3D = $CameraPivot/GunShotPoint
 
 func _init() -> void:
 	health = 1
@@ -40,6 +40,8 @@ func _ready() -> void:
 	
 	weapons.append(Weapon.Shotgun.new(self))
 	weapons.append(Weapon.Nailgun.new(self))
+	
+	bullet_start = gun_shot_point
 	
 	GameTime.time_timer = 360
 func _physics_process(delta: float) -> void:

@@ -28,7 +28,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33284542, -0.49379015)
 current = true
 script = ExtResource("2_6r27q")
 
-[node name="gun_shot_point" type="Node3D" parent="CameraPivot" unique_id=88076736]
+[node name="GunShotPoint" type="Node3D" parent="CameraPivot" unique_id=88076736]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2683594, 0)
 
 [node name="PlayerUI" parent="." unique_id=1038248244 instance=ExtResource("3_kww55")]

@@ -5,6 +5,7 @@ var health: float
 var stride_distance: float
 var speed: float
 
+var bullet_start : Node3D
 
 var weapons: Array[Weapon]
 var current_weapon_idx: int = 0
