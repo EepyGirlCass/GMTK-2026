@@ -12,6 +12,6 @@ var time_true_no_pause: float = 0.0
 func _update(delta) -> void:
 	if not paused:
 		time += delta * time_scale
-		time_timer += delta * time_scale * time_scale_timer
+		time_timer -= delta * time_scale * time_scale_timer
 		time_true += delta
 	time_true_no_pause += delta

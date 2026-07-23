@@ -29,6 +29,8 @@ var time_drain_multiplier_ui:float=1
 @onready var abilities_controller: AbilitiesController = $AbilitiesController
 @onready var camera_3d: Camera = $CameraPivot/Camera3D
 
+func _init() -> void:
+	health = 1
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -40,7 +42,7 @@ func _ready() -> void:
 	weapons.append(Weapon.Nailgun.new(self))
 	
 func _physics_process(delta: float) -> void:
-	current_weapon.shoot()
+	
 	time_drain_multiplier = 1
 	if health > 1:
 		time_drain_multiplier = lerp(1.0, .50 , health/4)
@@ -56,7 +58,7 @@ func _physics_process(delta: float) -> void:
 	
 	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
 	
-	change_timer(-new_delta)
+	change_timer(-delta)
 	
 	GameTime.time_scale = 1 * time_drain_multiplier
 	

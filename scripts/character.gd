@@ -1,7 +1,7 @@
 @abstract class_name Character
 extends CharacterBody3D
 
-var health: float
+var health: float 
 var stride_distance: float
 var speed: float
 

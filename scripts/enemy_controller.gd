@@ -14,7 +14,7 @@ func _physics_process(delta: float) -> void:
 	
 	delta *= GameTime.time_scale
 
-	look_at(Vector3(
+	$EnemySprite.look_at(Vector3(
 		player.global_position.x,
 		global_position.y,
 		player.global_position.z
