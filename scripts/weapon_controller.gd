@@ -107,7 +107,6 @@ func spend_time(amount:float):
 
 func fire_hitscan(start_pos : Vector3, spread_angle : float):
 	# 1. Setup the Physics Space
-	print('a')
 	var space_state = get_world_3d().direct_space_state
 	
 	# 2. Calculate the Trajectory
@@ -132,10 +131,15 @@ func fire_hitscan(start_pos : Vector3, spread_angle : float):
 	var gun_tracer : GunTracer = preload("res://scenes/gun_tracer.tscn").instantiate()
 	gun_tracer.start_pos = start_pos
 	
-	print(ray_end)
-	var collider = null
+	
+	var target = null
+	
 	if result:
 		gun_tracer.end_pos = result.position
+		target = result.collider
+		if target is Enemy:
+			target.take_damage(current_weapon.damage)
 	else:
 		gun_tracer.end_pos = ray_end
+
 	particles.add_child(gun_tracer)

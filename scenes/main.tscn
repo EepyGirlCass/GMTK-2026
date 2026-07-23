@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://c62cs0p6r37b0" path="res://icon.svg" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://csehikqjwq7e5" path="res://scenes/player_character.tscn" id="2_sugp2"]
+[ext_resource type="PackedScene" uid="uid://u2bh0id3lcta" path="res://scenes/enemy.tscn" id="3_sugp2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -15,6 +16,10 @@ background_mode = 2
 sky = SubResource("Sky_h2yge")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_aqpbq"]
+vertices = PackedVector3Array(-49.5, 0, -49.5, -49.5, 0, 49.5, 49.5, 0, 49.5, 49.5, 0, -49.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 
 [sub_resource type="BoxMesh" id="BoxMesh_lquwl"]
 size = Vector3(100, 1, 100)
@@ -34,18 +39,71 @@ environment = SubResource("Environment_1bvp3")
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
 
-[node name="LevelStage" type="MultiMeshInstance3D" parent="." unique_id=2059114316]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=842777237]
+navigation_mesh = SubResource("NavigationMesh_aqpbq")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="LevelStage" unique_id=1257883495]
+[node name="LevelStage" type="MultiMeshInstance3D" parent="NavigationRegion3D" unique_id=2059114316]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/LevelStage" unique_id=1257883495]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 mesh = SubResource("BoxMesh_lquwl")
 surface_material_override/0 = SubResource("StandardMaterial3D_h2yge")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="LevelStage/MeshInstance3D" unique_id=332285674]
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/LevelStage/MeshInstance3D" unique_id=332285674]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LevelStage/MeshInstance3D/StaticBody3D" unique_id=1534638387]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/LevelStage/MeshInstance3D/StaticBody3D" unique_id=1534638387]
 shape = SubResource("ConcavePolygonShape3D_ig7tw")
 
 [node name="Player" parent="." unique_id=2106942201 instance=ExtResource("2_sugp2")]
 
 [node name="Particles" type="Node3D" parent="." unique_id=984812865]
+
+[node name="Enemies" type="Node3D" parent="." unique_id=63575663]
+
+[node name="Enemy" parent="Enemies" unique_id=1393046475 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9073486e-06, 2.9888515, -37.096245)
+
+[node name="Enemy2" parent="Enemies" unique_id=111242963 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9073486e-06, 14.57123, 17.105267)
+
+[node name="Enemy3" parent="Enemies" unique_id=1753214665 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9073486e-06, 6.569065, -17.866255)
+
+[node name="Enemy4" parent="Enemies" unique_id=70127213 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.048979, 18.099895)
+
+[node name="Enemy8" parent="Enemies" unique_id=1191318475 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.902462, 6.048979, 18.099895)
+
+[node name="Enemy12" parent="Enemies" unique_id=115874856 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.542313, 6.048979, 18.099895)
+
+[node name="Enemy16" parent="Enemies" unique_id=1557331823 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0952835, 6.048979, 18.099895)
+
+[node name="Enemy15" parent="Enemies" unique_id=1891553949 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.095285, 6.569065, -17.866255)
+
+[node name="Enemy14" parent="Enemies" unique_id=1057146717 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.095282, 14.57123, 17.105267)
+
+[node name="Enemy13" parent="Enemies" unique_id=1868437694 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.095282, 2.9888515, -37.096245)
+
+[node name="Enemy11" parent="Enemies" unique_id=1780152208 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.542315, 6.569065, -17.866255)
+
+[node name="Enemy10" parent="Enemies" unique_id=1048364269 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.54231, 14.57123, 17.105267)
+
+[node name="Enemy9" parent="Enemies" unique_id=2061960542 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.54231, 2.9888515, -37.096245)
+
+[node name="Enemy7" parent="Enemies" unique_id=659331647 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.90246, 6.569065, -17.866255)
+
+[node name="Enemy6" parent="Enemies" unique_id=2092076210 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.902464, 14.57123, 17.105267)
+
+[node name="Enemy5" parent="Enemies" unique_id=118305515 instance=ExtResource("3_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.902464, 2.9888515, -37.096245)
