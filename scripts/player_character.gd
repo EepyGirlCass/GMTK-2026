@@ -41,6 +41,7 @@ func _ready() -> void:
 	weapons.append(Weapon.Shotgun.new(self))
 	weapons.append(Weapon.Nailgun.new(self))
 	
+	GameTime.time_timer = 360
 func _physics_process(delta: float) -> void:
 	
 	time_drain_multiplier = 1
@@ -260,3 +261,6 @@ func _input(event: InputEvent) -> void:
 	
 	if Input.is_action_just_pressed("Dash"):
 		dash()
+	
+	if Input.is_action_pressed("Attack"):
+		current_weapon.shoot()
