@@ -264,3 +264,18 @@ func _input(event: InputEvent) -> void:
 	
 	if Input.is_action_pressed("Attack"):
 		current_weapon.shoot()
+	
+	if Input.is_action_just_pressed("1"):
+		current_weapon = weapons[0]
+	if Input.is_action_just_pressed("2"):
+		current_weapon = weapons[1]
+	if Input.is_action_just_pressed("3"):
+		current_weapon = weapons[2]
+	if Input.is_action_just_pressed("4"):
+		current_weapon = weapons[3]
+	if Input.is_action_just_pressed("5"):
+		current_weapon = weapons[4]
+	if Input.is_action_just_pressed("Pause"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if Input.is_action_just_pressed("Reload"):
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
