@@ -43,7 +43,7 @@ func _ready() -> void:
 	
 	weapons.append(Weapon.Shotgun.new(self))
 	weapons.append(Weapon.Nailgun.new(self))
-	weapons.append(Weapon.Buckshot.new(self))
+	#weapons.append(Weapon.Buckshot.new(self))
 	
 	
 	GameTime.time_timer = 360
