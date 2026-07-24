@@ -109,7 +109,7 @@ func fire_hitscan():
 	var space_state := weapon_owner.get_world_3d().direct_space_state
 	
 	# 2. Calculate the Trajectory
-	var bullet_dir: Vector3 = -weapon_owner.gun_shot_point.global_transform.basis.z # Forward in Godot is -Z
+	var bullet_dir: Vector3 = -weapon_owner.bullet_start_node.global_transform.basis.z # Forward in Godot is -Z
 	
 	if not is_zero_approx(bullet_spread):
 		# Apply the random spread cone
@@ -169,7 +169,7 @@ func shoot_projectile() -> bool:
 
 func fire_projectile():
 	# 2. Calculate the Trajectory
-	var bullet_dir: Vector3 = -weapon_owner.gun_shot_point.global_transform.basis.z # Forward in Godot is -Z
+	var bullet_dir: Vector3 = -weapon_owner.bullet_start_node.global_transform.basis.z # Forward in Godot is -Z
 	
 	if not is_zero_approx(bullet_spread):
 		# Apply the random spread cone

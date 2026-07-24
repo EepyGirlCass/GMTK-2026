@@ -71,6 +71,7 @@ class Nail extends Projectile:
 		global_rotation = source_weapon.global_rotation
 		
 	func on_hit(body: Node3D):
+		if body == source_character: return
 		if body is Character:
 			if body.has_method("take_damage"):
 				body.take_damage(source_weapon.bullet_damage)
