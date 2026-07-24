@@ -92,7 +92,7 @@ func reload() -> bool:
 
 
 # return if a shot happened
-func shoot_hitscan() -> float:
+func shoot_hitscan(direction_override: Vector3 = Vector3.INF) -> float:
 	if GameTime.time < can_shoot_time:
 		return false
 	
@@ -106,7 +106,7 @@ func shoot_hitscan() -> float:
 	
 	ammo_clip -= 1
 	for i in range(bullet_amount):
-		fire_hitscan()
+		fire_hitscan(direction_override)
 	
 	if ammo_clip <= 0 and not reload_amount == 0:
 		start_reload()
@@ -114,12 +114,16 @@ func shoot_hitscan() -> float:
 	return true
 
 
-func fire_hitscan():
+func fire_hitscan(direction_override: Vector3 = Vector3.INF):
 	# 1. Setup the Physics Space
 	var space_state := weapon_owner.get_world_3d().direct_space_state
 	
 	# 2. Calculate the Trajectory
-	var bullet_dir: Vector3 = -weapon_owner.bullet_start_node.global_transform.basis.z # Forward in Godot is -Z
+	var bullet_dir: Vector3
+	if direction_override == Vector3.INF :
+		bullet_dir = -weapon_owner.bullet_start_node.global_transform.basis.z # Forward in Godot is -Z
+	else:
+		bullet_dir = direction_override
 	
 	if not is_zero_approx(bullet_spread):
 		# Apply the random spread cone
@@ -155,7 +159,7 @@ func fire_hitscan():
 	weapon_owner.get_node("../Particles").add_child(gun_tracer)
 
 
-func shoot_projectile() -> bool:
+func shoot_projectile(direction_override: Vector3 = Vector3.INF) -> bool:
 	if GameTime.time < can_shoot_time:
 		return false
 	
@@ -169,7 +173,7 @@ func shoot_projectile() -> bool:
 	
 	ammo_clip -= 1
 	for i in range(bullet_amount):
-		fire_projectile()
+		fire_projectile(direction_override)
 	
 	if ammo_clip <= 0 and not reload_amount == 0:
 		start_reload()
@@ -177,9 +181,13 @@ func shoot_projectile() -> bool:
 	return true
 
 
-func fire_projectile():
+func fire_projectile(direction_override: Vector3 = Vector3.INF):
 	# 2. Calculate the Trajectory
-	var bullet_dir: Vector3 = -weapon_owner.bullet_start_node.global_transform.basis.z # Forward in Godot is -Z
+	var bullet_dir: Vector3
+	if direction_override == Vector3.INF :
+		bullet_dir = -weapon_owner.bullet_start_node.global_transform.basis.z # Forward in Godot is -Z
+	else:
+		bullet_dir = direction_override
 	
 	if not is_zero_approx(bullet_spread):
 		# Apply the random spread cone

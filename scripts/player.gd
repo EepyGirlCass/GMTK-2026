@@ -57,7 +57,6 @@ func _physics_process(delta: float) -> void:
 	delta *= GameTime.time_scale
 	
 	
-	
 	time_drain_multiplier = 1
 	if health > 100:
 		time_drain_multiplier = lerp(1.0,.25 , health/400)
