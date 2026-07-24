@@ -32,7 +32,7 @@ var time_drain_multiplier_ui:float=1
 @onready var gun_shot_point: Node3D = $CameraPivot/GunShotPoint
 
 func _init() -> void:
-	health = 1
+	health = 100
 
 
 func _ready() -> void:
@@ -56,10 +56,10 @@ func _physics_process(delta: float) -> void:
 	if in_menu: return
 	
 	time_drain_multiplier = 1
-	if health > 1:
-		time_drain_multiplier = lerp(1.0, .50 , health/4)
-	if health < 1:
-		time_drain_multiplier = lerp(5.0, 1.0, health/1)
+	#if health > 1:
+		#time_drain_multiplier = lerp(1.0, .50 , health/4)
+	#if health < 1:
+		#time_drain_multiplier = lerp(5.0, 1.0, health/1)
 		
 	var current_slide_values = abilities_controller.slide_ability_values[abilities_controller.current_slide]
 	var slide_speed : float = current_slide_values["speed"]
@@ -272,8 +272,6 @@ func update_ui() -> void:
 			bar.value = clamp(current_recharge_pct * 100.0, 0, 100)
 		else:
 			bar.value = 0
-	
-	player_ui.speed.text = str(velocity)
 	
 	player_ui.drain_multiplier.text = str("x", roundf(time_drain_multiplier_ui*1000)*.001 )
 	

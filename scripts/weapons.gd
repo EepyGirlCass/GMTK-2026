@@ -137,8 +137,7 @@ func fire_hitscan():
 	
 	if result:
 		gun_tracer.end_pos = result.position
-		# TODO: make this actual code
-		if result.collider is CharacterBody3D:
+		if result.collider is Character:
 			if result.collider.has_method("take_damage"):
 				result.collider.take_damage(bullet_damage)
 	else:
@@ -188,6 +187,27 @@ func fire_projectile():
 	projectile.new(self, bullet_dir.normalized())
 
 
+class EnemyMelee extends Weapon:
+	var melee_range: float
+	func _init(character_owner: Character):
+		weapon_owner = character_owner
+		weapon_owner.add_child(self)
+		
+		reload_amount = 0 # no reload
+		melee_range = 2
+		bullet_damage = 10
+		shoot_cooldown = 3
+	
+	func shoot() -> bool:
+		if GameTime.time < can_shoot_time:
+			return false
+		if weapon_owner.global_position.distance_to(GlobalPlayer.player.global_position) <= melee_range:
+			GlobalPlayer.player.health -= bullet_damage
+			can_shoot_time = GameTime.time + shoot_cooldown
+			return true
+		return false
+
+
 class Shotgun extends Weapon:
 	func _init(character_owner: Character):
 		weapon_owner = character_owner
@@ -218,8 +238,8 @@ class Buckshot extends Shotgun:
 		reload_duration = 0.5
 		reload_amount = 2
 		
-		ammo_max_clip = 12
-		ammo_clip = 12
+		ammo_max_clip = 18
+		ammo_clip = 18
 		
 		shoot_cooldown = 0.25
 		bullet_damage = 0.1

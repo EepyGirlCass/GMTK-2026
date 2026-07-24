@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://c62cs0p6r37b0" path="res://icon.svg" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://csehikqjwq7e5" path="res://scenes/player_character.tscn" id="2_sugp2"]
-[ext_resource type="PackedScene" uid="uid://u2bh0id3lcta" path="res://scenes/enemy.tscn" id="3_sugp2"]
+[ext_resource type="Script" uid="uid://bv1sckfhrufvb" path="res://scripts/enemy.gd" id="3_sugp2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -60,22 +60,29 @@ shape = SubResource("ConcavePolygonShape3D_ig7tw")
 
 [node name="Enemies" type="Node3D" parent="." unique_id=63575663]
 
-[node name="Enemy" parent="Enemies" unique_id=1393046475 instance=ExtResource("3_sugp2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14.489834)
+[node name="Enemy" type="CharacterBody3D" parent="Enemies" unique_id=594788636]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4118681, 0.96858644, 13.891325)
+script = ExtResource("3_sugp2")
+metadata/_custom_type_script = "uid://bv1sckfhrufvb"
 
-[node name="Enemy2" parent="Enemies" unique_id=1716499370 instance=ExtResource("3_sugp2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6876135, 2.9888515, -37.096245)
+[node name="Enemy2" type="CharacterBody3D" parent="Enemies" unique_id=206352168]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5779805, 0.9685855, 12.173103)
+script = ExtResource("3_sugp2")
+metadata/_custom_type_script = "uid://bv1sckfhrufvb"
 
-[node name="Enemy3" parent="Enemies" unique_id=1618147014 instance=ExtResource("3_sugp2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3870735, 2.9888515, -37.096245)
+[node name="Enemy3" type="CharacterBody3D" parent="Enemies" unique_id=578579019]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.7090855, 0.96858644, 12.44236)
+script = ExtResource("3_sugp2")
+metadata/_custom_type_script = "uid://bv1sckfhrufvb"
 
-[node name="Enemy4" parent="Enemies" unique_id=870293286 instance=ExtResource("3_sugp2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.3933573, 2.9888515, -37.096245)
+[node name="Enemy4" type="CharacterBody3D" parent="Enemies" unique_id=2062649021]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.969764, 0.96858644, 14.819403)
+script = ExtResource("3_sugp2")
+metadata/_custom_type_script = "uid://bv1sckfhrufvb"
 
-[node name="Enemy5" parent="Enemies" unique_id=944906169 instance=ExtResource("3_sugp2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.441684, 2.9888515, -37.096245)
-
-[node name="Enemy6" parent="Enemies" unique_id=1622609778 instance=ExtResource("3_sugp2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.590418, 2.9888515, -37.096245)
+[node name="Enemy5" type="CharacterBody3D" parent="Enemies" unique_id=765324330]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.72017, 0.96858644, 11.202939)
+script = ExtResource("3_sugp2")
+metadata/_custom_type_script = "uid://bv1sckfhrufvb"
 
 [node name="Projectiles" type="Node3D" parent="." unique_id=1608317585]

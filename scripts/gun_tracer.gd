@@ -30,6 +30,11 @@ func _ready() -> void:
 	# 2. Position and Align
 	var distance = start_pos.distance_to(end_pos)
 	mesh_instance.global_position = (end_pos + start_pos) * 0.5 # Midpoint
+	# avoid errors
+	if mesh_instance.global_position == end_pos:
+		queue_free()
+		return
+	
 	mesh_instance.look_at(end_pos)
 	mesh_instance.rotate_object_local(Vector3.RIGHT, PI/2) # Align cylinder axis
 	mesh_instance.scale.y = distance # Stretch to fit length

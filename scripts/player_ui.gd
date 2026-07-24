@@ -8,6 +8,5 @@ extends Control
 @onready var timer_messages: Control = $TimerMessages
 @onready var reload_circle: TextureRect = $ReloadCircle
 @onready var dash_bar_container: HBoxContainer = $DashBarContainer
-@onready var speed: Label = $speed
 @onready var drain_multiplier: Label = $DrainMultiplier
 @onready var shop_ui: Shop = $ShopUI
