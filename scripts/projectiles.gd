@@ -69,6 +69,7 @@ func _process(delta: float) -> void:
 
 
 func shapecast() -> Array[Dictionary]:
+	if is_queued_for_deletion(): return []
 	# 1. Setup the Physics Space
 	var space_state := source_character.get_world_3d().direct_space_state
 	
