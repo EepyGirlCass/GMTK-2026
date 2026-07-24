@@ -56,11 +56,7 @@ func _physics_process(delta: float) -> void:
 	if in_menu: return
 	delta *= GameTime.time_scale
 	
-	# more gravity while falling
-	if velocity.y < -0.1:
-		velocity.y -= 12 * delta
-	else:
-		velocity.y -= 5 * delta
+	
 	
 	time_drain_multiplier = 1
 	if health > 100:
@@ -79,7 +75,12 @@ func _physics_process(delta: float) -> void:
 	
 	# Ignore gravity while dashing so upward Y isn't immediately killed
 	if not is_on_floor() and dash_timer <= 0.0:
-		velocity += get_gravity() * delta 
+		# more gravity while falling
+		if velocity.y < -0.1:
+			velocity.y -= 22 * delta
+		else:
+			velocity.y -= 15 * delta
+		
 	if is_on_floor():
 		current_jumps = 0
 	
