@@ -14,10 +14,11 @@ var velocity : Vector3
 
 var speed : float
 
-@abstract func on_hit(body: Node3D)
+@abstract func on_hit(body: Node3D) -> void
 
 func _ready() -> void:
 	super()
+	
 	var area_3D := Area3D.new()
 	add_child(area_3D)
 	
@@ -34,6 +35,7 @@ func _ready() -> void:
 	
 	area_3D.connect("body_entered", on_hit)
 
+
 func _process(delta: float) -> void:
 	if GameTime.paused: return
 	delta *= GameTime.time_scale
@@ -47,13 +49,10 @@ func _process(delta: float) -> void:
 	
 	super(delta)
 
-func _init(direction : Vector3) -> void:
-	velocity = Vector3(1, 0, 0) * direction
-	
+
 class Nail extends Projectile:
-	
 	@warning_ignore("shadowed_variable_base_class")
-	func _init(source_weapon : Weapon, direction : Vector3) -> void:
+	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
 		texture = preload("res://assets/nail_atlas.png")
 		sprite_tile_size = Vector2i(32, 32)
 		
@@ -65,13 +64,13 @@ class Nail extends Projectile:
 		hitbox = Vector3.ONE * .05
 		
 		expire_time = GameTime.time + lifetime
-		self.source_weapon = source_weapon
+		source_weapon = weapon_owner
 		source_character = source_weapon.weapon_owner
 		velocity = direction * speed # + source_character.velocity
-		global_position = source_character.bullet_start + direction * 0.0625
+		global_position = source_character.bullet_start
 		global_rotation = source_weapon.global_rotation
 		
-	func on_hit(body:Node3D):
+	func on_hit(body: Node3D):
 		if body is EnemyController:
 			body.take_damage(source_weapon.bullet_damage)
 		queue_free()

@@ -31,9 +31,9 @@ var time_drain_multiplier_ui:float=1
 @onready var camera_3d: Camera = $CameraPivot/Camera3D
 @onready var gun_shot_point: Node3D = $CameraPivot/GunShotPoint
 
-
 func _init() -> void:
 	health = 1
+
 
 func _ready() -> void:
 	GlobalPlayer.player = self
@@ -49,6 +49,8 @@ func _ready() -> void:
 	bullet_start_node = gun_shot_point
 	
 	GameTime.time_timer = 360
+
+
 func _physics_process(delta: float) -> void:
 	
 	if in_menu: return
@@ -64,24 +66,15 @@ func _physics_process(delta: float) -> void:
 	if is_sliding: 
 		time_drain_multiplier *= current_slide_values["multiplier"]
 	
-	#delta *= GameTime.time_scale * time_drain_multiplier
-	
 	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
 	
-	
 	GameTime.time_scale = 1 * time_drain_multiplier
-	
 	
 	# Ignore gravity while dashing so upward Y isn't immediately killed
 	if not is_on_floor() and dash_timer <= 0.0:
 		velocity += get_gravity() * delta
 	if is_on_floor():
 		current_jumps = 0
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and (is_on_floor() or current_jumps < jump_amount):
-		jump()
-	
-
 	
 	# Movement logic (Only active when NOT dashing)
 	if dash_timer > 0.0:
@@ -115,10 +108,7 @@ func _physics_process(delta: float) -> void:
 			else:
 				velocity.x = move_toward(velocity.x, 0, SPEED)
 				velocity.z = move_toward(velocity.z, 0, SPEED)
-
 	move_and_slide()
-	
-
 	
 	if is_sliding:
 		$CollisionShape3D.shape.height = lerp($CollisionShape3D.shape.height, .50, 20 * delta)
@@ -139,12 +129,65 @@ func _physics_process(delta: float) -> void:
 				
 	update_ui()
 
+
 func _process(_delta: float) -> void:
 	if in_menu: return
 	if Input.is_action_pressed("Attack"):
 		if current_weapon.shoot():
 			change_time_with_message(-current_weapon.shoot_cost)
+
+
+func _input(event: InputEvent) -> void:
+	if in_menu:
+		if Input.is_action_just_pressed("Pause"):
+			player_ui.shop_ui._on_button_pressed()
+		return
 	
+	if event is InputEventMouseMotion or event is InputEventJoypadMotion:
+		rotation.y -= event.relative.x * .0025
+		$CameraPivot.rotation.x -= event.relative.y * .0025
+		$CameraPivot.rotation.x = clamp($CameraPivot.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+	
+	if Input.is_action_just_pressed("Pause"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		open_shop()
+	
+	if Input.is_action_just_pressed("Slide"):
+		is_sliding = true
+		var input_dir := Input.get_vector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward")
+		var slide_dir_3d : Vector3
+		
+		if input_dir != Vector2.ZERO:
+			# Direction based on WASD relative to player transform
+			slide_dir_3d = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		else:
+			# Fallback to forward look direction
+			var cam_forward := -camera_pivot.global_transform.basis.z
+			slide_dir_3d = Vector3(cam_forward.x, 0, cam_forward.z).normalized()
+		
+		slide_dir = Vector2(slide_dir_3d.x, slide_dir_3d.z)
+	if Input.is_action_just_released("Slide"):
+		is_sliding = false
+	
+	if Input.is_action_just_pressed("Dash"):
+		dash()
+	if Input.is_action_just_pressed("Jump") and (is_on_floor() or current_jumps < jump_amount):
+		jump()
+	
+	if Input.is_action_just_pressed("Slot1"):
+		select_weapon(0)
+	if Input.is_action_just_pressed("Slot2"):
+		select_weapon(1)
+	if Input.is_action_just_pressed("Slot3"):
+		select_weapon(2)
+	if Input.is_action_just_pressed("Slot4"):
+		select_weapon(3)
+	if Input.is_action_just_pressed("Slot5"):
+		select_weapon(4)
+	
+	if Input.is_action_just_pressed("Reload"):
+		current_weapon.start_reload()
+
 
 func jump():
 	var current_jump_values = abilities_controller.jump_ability_values[abilities_controller.current_jump]
@@ -152,7 +195,8 @@ func jump():
 	velocity.y = jump_height
 	change_time_with_message(current_jump_values["cost"])
 	current_jumps += 1
-	
+
+
 func dash():
 	var current_dash_values = abilities_controller.dash_ability_values[abilities_controller.current_dash]
 	if dashes_charged <= 0: return
@@ -162,7 +206,7 @@ func dash():
 		
 	dashes_charged -= 1
 	
-
+	
 	var input_dir := Input.get_vector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward")
 	
 	var dash_dir_3d : Vector3
@@ -172,8 +216,8 @@ func dash():
 		dash_dir_3d.y = cam_forward_y * -input_dir.y
 	else:
 		dash_dir_3d = -camera_pivot.global_transform.basis.z.normalized()
-
-
+	
+	
 	var horizontal_dash_dir := Vector3(dash_dir_3d.x, 0, dash_dir_3d.z).normalized()
 	if horizontal_dash_dir != Vector3.ZERO:
 		slide_dir = Vector2(horizontal_dash_dir.x, horizontal_dash_dir.z)
@@ -184,10 +228,11 @@ func dash():
 	dash_velocity = dash_dir_3d * target_speed
 	dash_velocity.y /= 5
 	dash_timer = DASH_DURATION
-
+	
 	var dash_cost : float = current_dash_values["cost"]
 	change_time_with_message(dash_cost)
-	
+
+
 func update_dash_ability(amount:int, cooldown:float):
 	max_dashes = amount
 	dashes_charged = amount
@@ -199,9 +244,11 @@ func update_dash_ability(amount:int, cooldown:float):
 	for x in max_dashes:
 		var dash_bar := preload("uid://rsri0ek20iac").instantiate()
 		player_ui.dash_bar_container.add_child(dash_bar)
-	
+
+
 func change_timer(amount) -> void:
 	GameTime.time_timer += amount
+
 
 func update_ui() -> void:
 	player_ui.timer.text = convert_float_to_time(GameTime.time_timer)
@@ -215,7 +262,7 @@ func update_ui() -> void:
 	var current_recharge_pct : float = 0.0
 	if dash_cooldown > 0:
 		current_recharge_pct = 1.0 - (dash_cooldown_timer / dash_cooldown)
-
+	
 	var dash_bars = player_ui.dash_bar_container.get_children()
 	for index in range(dash_bars.size()):
 		var bar = dash_bars[index]
@@ -233,7 +280,8 @@ func update_ui() -> void:
 	#print(current_weapon.finished_reload_time - GameTime.time)
 	var reload_circle_mat : ShaderMaterial = player_ui.reload_circle.material as ShaderMaterial
 	reload_circle_mat.set_shader_parameter("fill_ratio", current_weapon.get_reload_progress())
-	
+
+
 func convert_float_to_time(time: float) -> String:
 	var total_seconds: int = max(0, int(time))
 	@warning_ignore("integer_division")
@@ -243,6 +291,7 @@ func convert_float_to_time(time: float) -> String:
 	var milliseconds: int = mini(999, int((max(0.0, time) - total_seconds) * 1000))
 	
 	return "%02d:%02d:%03d" % [minutes, seconds, milliseconds]
+
 
 func change_time_with_message(amount:float):
 	change_timer(amount)
@@ -254,58 +303,6 @@ func change_time_with_message(amount:float):
 	timer_label.global_position.x = player_ui.timer.global_position.x + player_ui.timer.size.x/2
 	if amount > 0:
 		timer_label.global_position.x -= 100
-
-func _input(event: InputEvent) -> void:
-	
-	if in_menu:
-		if Input.is_action_just_pressed("Pause"):
-			player_ui.shop_ui._on_button_pressed()
-		return
-	
-	if event is InputEventMouseMotion:
-		rotation.y -= event.relative.x * .0025
-		$CameraPivot.rotation.x -= event.relative.y * .0025
-		$CameraPivot.rotation.x = clamp($CameraPivot.rotation.x, deg_to_rad(-90), deg_to_rad(90))
-	
-	if Input.is_action_just_pressed("Slide"):
-		is_sliding = true
-		var input_dir := Input.get_vector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward")
-		var slide_dir_3d : Vector3
-		
-		if input_dir != Vector2.ZERO:
-			# Direction based on WASD relative to player transform
-			slide_dir_3d = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-		else:
-			# Fallback to forward look direction
-			var cam_forward := -camera_pivot.global_transform.basis.z
-			slide_dir_3d = Vector3(cam_forward.x, 0, cam_forward.z).normalized()
-			
-		slide_dir = Vector2(slide_dir_3d.x, slide_dir_3d.z)
-
-	if Input.is_action_just_released("Slide"):
-		is_sliding = false
-	
-	if Input.is_action_just_pressed("Dash"):
-		dash()
-	
-
-	
-	if Input.is_action_just_pressed("Slot1"):
-		current_weapon_idx = 0
-	if Input.is_action_just_pressed("Slot2"):
-		current_weapon_idx = 1
-	if Input.is_action_just_pressed("Slot3"):
-		current_weapon_idx = 2
-	if Input.is_action_just_pressed("Slot4"):
-		current_weapon_idx = 3
-	if Input.is_action_just_pressed("Slot5"):
-		current_weapon_idx = 4
-	if Input.is_action_just_pressed("Pause"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		open_shop()
-	if Input.is_action_just_pressed("Reload"):
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		current_weapon.start_reload()
 
 
 func open_shop():

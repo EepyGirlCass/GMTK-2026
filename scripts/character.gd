@@ -13,3 +13,10 @@ var weapons: Array[Weapon]
 var current_weapon_idx: int = 0
 var current_weapon: Weapon:
 	get: return weapons[current_weapon_idx]
+
+func select_weapon(index: int) -> void:
+	if weapons.size() <= index:
+		return
+	
+	current_weapon.start_reload()
+	current_weapon_idx = index

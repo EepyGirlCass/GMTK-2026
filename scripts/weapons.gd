@@ -34,6 +34,7 @@ func _ready():
 	particles = get_node("/root/Main/Particles")
 	projectiles = get_node("/root/Main/Projectiles")
 
+
 func _process(_delta: float) -> void:
 	if GameTime.time > finished_reload_time and reloading:
 		reloading = false
@@ -144,6 +145,7 @@ func fire_hitscan():
 		gun_tracer.end_pos = ray_end
 	weapon_owner.get_node("../Particles").add_child(gun_tracer)
 
+
 func shoot_projectile() -> bool:
 	if GameTime.time < can_shoot_time:
 		return false
@@ -165,6 +167,7 @@ func shoot_projectile() -> bool:
 	
 	return true
 
+
 func fire_projectile():
 	# 2. Calculate the Trajectory
 	var bullet_dir: Vector3 = -weapon_owner.gun_shot_point.global_transform.basis.z # Forward in Godot is -Z
@@ -183,7 +186,8 @@ func fire_projectile():
 		bullet_dir = bullet_dir.rotated(rotation_vec, randf() * deg_to_rad(bullet_spread))
 	
 	projectile.new(self, bullet_dir.normalized())
-	
+
+
 class Shotgun extends Weapon:
 	func _init(character_owner: Character):
 		weapon_owner = character_owner
