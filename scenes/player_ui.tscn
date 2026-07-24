@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c62cs0p6r37b0" path="res://icon.svg" id="2_sk4pr"]
 [ext_resource type="Shader" uid="uid://d050avdq3lue5" path="res://scripts/shaders/reload_circle.gdshader" id="3_48xfa"]
 [ext_resource type="PackedScene" uid="uid://c6b8adscv5ee1" path="res://scenes/shop_ui.tscn" id="4_8isll"]
+[ext_resource type="PackedScene" uid="uid://3ypv3308bhc8" path="res://scenes/menu.tscn" id="5_7ctsh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8isll"]
 bg_color = Color(1, 1, 1, 1)
@@ -155,3 +156,7 @@ offset_bottom = 1035.0
 label_settings = SubResource("LabelSettings_guxnq")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="MainMenu" parent="." unique_id=1230554328 instance=ExtResource("5_7ctsh")]
+visible = false
+layout_mode = 1
