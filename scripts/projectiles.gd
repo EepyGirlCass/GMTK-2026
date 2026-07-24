@@ -57,7 +57,7 @@ class Nail extends Projectile:
 		texture = preload("res://assets/nail_atlas.png")
 		sprite_tile_size = Vector2i(32, 32)
 		
-		Weapon.projectiles.add_child(self)
+		Weapon.projectiles.add_child.call_deferred(self)
 		
 		speed = 50
 		gravity = 10
@@ -68,17 +68,18 @@ class Nail extends Projectile:
 		source_weapon = weapon_owner
 		source_character = source_weapon.weapon_owner
 		velocity = direction * speed # + source_character.velocity
-		global_position = source_character.bullet_start
-		global_rotation = source_weapon.global_rotation
+		set_deferred(&"global_position", source_character.bullet_start)
+		set_deferred(&"global_rotation", source_weapon.global_rotation)
 		
 	func on_hit(body: Node3D):
+		if is_queued_for_deletion(): return
 		if body == source_character: return
 		if body is Character:
 			if body.has_method("take_damage"):
 				body.take_damage(source_weapon.bullet_damage)
 				var new_blood_particle = blood_particle.instantiate()
-				new_blood_particle.global_position = global_position
 				particles.add_child(new_blood_particle)
+				new_blood_particle.global_position = global_position
 		queue_free()
 		
 class Buckshot extends Projectile:
@@ -86,7 +87,7 @@ class Buckshot extends Projectile:
 		texture = preload("res://assets/pellet_atlas.png")
 		sprite_tile_size = Vector2i(32, 32)
 		
-		Weapon.projectiles.add_child(self)
+		Weapon.projectiles.add_child.call_deferred(self)
 		
 		speed = 100
 		gravity = 10

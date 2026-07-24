@@ -2,7 +2,6 @@ class_name Enemy
 extends Character
 
 var create_on_death: PackedScene
-var dead : bool = false
 
 var nav_agent: NavigationAgent3D
 var sprite: BillboardSprite3D
@@ -50,7 +49,7 @@ func _process(delta: float) -> void:
 	if nav_agent.is_navigation_finished():
 		velocity = Vector3.ZERO
 		return
-
+	
 	var next_path_position: Vector3 = nav_agent.get_next_path_position()
 	
 	var direction: Vector3 = (next_path_position - global_position).normalized()
@@ -82,8 +81,7 @@ func hit_flash() -> void:
 
 
 func die():
-	if dead: return
-	dead = true
+	if is_queued_for_deletion(): return
 	#player.change_time_with_message(10) # DEBUG
 	var scene = create_on_death.instantiate()
 	if scene.has_method(&"set_time"):

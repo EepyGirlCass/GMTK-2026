@@ -123,7 +123,7 @@ func load_weapon_info(loaded_weapon_index:int):
 	if weapon_equipped: equip_button.text = "EQUIPPED"
 	if not selected_weapon.purchased: equip_button.text = "PURCHASE: " + player.convert_float_to_time(selected_weapon.weapon_shop_cost)
 	
-func _on_weapon_icons_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
+func _on_weapon_icons_item_clicked(index: int, _at_position: Vector2, _mouse_button_index: int) -> void:
 	load_weapon_info(index)
 
 
