@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://c62cs0p6r37b0" path="res://icon.svg" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://csehikqjwq7e5" path="res://scenes/player_character.tscn" id="2_sugp2"]
-[ext_resource type="Script" uid="uid://bv6qlhwcyj3lm" path="res://scripts/enemies/fodder.gd" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://b4pvs2vf8df33" path="res://scenes/time_pickup.tscn" id="4_jyhfs"]
 [ext_resource type="Script" uid="uid://f7ee4k2tvmb7" path="res://scripts/enemy_spawner.gd" id="5_tbgi4"]
 
@@ -61,21 +60,6 @@ shape = SubResource("ConcavePolygonShape3D_ig7tw")
 [node name="Particles" type="Node3D" parent="." unique_id=984812865]
 
 [node name="Enemies" type="Node3D" parent="." unique_id=63575663]
-
-[node name="Enemy" type="CharacterBody3D" parent="Enemies" unique_id=1361060298]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4118681, 0.96858644, 13.891325)
-script = ExtResource("3_jyhfs")
-metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
-
-[node name="Enemy2" type="CharacterBody3D" parent="Enemies" unique_id=785007536]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5779805, 0.9685855, 12.173103)
-script = ExtResource("3_jyhfs")
-metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
-
-[node name="Enemy3" type="CharacterBody3D" parent="Enemies" unique_id=332959894]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.7090855, 0.96858644, 12.44236)
-script = ExtResource("3_jyhfs")
-metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
 
 [node name="Projectiles" type="Node3D" parent="." unique_id=1608317585]
 

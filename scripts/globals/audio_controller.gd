@@ -12,6 +12,7 @@ enum AudioChannel {
 var _pause_positions: Array[float] # TODO: use stream_paused instead
 
 func _ready() -> void:
+	_pause_positions.resize(AudioChannel.size())
 	_pause_positions.fill(0.0)
 	
 	for channel: String in AudioChannel:

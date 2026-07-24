@@ -30,7 +30,7 @@ var time_drain_multiplier_ui:float=1
 @onready var abilities_controller: AbilitiesController = $AbilitiesController
 @onready var camera_3d: Camera = $CameraPivot/Camera3D
 
-	
+
 
 func _ready() -> void:
 	set_health(100)
@@ -41,10 +41,11 @@ func _ready() -> void:
 	update_dash_ability(abilities_controller.dash_ability_values[abilities_controller.current_dash]["amount"],
 	abilities_controller.dash_ability_values[abilities_controller.current_dash]["cooldown"] )
 	
-	weapons.append(Weapon.Shotgun.new(self))
-	weapons.append(Weapon.Nailgun.new(self))
+	add_weapon(Weapon.Shotgun)
+	add_weapon(Weapon.Nailgun)
+	assert(weapons.size() == 2)
 	#weapons.append(Weapon.Buckshot.new(self))
-	
+	print(weapon_equip_list)
 	
 	GameTime.time_timer = 360
 

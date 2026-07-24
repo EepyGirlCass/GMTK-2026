@@ -24,6 +24,8 @@ var bullet_damage : float
 var bullet_crit_mult : float
 var bullet_amount : int
 var bullet_range : float = 1000.0
+var fire_sound : AudioStream 
+
 
 var projectile
 
@@ -105,7 +107,7 @@ func shoot_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.IN
 			return false
 	
 	can_shoot_time = GameTime.time + shoot_cooldown
-	
+	AudioController.play_sound(AudioController.AudioChannel.PLAYER, fire_sound )
 	ammo_clip -= 1
 	for i in range(bullet_amount):
 		fire_hitscan(draw_tracer, direction_override)
@@ -189,6 +191,7 @@ func shoot_projectile(direction_override: Vector3 = Vector3.INF) -> bool:
 			return false
 	
 	can_shoot_time = GameTime.time + shoot_cooldown
+	AudioController.play_sound(AudioController.AudioChannel.PLAYER, fire_sound)
 	
 	ammo_clip -= 1
 	for i in range(bullet_amount):
@@ -270,6 +273,7 @@ class Shotgun extends Weapon:
 		weapon_description = "blah blah"
 		weapon_icon_path = "res://icon.svg"
 		
+		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
 		
 	func shoot():
 		return shoot_hitscan()
@@ -295,7 +299,9 @@ class Buckshot extends Shotgun:
 		weapon_shop_cost = 0
 		weapon_description = "blah blah"
 		weapon_icon_path = "res://icon.svg"
-
+		
+		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
+		
 	func shoot():
 		return shoot_projectile()
 
@@ -320,6 +326,8 @@ class Nailgun extends Weapon:
 		weapon_shop_cost = 0
 		weapon_description = "blah blah"
 		weapon_icon_path = "res://icon.svg"
+		
+		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
 	func shoot():
 		
 		return shoot_projectile()

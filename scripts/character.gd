@@ -9,11 +9,23 @@ var bullet_start: Vector3:
 	get: return bullet_start_node.global_position
 
 var weapons: Array[Weapon]
+
+var weapon_equip_list : Dictionary
+
 var current_weapon_idx: int = 0
 var current_weapon: Weapon:
 	get: return weapons[current_weapon_idx]
 
 @abstract func take_damage(damage:float) -> void
+
+func add_weapon(weapon_class:GDScript):
+	var weapon_object := weapon_class.new() as Weapon
+	weapons.append(weapon_object)
+	weapon_equip_list[weapon_class] = true
+
+func remove_weapon(weapon_object:Weapon):
+	weapon_object.queue_free()
+	weapon_equip_list.erase(weapon_object)
 
 func select_weapon(index: int) -> void:
 	if weapons.size() <= index:
