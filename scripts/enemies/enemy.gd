@@ -1,20 +1,16 @@
-class_name Enemy
+@abstract class_name Enemy
 extends Character
 
 var create_on_death: PackedScene
 
 var nav_agent: NavigationAgent3D
+var body_collider: CollisionShape3D
+var head_collider: CollisionShape3D
 var sprite: BillboardSprite3D
 
 var time_reward : float = 1
 
-@onready var player: Player = $"../../Player"
-
 func _ready() -> void:
-	speed = 100
-	health = 20
-	weapons.append(Weapon.EnemyMelee.new(self))
-	create_on_death = preload("res://scenes/time_pickup.tscn")
 	
 	bullet_start_node = Node3D.new()
 	add_child(bullet_start_node)
@@ -25,18 +21,21 @@ func _ready() -> void:
 	
 	add_child(NavigationObstacle3D.new())
 	
-	var collider = CollisionShape3D.new()
-	collider.shape = CapsuleShape3D.new()
-	add_child(collider)
+	body_collider = CollisionShape3D.new()
+	body_collider.shape = CapsuleShape3D.new()
+	body_collider.shape.radius = 0.25
+	body_collider.shape.height = 1.5
+	add_child(body_collider)
+	body_collider.global_position = global_position + Vector3(0, 0, 0)
+	
+	head_collider = CollisionShape3D.new()
+	head_collider.shape = SphereShape3D.new()
+	head_collider.shape.radius = 0.25
+	add_child(head_collider)
+	head_collider.global_position = global_position + Vector3(0, 0.75, 0)
 	
 	sprite = BillboardSprite3D.new()
-	sprite.sprite_tile_size = Vector2i(256, 512)
-	sprite.animations[&"walk"] = 8
-	sprite.texture = preload("res://assets/skeleton_atlas.png")
 	add_child(sprite)
-	sprite.framerate = 8
-	sprite.set_animation(&"walk")
-	sprite.pixel_size = .005
 
 func _process(delta: float) -> void:
 	if GameTime.paused: return

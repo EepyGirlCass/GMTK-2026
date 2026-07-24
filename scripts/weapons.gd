@@ -94,7 +94,7 @@ func reload() -> bool:
 
 
 # return if a shot happened
-func shoot_hitscan(direction_override: Vector3 = Vector3.INF) -> float:
+func shoot_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.INF) -> float:
 	if GameTime.time < can_shoot_time:
 		return false
 	
@@ -108,7 +108,7 @@ func shoot_hitscan(direction_override: Vector3 = Vector3.INF) -> float:
 	
 	ammo_clip -= 1
 	for i in range(bullet_amount):
-		fire_hitscan(direction_override)
+		fire_hitscan(draw_tracer, direction_override)
 	
 	if ammo_clip <= 0 and not reload_amount == 0:
 		start_reload()
@@ -116,7 +116,7 @@ func shoot_hitscan(direction_override: Vector3 = Vector3.INF) -> float:
 	return true
 
 
-func fire_hitscan(direction_override: Vector3 = Vector3.INF):
+func fire_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.INF):
 	# 1. Setup the Physics Space
 	var space_state := weapon_owner.get_world_3d().direct_space_state
 	
@@ -148,20 +148,28 @@ func fire_hitscan(direction_override: Vector3 = Vector3.INF):
 	
 	var result = space_state.intersect_ray(query)
 	
-	var gun_tracer : GunTracer = preload("res://scenes/gun_tracer.tscn").instantiate()
-	gun_tracer.start_pos = weapon_owner.bullet_start
-	
 	if result:
-		gun_tracer.end_pos = result.position
 		if result.collider is Character:
 			if result.collider.has_method("take_damage"):
-				result.collider.take_damage(bullet_damage)
+				
+				if result.shape == result.collider.head_collider.shape:
+					result.collider.take_damage(bullet_damage * bullet_crit_mult)
+				else:
+					result.collider.take_damage(bullet_damage)
+				
 				var new_blood_particle = blood_particle.instantiate()
 				new_blood_particle.global_position = result.position 
 				particles.add_child(new_blood_particle)
-	else:
-		gun_tracer.end_pos = ray_end
-	weapon_owner.get_node("../Particles").add_child(gun_tracer)
+	
+	if draw_tracer:
+		var gun_tracer : GunTracer = preload("res://scenes/gun_tracer.tscn").instantiate()
+		gun_tracer.start_pos = weapon_owner.bullet_start
+		
+		if result:
+			gun_tracer.end_pos = result.position
+		else:
+			gun_tracer.end_pos = ray_end
+		weapon_owner.get_node("../Particles").add_child(gun_tracer)
 
 
 func shoot_projectile(direction_override: Vector3 = Vector3.INF) -> bool:
