@@ -36,6 +36,8 @@ var weapon_owner: Character
 static var particles: Node3D
 static var projectiles: Node3D
 
+var blood_particle : PackedScene
+
 # return if a shot happened
 @abstract func shoot() -> bool
 
@@ -43,7 +45,7 @@ static var projectiles: Node3D
 func _ready():
 	particles = get_node("/root/Main/Particles")
 	projectiles = get_node("/root/Main/Projectiles")
-
+	blood_particle = preload("res://scenes/blood_particle.tscn")
 
 func _process(_delta: float) -> void:
 	if GameTime.time > finished_reload_time and reloading:
@@ -154,6 +156,9 @@ func fire_hitscan(direction_override: Vector3 = Vector3.INF):
 		if result.collider is Character:
 			if result.collider.has_method("take_damage"):
 				result.collider.take_damage(bullet_damage)
+				var new_blood_particle = blood_particle.instantiate()
+				new_blood_particle.global_position = result.position 
+				particles.add_child(new_blood_particle)
 	else:
 		gun_tracer.end_pos = ray_end
 	weapon_owner.get_node("../Particles").add_child(gun_tracer)
@@ -230,7 +235,7 @@ class EnemyMelee extends Weapon:
 class Shotgun extends Weapon:
 	func _init(character_owner: Character):
 		weapon_owner = character_owner
-		weapon_owner.add_child.call_deferred(self)
+		weapon_owner.add_child(self)
 		
 		reload_duration = 1.25
 		reload_amount = -1 # full clip
@@ -284,7 +289,7 @@ class Buckshot extends Shotgun:
 class Nailgun extends Weapon:
 	func _init(character_owner: Character):
 		weapon_owner = character_owner
-		weapon_owner.add_child.call_deferred(self)
+		weapon_owner.add_child(self)
 		weapon_class = WeaponClasses.NAILGUN
 		reload_amount = 0 # no reload
 		

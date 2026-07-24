@@ -13,12 +13,14 @@ var source_character : Character
 var velocity : Vector3
 
 var speed : float
-
+var blood_particle : PackedScene
+var particles : Node3D
 @abstract func on_hit(body: Node3D) -> void
 
 func _ready() -> void:
 	super()
-	
+	blood_particle = preload("res://scenes/blood_particle.tscn")
+	particles = get_node("/root/Main/Particles")
 	var area_3D := Area3D.new()
 	add_child(area_3D)
 	
@@ -74,8 +76,11 @@ class Nail extends Projectile:
 		if body is Character:
 			if body.has_method("take_damage"):
 				body.take_damage(source_weapon.bullet_damage)
+				var new_blood_particle = blood_particle.instantiate()
+				new_blood_particle.global_position = global_position
+				particles.add_child(new_blood_particle)
 		queue_free()
-
+		
 class Buckshot extends Projectile:
 	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
 		texture = preload("res://assets/pellet_atlas.png")
@@ -101,4 +106,7 @@ class Buckshot extends Projectile:
 		if body is Character:
 			if body.has_method("take_damage"):
 				body.take_damage(source_weapon.bullet_damage)
+				var new_blood_particle = blood_particle.instantiate()
+				new_blood_particle.global_position = global_position
+				particles.add_child(new_blood_particle)
 		queue_free()

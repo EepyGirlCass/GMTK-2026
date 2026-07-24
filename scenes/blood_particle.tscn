@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://xtmiloqs7oo0"]
+
+[ext_resource type="Script" uid="uid://o6wrdolag31u" path="res://scripts/blood_particle.gd" id="1_2jgbo"]
+
+[sub_resource type="Gradient" id="Gradient_rpjjw"]
+colors = PackedColorArray(0.4390491, 0.43904912, 0.43904912, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qxuri"]
+gradient = SubResource("Gradient_rpjjw")
+
+[sub_resource type="Curve" id="Curve_rpjjw"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_u4sla"]
+curve = SubResource("Curve_rpjjw")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aqpbq"]
+spread = 180.0
+initial_velocity_max = 7.8999996
+scale_min = 0.099999994
+scale_max = 0.099999994
+scale_curve = SubResource("CurveTexture_u4sla")
+color = Color(0.9997818, 0.20533794, 0.22053444, 1)
+color_initial_ramp = SubResource("GradientTexture1D_qxuri")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ucis6"]
+vertex_color_use_as_albedo = true
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_82y3s"]
+material = SubResource("StandardMaterial3D_ucis6")
+
+[node name="BloodParticle" type="GPUParticles3D" unique_id=21598680]
+emitting = false
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_aqpbq")
+draw_pass_1 = SubResource("QuadMesh_82y3s")
+script = ExtResource("1_2jgbo")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

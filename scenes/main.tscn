@@ -86,6 +86,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.72017, 0.96858644, 11.2029
 script = ExtResource("3_sugp2")
 metadata/_custom_type_script = "uid://bv1sckfhrufvb"
 
+[node name="Enemy10" type="CharacterBody3D" parent="Enemies" unique_id=1949248713]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.72017, 0.96858644, 21.032314)
+script = ExtResource("3_sugp2")
+metadata/_custom_type_script = "uid://bv1sckfhrufvb"
+
+[node name="Enemy9" type="CharacterBody3D" parent="Enemies" unique_id=1632517551]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.969764, 0.96858644, 24.648777)
+script = ExtResource("3_sugp2")
+metadata/_custom_type_script = "uid://bv1sckfhrufvb"
+
+[node name="Enemy8" type="CharacterBody3D" parent="Enemies" unique_id=298133187]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.7090855, 0.96858644, 22.271734)
+script = ExtResource("3_sugp2")
+metadata/_custom_type_script = "uid://bv1sckfhrufvb"
+
+[node name="Enemy7" type="CharacterBody3D" parent="Enemies" unique_id=690826770]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5779805, 0.9685855, 22.002478)
+script = ExtResource("3_sugp2")
+metadata/_custom_type_script = "uid://bv1sckfhrufvb"
+
+[node name="Enemy6" type="CharacterBody3D" parent="Enemies" unique_id=513823705]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4118681, 0.96858644, 23.7207)
+script = ExtResource("3_sugp2")
+metadata/_custom_type_script = "uid://bv1sckfhrufvb"
+
 [node name="Projectiles" type="Node3D" parent="." unique_id=1608317585]
 
 [node name="Pickups" type="Node3D" parent="." unique_id=1045950830]

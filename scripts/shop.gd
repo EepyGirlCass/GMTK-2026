@@ -59,23 +59,23 @@ func show_shop():
 	tween.tween_property(self, "position:x", 0, .75)
 	tween.parallel().tween_property(self, "scale", Vector2.ONE, .75)
 	tween.tween_callback(transition_end)
-	
+	load_weapons_page(0 as Weapon.WeaponClasses)
 
 
 func _on_shotgun_button_pressed() -> void:
-	load_weapons_page(0)
+	load_weapons_page(0 as Weapon.WeaponClasses)
 
 
 func _on_nailgun_button_pressed() -> void:
-	load_weapons_page(1)
+	load_weapons_page(1 as Weapon.WeaponClasses)
 
 
 func _on_sidearm_button_pressed() -> void:
-	load_weapons_page(2)
+	load_weapons_page(2 as Weapon.WeaponClasses)
 
 
 func _on_projectile_button_pressed() -> void:
-	load_weapons_page(3)
+	load_weapons_page(3 as Weapon.WeaponClasses)
 
 func load_weapons_page(weapon_class:Weapon.WeaponClasses):
 	loaded_weapons.clear()
@@ -87,9 +87,9 @@ func load_weapons_page(weapon_class:Weapon.WeaponClasses):
 		var weapon_item_name : String = valid_weapon.weapon_name
 		var weapon_equipped := false
 		for weapon2 :Weapon in player.weapons:
-			var weapon2_script := weapon2.get_script() as GDScript
-			print("scripts: ",weapon2_script.get_global_name(), valid_weapon.get_class(), valid_weapon)
-			if weapon2.get_script().get_global_name() == valid_weapon.get_script().get_global_name(): weapon_equipped = true
+			if selected_weapon == null: continue
+			if weapon2.get_script() == selected_weapon.get_script(): weapon_equipped = true
+			
 		if weapon_equipped: weapon_item_name += "  (EQUIPPED)"
 		weapon_icons.add_item(weapon_item_name ,load(valid_weapon.weapon_icon_path))
 	
@@ -116,7 +116,7 @@ func load_weapon_info(loaded_weapon_index:int):
 	
 	var weapon_equipped := false
 	for weapon2 :Weapon in player.weapons:
-		if weapon2.get_script().get_global_name() == selected_weapon.get_script().get_global_name(): weapon_equipped = true
+		if weapon2.get_script() == selected_weapon.get_script(): weapon_equipped = true
 	
 	if weapon_equipped: equip_button.text = "EQUIPPED"
 	if not selected_weapon.purchased: equip_button.text = "PURCHASE: " + player.convert_float_to_time(selected_weapon.weapon_shop_cost)
