@@ -1,8 +1,8 @@
 class_name Fodder
 extends Enemy
 
-func _init() -> void:
-	
+func _init(spawn_position: Vector3) -> void:
+	global_position = spawn_position
 	speed = 100
 	health = 20
 	weapons.append(Weapon.EnemyMelee.new(self))

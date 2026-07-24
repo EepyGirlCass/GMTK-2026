@@ -152,14 +152,20 @@ func fire_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.INF
 		if result.collider is Character:
 			if result.collider.has_method("take_damage"):
 				
-				if result.shape == result.collider.head_collider.shape:
+				var collider = result.collider
+				var shape_index = result.shape
+				
+				var owner_id = collider.shape_find_owner(shape_index)
+				var collision_shape_node = collider.shape_owner_get_owner(owner_id)
+				if collision_shape_node == collider.head_collider:
+					print("crit!")
 					result.collider.take_damage(bullet_damage * bullet_crit_mult)
 				else:
 					result.collider.take_damage(bullet_damage)
 				
 				var new_blood_particle = blood_particle.instantiate()
-				new_blood_particle.global_position = result.position 
 				particles.add_child(new_blood_particle)
+				new_blood_particle.global_position = result.position 
 	
 	if draw_tracer:
 		var gun_tracer : GunTracer = preload("res://scenes/gun_tracer.tscn").instantiate()

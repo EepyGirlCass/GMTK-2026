@@ -10,6 +10,33 @@ var sprite: BillboardSprite3D
 
 var time_reward : float = 1
 
+#region AI
+var target: Character
+
+var notice_range: float
+var notice_time: float
+
+var too_close_range: float
+var too_far_range: float
+var attack_range: float
+var attack_when_close: bool
+
+func do_ai(_delta: float) -> void:
+	var target_distance := global_position.distance_to(target.global_position)
+	var target_direction := (target.global_position - global_position).normalized()
+	
+	if target_distance < too_close_range:
+		pass
+	elif target_distance > too_far_range:
+		pass
+	
+	if target_distance >= too_close_range and target_distance < attack_range:
+		pass
+
+#endregion
+
+@abstract func _init(spawn_position: Vector3) -> void
+
 func _ready() -> void:
 	
 	bullet_start_node = Node3D.new()
@@ -30,7 +57,7 @@ func _ready() -> void:
 	
 	head_collider = CollisionShape3D.new()
 	head_collider.shape = SphereShape3D.new()
-	head_collider.shape.radius = 0.25
+	head_collider.shape.radius = 0.375
 	add_child(head_collider)
 	head_collider.global_position = global_position + Vector3(0, 0.75, 0)
 	
@@ -41,7 +68,7 @@ func _process(delta: float) -> void:
 	if GameTime.paused: return
 	delta *= GameTime.time_scale
 	
-	current_weapon.shoot()
+	do_ai(delta)
 	
 	nav_agent.target_position = GlobalPlayer.player.global_position
 	

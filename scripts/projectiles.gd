@@ -15,30 +15,23 @@ var velocity : Vector3
 var speed : float
 var blood_particle : PackedScene
 var particles : Node3D
-@abstract func on_hit(body: Node3D) -> void
+var collider_shape : Shape3D
 
 func _ready() -> void:
 	super()
 	blood_particle = preload("res://scenes/blood_particle.tscn")
 	particles = get_node("/root/Main/Particles")
-	var area_3D := Area3D.new()
-	add_child(area_3D)
-	
-	area_3D.set_collision_mask_value(1, true)
-	area_3D.set_collision_mask_value(2, false)
-	area_3D.set_collision_mask_value(3, true)
 	
 	var collider := CollisionShape3D.new()
-	area_3D.add_child(collider)
+	add_child(collider)
 	
-	var collider_box = BoxShape3D.new()
-	collider.shape = collider_box
-	collider_box.size = hitbox
-	
-	area_3D.connect("body_entered", on_hit)
+	collider_shape = BoxShape3D.new()
+	collider.shape = collider_shape
+	collider_shape.size = hitbox
 
 
 func _process(delta: float) -> void:
+	if is_queued_for_deletion(): return
 	if GameTime.paused: return
 	delta *= GameTime.time_scale
 	
@@ -46,10 +39,47 @@ func _process(delta: float) -> void:
 		queue_free()
 		return
 	
+	var results = shapecast()
+	if results:
+		for result in results:
+			if result.collider is Character:
+				if result.collider.has_method("take_damage"):
+					
+					var collider = result.collider
+					var shape_index = result.shape
+					
+					var owner_id = collider.shape_find_owner(shape_index)
+					var collision_shape_node = collider.shape_owner_get_owner(owner_id)
+					if collision_shape_node == collider.head_collider:
+						print("crit!")
+						result.collider.take_damage(source_weapon.bullet_damage * source_weapon.bullet_crit_mult)
+					else:
+						result.collider.take_damage(source_weapon.bullet_damage)
+					
+					var new_blood_particle = blood_particle.instantiate()
+					particles.add_child(new_blood_particle)
+					new_blood_particle.global_position = global_position
+		queue_free()
+	
 	velocity.y -= gravity * delta
 	position += velocity * delta
 	
 	super(delta)
+
+
+func shapecast() -> Array[Dictionary]:
+	# 1. Setup the Physics Space
+	var space_state := source_character.get_world_3d().direct_space_state
+	
+	# 3. Create the Query
+	var query = PhysicsShapeQueryParameters3D.new()
+	query.shape = collider_shape
+	query.motion = velocity
+	query.transform = transform
+	
+	query.exclude = [source_character, source_weapon, self] # Don't shoot yourself
+	
+	return space_state.intersect_shape(query)
 
 
 class Nail extends Projectile:
@@ -70,18 +100,8 @@ class Nail extends Projectile:
 		velocity = direction * speed # + source_character.velocity
 		set_deferred(&"global_position", source_character.bullet_start)
 		set_deferred(&"global_rotation", source_weapon.global_rotation)
-		
-	func on_hit(body: Node3D):
-		if is_queued_for_deletion(): return
-		if body == source_character: return
-		if body is Character:
-			if body.has_method("take_damage"):
-				body.take_damage(source_weapon.bullet_damage)
-				var new_blood_particle = blood_particle.instantiate()
-				particles.add_child(new_blood_particle)
-				new_blood_particle.global_position = global_position
-		queue_free()
-		
+
+
 class Buckshot extends Projectile:
 	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
 		texture = preload("res://assets/pellet_atlas.png")
@@ -101,13 +121,3 @@ class Buckshot extends Projectile:
 		velocity = direction * speed # + source_character.velocity
 		global_position = source_character.bullet_start
 		global_rotation = source_weapon.global_rotation
-		
-	func on_hit(body: Node3D):
-		if body == source_character: return
-		if body is Character:
-			if body.has_method("take_damage"):
-				body.take_damage(source_weapon.bullet_damage)
-				var new_blood_particle = blood_particle.instantiate()
-				new_blood_particle.global_position = global_position
-				particles.add_child(new_blood_particle)
-		queue_free()
