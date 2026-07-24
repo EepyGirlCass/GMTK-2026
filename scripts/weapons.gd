@@ -1,6 +1,16 @@
 @abstract class_name Weapon
 extends Node3D
 
+enum WeaponClasses {SHOTGUN, NAILGUN, SIDEARM, PROJECTILE}
+
+var weapon_class : WeaponClasses
+var weapon_name : String
+var weapon_description : String
+var weapon_shop_cost : float
+var weapon_icon_path : String
+
+var purchased : bool = false
+
 var reload_duration : float
 var reload_amount : int
 
@@ -202,7 +212,8 @@ class EnemyMelee extends Weapon:
 		if GameTime.time < can_shoot_time:
 			return false
 		if weapon_owner.global_position.distance_to(GlobalPlayer.player.global_position) <= melee_range:
-			GlobalPlayer.player.health -= bullet_damage
+			
+			GlobalPlayer.player.take_damage(bullet_damage)
 			can_shoot_time = GameTime.time + shoot_cooldown
 			return true
 		return false
@@ -225,7 +236,14 @@ class Shotgun extends Weapon:
 		bullet_damage = 2
 		bullet_crit_mult = 1.1
 		bullet_amount = 8
-	
+		
+		weapon_class = WeaponClasses.SHOTGUN
+		weapon_name = "Stock Shotgun"
+		weapon_shop_cost = 0
+		weapon_description = "blah blah"
+		weapon_icon_path = "res://icon.svg"
+		
+		
 	func shoot():
 		return shoot_hitscan()
 
@@ -233,7 +251,7 @@ class Buckshot extends Shotgun:
 	func _init(character_owner: Character):
 		super(character_owner)
 		
-		projectile = Projectile.Nail
+		projectile = Projectile.Buckshot
 		
 		reload_duration = 0.5
 		reload_amount = 2
@@ -244,7 +262,13 @@ class Buckshot extends Shotgun:
 		shoot_cooldown = 0.25
 		bullet_damage = 0.1
 		bullet_amount = 16
-	
+		
+		weapon_class = WeaponClasses.SHOTGUN
+		weapon_name = "Buckshot"
+		weapon_shop_cost = 0
+		weapon_description = "blah blah"
+		weapon_icon_path = "res://icon.svg"
+
 	func shoot():
 		return shoot_projectile()
 
@@ -253,7 +277,7 @@ class Nailgun extends Weapon:
 	func _init(character_owner: Character):
 		weapon_owner = character_owner
 		weapon_owner.add_child(self)
-		
+		weapon_class = WeaponClasses.NAILGUN
 		reload_amount = 0 # no reload
 		
 		projectile = Projectile.Nail
@@ -265,6 +289,10 @@ class Nailgun extends Weapon:
 		bullet_crit_mult = 2
 		bullet_amount = 1
 	
+		weapon_name = "Nailgun"
+		weapon_shop_cost = 0
+		weapon_description = "blah blah"
+		weapon_icon_path = "res://icon.svg"
 	func shoot():
 		
 		return shoot_projectile()

@@ -10,3 +10,4 @@ extends Control
 @onready var dash_bar_container: HBoxContainer = $DashBarContainer
 @onready var drain_multiplier: Label = $DrainMultiplier
 @onready var shop_ui: Shop = $ShopUI
+@onready var health_bar_white: ProgressBar = $HealthBarWhite

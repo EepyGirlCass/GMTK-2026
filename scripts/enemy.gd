@@ -8,9 +8,9 @@ var sprite: BillboardSprite3D
 @onready var player: Player = $"../../Player"
 
 func _ready() -> void:
-	speed = 20
+	speed = 100
 	health = 100
-	weapons.append(Weapon.Nailgun.new(self))
+	weapons.append(Weapon.EnemyMelee.new(self))
 	create_on_death = preload("res://scenes/time_pickup.tscn")
 	
 	bullet_start_node = Node3D.new()
@@ -39,7 +39,7 @@ func _process(delta: float) -> void:
 	
 	current_weapon.shoot()
 	
-	nav_agent.target_position = Vector3.ZERO #GlobalPlayer.player.global_position
+	nav_agent.target_position = GlobalPlayer.player.global_position
 	
 	if nav_agent.is_navigation_finished():
 		velocity = Vector3.ZERO
@@ -56,8 +56,8 @@ func _process(delta: float) -> void:
 	move_and_slide()
 
 
-func take_damage(amount:float):
-	health -= amount
+func take_damage(damage:float):
+	health -= damage
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
 	tween.tween_property(sprite, "pixel_size", 0.0075, .1)

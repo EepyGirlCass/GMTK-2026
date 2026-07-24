@@ -76,3 +76,30 @@ class Nail extends Projectile:
 			if body.has_method("take_damage"):
 				body.take_damage(source_weapon.bullet_damage)
 		queue_free()
+
+class Buckshot extends Projectile:
+	@warning_ignore("shadowed_variable_base_class")
+	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
+		texture = preload("res://assets/pellet_atlas.png")
+		sprite_tile_size = Vector2i(32, 32)
+		
+		Weapon.projectiles.add_child(self)
+		
+		speed = 50
+		gravity = 10
+		lifetime = 5
+		hitbox = Vector3.ONE * .05
+		
+		expire_time = GameTime.time + lifetime
+		source_weapon = weapon_owner
+		source_character = source_weapon.weapon_owner
+		velocity = direction * speed # + source_character.velocity
+		global_position = source_character.bullet_start
+		global_rotation = source_weapon.global_rotation
+		
+	func on_hit(body: Node3D):
+		if body == source_character: return
+		if body is Character:
+			if body.has_method("take_damage"):
+				body.take_damage(source_weapon.bullet_damage)
+		queue_free()

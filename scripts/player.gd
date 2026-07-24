@@ -29,24 +29,22 @@ var time_drain_multiplier_ui:float=1
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var abilities_controller: AbilitiesController = $AbilitiesController
 @onready var camera_3d: Camera = $CameraPivot/Camera3D
-@onready var gun_shot_point: Node3D = $CameraPivot/GunShotPoint
 
-func _init() -> void:
-	health = 100
-
+	
 
 func _ready() -> void:
+	set_health(100)
+	
 	GlobalPlayer.player = self
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	
+	bullet_start_node = $CameraPivot/GunShotPoint
 	update_dash_ability(abilities_controller.dash_ability_values[abilities_controller.current_dash]["amount"],
 	abilities_controller.dash_ability_values[abilities_controller.current_dash]["cooldown"] )
 	
 	weapons.append(Weapon.Shotgun.new(self))
 	weapons.append(Weapon.Nailgun.new(self))
-	weapons.append(Weapon.Buckshot.new(self))
+	#weapons.append(Weapon.Buckshot.new(self))
 	
-	bullet_start_node = gun_shot_point
 	
 	GameTime.time_timer = 360
 
@@ -139,7 +137,7 @@ func _process(_delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if in_menu:
-		if Input.is_action_just_pressed("Pause"):
+		if Input.is_action_just_pressed("OpenShop"):
 			player_ui.shop_ui._on_button_pressed()
 		return
 	
@@ -148,7 +146,7 @@ func _input(event: InputEvent) -> void:
 		$CameraPivot.rotation.x -= event.relative.y * .0025
 		$CameraPivot.rotation.x = clamp($CameraPivot.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 	
-	if Input.is_action_just_pressed("Pause"):
+	if Input.is_action_just_pressed("OpenShop"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		open_shop()
 	
@@ -182,9 +180,7 @@ func _input(event: InputEvent) -> void:
 		select_weapon(2)
 	if Input.is_action_just_pressed("Slot4"):
 		select_weapon(3)
-	if Input.is_action_just_pressed("Slot5"):
-		select_weapon(4)
-	
+
 	if Input.is_action_just_pressed("Reload"):
 		current_weapon.start_reload()
 
@@ -249,10 +245,22 @@ func update_dash_ability(amount:int, cooldown:float):
 func change_timer(amount) -> void:
 	GameTime.time_timer += amount
 
+func set_health(value:float):
+	health = value
+	player_ui.health_bar.value = value
+	player_ui.health_bar_white.value = value
+	
+func take_damage(damage:float):
+	var tween := create_tween()
+	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(player_ui.health_bar, "value", player_ui.health_bar.value - damage, 0.5)
+	tween.parallel().tween_property(player_ui.health_bar_white, "value", player_ui.health_bar.value - damage, 1.5)
+	health -= damage
 
 func update_ui() -> void:
 	player_ui.timer.text = convert_float_to_time(GameTime.time_timer)
-	player_ui.health_bar.value = health * 100
+	
+	 
 	
 	if current_weapon.ammo_max_clip == 0:
 		player_ui.ammo_count.text = ""
@@ -306,4 +314,5 @@ func change_time_with_message(amount:float):
 func open_shop():
 	in_menu = true
 	GameTime.paused = true
-	player_ui.shop_ui.show()
+	
+	player_ui.shop_ui.show_shop()

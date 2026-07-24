@@ -1,2 +1,2 @@
 extends Node
-var player: Character
+var player: Player

@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://drvis4ki3ljo6" path="res://scripts/shop.gd" id="1_oixfk"]
 [ext_resource type="Texture2D" uid="uid://bx2fi5s78b1um" path="res://assets/close_43dp_FFFFFF_FILL0_wght400_GRAD0_opsz40.png" id="2_18xnp"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_aqpbq"]
+font_size = 39
+
 [node name="ShopUI" type="Control" unique_id=1378547139]
 layout_mode = 3
 anchors_preset = 15
@@ -32,16 +35,158 @@ layout_mode = 2
 theme_override_constants/side_margin = 44
 theme_override_constants/tab_separation = 45
 theme_override_font_sizes/font_size = 55
-current_tab = 0
+current_tab = 1
 
 [node name="Abilities" type="Control" parent="PanelContainer/MarginContainer/TabContainer" unique_id=296922594]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/TabContainer/Abilities" unique_id=1180038267]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
 [node name="Weapons" type="Control" parent="PanelContainer/MarginContainer/TabContainer" unique_id=1632048321]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/TabContainer/Weapons" unique_id=972652750]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer" unique_id=1665088138]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer" unique_id=2127875036]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="ShotgunButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer" unique_id=876284737]
+custom_minimum_size = Vector2(300, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 53
+toggle_mode = true
+text = "Shotguns"
+
+[node name="NailgunButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer" unique_id=273892754]
+custom_minimum_size = Vector2(300, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 53
+toggle_mode = true
+text = "Nailguns"
+
+[node name="SidearmButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer" unique_id=135441173]
+custom_minimum_size = Vector2(300, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 53
+toggle_mode = true
+text = "Sidearms"
+
+[node name="ProjectileButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer" unique_id=181071514]
+custom_minimum_size = Vector2(300, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 53
+toggle_mode = true
+text = "Projectiles"
+
+[node name="WeaponTabs" type="Control" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer" unique_id=308422039]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VSplitContainer" type="VSplitContainer" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs" unique_id=1943812806]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+dragging_enabled = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer" unique_id=1404983452]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WeaponIcons" type="ItemList" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/ScrollContainer" unique_id=948635922]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 37
+auto_width = true
+auto_height = true
+wraparound_items = false
+fixed_icon_size = Vector2i(128, 128)
+
+[node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer" unique_id=778820831]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WeaponStats" type="VBoxContainer" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer" unique_id=388457539]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="WeaponName" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats" unique_id=1071358329]
+layout_mode = 2
+text = "Name:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="WeaponDamage" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats" unique_id=2006334492]
+layout_mode = 2
+text = "Damage:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="WeaponFireRate" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats" unique_id=504276744]
+layout_mode = 2
+text = "Fire Rate:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="WeaponReloadSpeed" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats" unique_id=1655551295]
+layout_mode = 2
+text = "Reload Speed:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="WeaponBulletAmount" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats" unique_id=1751272901]
+layout_mode = 2
+text = "Bullet Amount:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="WeaponTimeCost" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats" unique_id=297324759]
+layout_mode = 2
+text = "Bullet Amount:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="WeaponDescription" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats" unique_id=827454476]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Description:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="WeaponUpgrades" type="VBoxContainer" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer" unique_id=1323697241]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EquipButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponUpgrades" unique_id=460798928]
+layout_mode = 2
+theme_override_font_sizes/font_size = 46
+text = "Equip"
 
 [node name="Button" type="Button" parent="." unique_id=1947735997]
 layout_mode = 0
@@ -53,4 +198,10 @@ icon = ExtResource("2_18xnp")
 icon_alignment = 1
 expand_icon = true
 
+[connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer/ShotgunButton" to="." method="_on_shotgun_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer/NailgunButton" to="." method="_on_nailgun_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer/SidearmButton" to="." method="_on_sidearm_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer/ProjectileButton" to="." method="_on_projectile_button_pressed"]
+[connection signal="item_clicked" from="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/ScrollContainer/WeaponIcons" to="." method="_on_weapon_icons_item_clicked"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponUpgrades/EquipButton" to="." method="_on_equip_button_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

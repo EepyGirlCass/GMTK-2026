@@ -65,6 +65,11 @@ func die():
 "
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aqpbq"]
+height = 1.4935303
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_md0e3"]
+radius = 0.25726318
+height = 0.51452637
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_aqpbq"]
 radius = 1.5
@@ -74,8 +79,13 @@ collision_layer = 4
 collision_mask = 7
 script = SubResource("GDScript_md0e3")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=684928654]
+[node name="BodyHitbox" type="CollisionShape3D" parent="." unique_id=684928654]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25323486, 0)
 shape = SubResource("CapsuleShape3D_aqpbq")
+
+[node name="HeadHitbox" type="CollisionShape3D" parent="." unique_id=977630540]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7288723, 0)
+shape = SubResource("CapsuleShape3D_md0e3")
 
 [node name="EnemySprite" type="Sprite3D" parent="." unique_id=1503498068]
 modulate = Color(1.353256, 1.353256, 1.353256, 1)

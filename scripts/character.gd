@@ -14,6 +14,8 @@ var current_weapon_idx: int = 0
 var current_weapon: Weapon:
 	get: return weapons[current_weapon_idx]
 
+@abstract func take_damage(damage:float) -> void
+
 func select_weapon(index: int) -> void:
 	if weapons.size() <= index:
 		return
