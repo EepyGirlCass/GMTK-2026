@@ -9,5 +9,5 @@ extends Control
 @onready var reload_circle: TextureRect = $ReloadCircle
 @onready var dash_bar_container: HBoxContainer = $DashBarContainer
 @onready var drain_multiplier: Label = $DrainMultiplier
-@onready var shop_ui: Shop = $ShopUI
+@onready var shop_ui: Control = $ShopUI
 @onready var health_bar_white: ProgressBar = $HealthBarWhite

@@ -1,4 +1,3 @@
-class_name Shop
 extends Control
 
 @onready var player: Player = $"../.."
@@ -114,9 +113,12 @@ func load_weapon_info(loaded_weapon_index:int):
 	weapon_description.text = str("Desc.: ", selected_weapon.weapon_description)
 	weapon_time_cost.text = str("Time Cost: ", selected_weapon.shoot_cost)
 	
+	
+	var weapon_classes: Array= player.weapons.map(func(value): return value.get_script())
 	var weapon_equipped := false
 	for weapon2 :Weapon in player.weapons:
-		if weapon2.get_script() == selected_weapon.get_script(): weapon_equipped = true
+		if weapon_classes.has(weapon2.get_script()):
+			weapon_equipped = true
 	
 	if weapon_equipped: equip_button.text = "EQUIPPED"
 	if not selected_weapon.purchased: equip_button.text = "PURCHASE: " + player.convert_float_to_time(selected_weapon.weapon_shop_cost)
