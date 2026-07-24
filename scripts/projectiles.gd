@@ -17,8 +17,6 @@ var blood_particle : PackedScene
 var particles : Node3D
 var collider_shape : Shape3D
 
-var has_hit : bool
-
 func _ready() -> void:
 	super()
 	blood_particle = preload("res://scenes/blood_particle.tscn")
@@ -35,7 +33,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if is_queued_for_deletion(): return
 	if GameTime.paused: return
-	if has_hit: return
 	delta *= GameTime.time_scale
 	
 	if GameTime.time > expire_time:
@@ -44,14 +41,9 @@ func _process(delta: float) -> void:
 	
 	var results = shapecast()
 	if results:
+		on_hit()
 		for result in results:
-			
-			if result.collider is StaticBody3D:
-				on_hit()
 			if result.collider is Character:
-				
-				on_hit()
-				
 				if result.collider.has_method("take_damage") and source_weapon.bullet_damage != 0:
 					
 					var collider = result.collider
@@ -59,18 +51,15 @@ func _process(delta: float) -> void:
 					
 					var owner_id = collider.shape_find_owner(shape_index)
 					var collision_shape_node = collider.shape_owner_get_owner(owner_id)
-	if "head_collider" in collider:
-		if collision_shape_node == collider.head_collider:
-			result.collider.take_damage(source_weapon.bullet_damage * source_weapon.bullet_crit_mult)
-
+					if "head_collider" in collider:
+						if collision_shape_node == collider.head_collider:
+							result.collider.take_damage(source_weapon.bullet_damage * source_weapon.bullet_crit_mult)
 					else:
 						result.collider.take_damage(source_weapon.bullet_damage)
-					
-					
-					
-					var new_blood_particle = blood_particle.instantiate()
-					particles.add_child(new_blood_particle)
-					new_blood_particle.global_position = global_position
+			
+			var new_blood_particle = blood_particle.instantiate()
+			particles.add_child(new_blood_particle)
+			new_blood_particle.global_position = global_position
 		queue_free()
 	
 	velocity.y -= gravity * delta
@@ -117,7 +106,8 @@ class Nail extends Projectile:
 	
 	func on_hit():
 		pass
-	
+
+
 class Rocket extends Projectile:
 	
 	static var explosion_scene : PackedScene = preload("uid://b1n131e3hgrlh")
@@ -142,8 +132,6 @@ class Rocket extends Projectile:
 	
 	func on_hit():
 		if is_queued_for_deletion(): return
-		if has_hit: return
-		has_hit = true
 		
 		var explosion := explosion_scene.instantiate()
 		explosion.damage = 10
@@ -152,6 +140,7 @@ class Rocket extends Projectile:
 		particles.add_child(explosion)
 		
 		queue_free()
+
 
 class Grenade extends Projectile:
 	
@@ -177,8 +166,6 @@ class Grenade extends Projectile:
 	
 	func on_hit():
 		if is_queued_for_deletion(): return
-		if has_hit: return
-		has_hit = true
 		
 		var explosion := explosion_scene.instantiate()
 		explosion.damage = 4

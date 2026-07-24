@@ -23,23 +23,24 @@ func add_weapon(weapon_class: GDScript):
 	weapons.append(weapon_object)
 	weapon_equip_list[weapon_class] = true
 
-func remove_weapon(weapon_object:Weapon):
+
+func remove_weapon(weapon_object: Weapon):
 	weapon_object.queue_free()
 	print(weapon_equip_list.erase(weapon_object.get_script()))
 	var index = weapons.find(weapon_object)
-	if index == -1: push_error("fuck no weapon")
+	if index == -1: push_error("Couldn't find weapon to remove!")
 	weapons[index] = null
 
-func replace_weapon(new_weapon: GDScript, slot: int):
-	var weapon_object: Weapon = new_weapon.new(self)
+
+func replace_weapon(weapon_class: GDScript, index: int):
+	var weapon_object: Weapon = weapon_class.new(self)
 	print(weapon_object)
-	remove_weapon(weapons[slot])
-	weapons[slot] = weapon_object
-	weapon_equip_list[new_weapon] = true
+	remove_weapon(weapons[index])
+	weapons[index] = weapon_object
+	weapon_equip_list[weapon_class] = true
+
 
 func select_weapon(index: int) -> void:
-	if weapons.size() <= index:
-		return
-	current_weapon_idx = index
+	if not weapons[index]: return
 	current_weapon.start_reload()
-	
+	current_weapon_idx = index

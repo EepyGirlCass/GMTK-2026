@@ -1,7 +1,10 @@
 class_name Fodder
 extends Enemy
 
-func _init():
+func _init(spawn_position: Vector3 = Vector3.INF):
+	if spawn_position != Vector3.INF:
+		set_deferred("global_position", spawn_position)
+	
 	speed = 100
 	health = 20
 	
@@ -10,7 +13,6 @@ func _init():
 	attack_range = 1000
 	attack_when_close = true
 	attack_when_far = true
-	
 	
 	create_on_death = preload("res://scenes/time_pickup.tscn")
 
@@ -22,6 +24,7 @@ func _ready() -> void:
 	super()
 	
 	add_weapon(Weapon.Nailgun)
+	current_weapon.bullet_damage = 0
 	target = GlobalPlayer.player
 	
 	sprite.sprite_tile_size = Vector2i(256, 512)

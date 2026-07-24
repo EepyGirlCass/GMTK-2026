@@ -70,7 +70,6 @@ func get_projectile_direction() -> Vector3:
 		
 		if iterations > 64:
 			t = best_shot
-			print("out of projectile range")
 			break
 	
 	return (a * (t ** 2) + b * t + c).normalized()
@@ -102,7 +101,7 @@ func do_ai(_delta: float) -> void:
 
 #endregion
 
-@abstract func _init(spawn_position: Vector3) -> void
+@abstract func _init(spawn_position: Vector3 = Vector3.INF) -> void
 
 func _ready() -> void:
 	
