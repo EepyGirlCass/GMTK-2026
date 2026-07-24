@@ -88,7 +88,6 @@ func _ready() -> void:
 		# place settings in categories
 		for setting_name in Setting.settings_dict.keys():
 			var setting = Setting.settings_dict[setting_name]
-			#print(setting.category)
 			if setting.category != category_number: continue
 			
 			var split = HBoxContainer.new()

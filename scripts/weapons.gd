@@ -27,7 +27,7 @@ var bullet_range : float = 1000.0
 var fire_sound : AudioStream 
 
 
-var projectile
+var projectile: GDScript
 
 var can_shoot_time: float = 0
 var started_reload_time: float = 0

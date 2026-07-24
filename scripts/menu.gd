@@ -4,8 +4,7 @@ var player_ui: PlayerUI
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	add_child(Settings)
-	print(get_parent())
+	#add_child(Settings)
 	player_ui = get_parent()
 
 func _on_quit_button_pressed() -> void:

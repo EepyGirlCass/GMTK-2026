@@ -4,6 +4,8 @@ extends Character
 var create_on_death: PackedScene
 
 var nav_agent: NavigationAgent3D
+@onready var nav_region: NavigationRegion3D = $NavigationRegion3D
+
 var body_collider: CollisionShape3D
 var head_collider: CollisionShape3D
 var sprite: BillboardSprite3D
@@ -20,14 +22,22 @@ var too_close_range: float
 var too_far_range: float
 var attack_range: float
 var attack_when_close: bool
+var attack_when_far: bool
 
 func do_ai(_delta: float) -> void:
+	if not target: return # DEBUG
+	
 	var target_distance := global_position.distance_to(target.global_position)
 	var target_direction := (target.global_position - global_position).normalized()
 	
 	if target_distance < too_close_range:
+		# move away
 		pass
 	elif target_distance > too_far_range:
+		# move closer
+		pass
+	else:
+		# good distance
 		pass
 	
 	if target_distance >= too_close_range and target_distance < attack_range:

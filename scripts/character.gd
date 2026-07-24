@@ -8,7 +8,7 @@ var bullet_start_node : Node3D
 var bullet_start: Vector3:
 	get: return bullet_start_node.global_position
 
-var weapons: Array[Weapon]
+var weapons: Array[Weapon] = []
 
 var weapon_equip_list : Dictionary
 
@@ -18,8 +18,8 @@ var current_weapon: Weapon:
 
 @abstract func take_damage(damage:float) -> void
 
-func add_weapon(weapon_class:GDScript):
-	var weapon_object := weapon_class.new() as Weapon
+func add_weapon(weapon_class: GDScript):
+	var weapon_object: Weapon = weapon_class.new(self)
 	weapons.append(weapon_object)
 	weapon_equip_list[weapon_class] = true
 

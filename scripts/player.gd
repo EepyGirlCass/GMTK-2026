@@ -43,9 +43,6 @@ func _ready() -> void:
 	
 	add_weapon(Weapon.Shotgun)
 	add_weapon(Weapon.Nailgun)
-	assert(weapons.size() == 2)
-	#weapons.append(Weapon.Buckshot.new(self))
-	print(weapon_equip_list)
 	
 	GameTime.time_timer = 360
 
@@ -277,12 +274,14 @@ func take_damage(damage:float):
 func update_ui() -> void:
 	player_ui.timer.text = convert_float_to_time(GameTime.time_timer)
 	
-	 
-	
-	if current_weapon.ammo_max_clip == 0:
-		player_ui.ammo_count.text = ""
-	else:
-		player_ui.ammo_count.text = str(current_weapon.ammo_clip, "/", current_weapon.ammo_max_clip)
+	if current_weapon:
+		if current_weapon.reload_amount == 0:
+			player_ui.ammo_count.text = ""
+		else:
+			player_ui.ammo_count.text = str(current_weapon.ammo_clip, "/", current_weapon.ammo_max_clip)
+		
+		var reload_circle_mat : ShaderMaterial = player_ui.reload_circle.material as ShaderMaterial
+		reload_circle_mat.set_shader_parameter("fill_ratio", current_weapon.get_reload_progress())
 	
 	var current_recharge_pct : float = 0.0
 	if dash_cooldown > 0:
@@ -299,10 +298,6 @@ func update_ui() -> void:
 			bar.value = 0
 	
 	player_ui.drain_multiplier.text = str("x", roundf(time_drain_multiplier_ui*1000)*.001 )
-	
-	#print(current_weapon.finished_reload_time - GameTime.time)
-	var reload_circle_mat : ShaderMaterial = player_ui.reload_circle.material as ShaderMaterial
-	reload_circle_mat.set_shader_parameter("fill_ratio", current_weapon.get_reload_progress())
 
 
 func convert_float_to_time(time: float) -> String:
