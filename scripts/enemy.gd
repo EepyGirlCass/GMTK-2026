@@ -2,6 +2,7 @@ class_name Enemy
 extends Character
 
 var create_on_death: PackedScene
+var dead : bool = false
 
 var nav_agent: NavigationAgent3D
 var sprite: BillboardSprite3D
@@ -81,6 +82,8 @@ func hit_flash() -> void:
 
 
 func die():
+	if dead: return
+	dead = true
 	#player.change_time_with_message(10) # DEBUG
 	var scene = create_on_death.instantiate()
 	if scene.has_method(&"set_time"):

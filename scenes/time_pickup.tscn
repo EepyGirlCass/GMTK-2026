@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b4pvs2vf8df33"]
 
-[ext_resource type="Texture2D" uid="uid://c3qn3ve5wccla" path="res://assets/clock_atlas.png" id="1_gf56s"]
+[ext_resource type="Texture2D" uid="uid://docfedrje1agp" path="res://assets/clock_atlas.png" id="1_gf56s"]
 [ext_resource type="Script" uid="uid://bsam2a0obiqw2" path="res://scripts/time_pickup.gd" id="1_spusg"]
 [ext_resource type="Script" uid="uid://c1nljkc6e7imm" path="res://scripts/billboard_sprite_3d.gd" id="2_spusg"]
 

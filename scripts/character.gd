@@ -4,7 +4,6 @@ extends CharacterBody3D
 var health: float 
 var stride_distance: float
 var speed: float
-
 var bullet_start_node : Node3D
 var bullet_start: Vector3:
 	get: return bullet_start_node.global_position
