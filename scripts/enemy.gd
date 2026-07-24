@@ -27,11 +27,13 @@ func _ready() -> void:
 	add_child(collider)
 	
 	sprite = BillboardSprite3D.new()
-	sprite.sprite_tile_size = Vector2i(128, 256)
-	sprite.animations[&"walk"] = 3
+	sprite.sprite_tile_size = Vector2i(256, 512)
+	sprite.animations[&"walk"] = 8
 	sprite.texture = preload("res://assets/skeleton_atlas.png")
 	add_child(sprite)
-
+	sprite.framerate = 8
+	sprite.set_animation(&"walk")
+	sprite.pixel_size = .005
 
 func _process(delta: float) -> void:
 	if GameTime.paused: return
