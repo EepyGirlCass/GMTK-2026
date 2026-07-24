@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://c62cs0p6r37b0" path="res://icon.svg" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://csehikqjwq7e5" path="res://scenes/player_character.tscn" id="2_sugp2"]
 [ext_resource type="Script" uid="uid://bv1sckfhrufvb" path="res://scripts/enemy.gd" id="3_sugp2"]
+[ext_resource type="PackedScene" uid="uid://b4pvs2vf8df33" path="res://scenes/time_pickup.tscn" id="4_jyhfs"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -86,3 +87,9 @@ script = ExtResource("3_sugp2")
 metadata/_custom_type_script = "uid://bv1sckfhrufvb"
 
 [node name="Projectiles" type="Node3D" parent="." unique_id=1608317585]
+
+[node name="Pickups" type="Node3D" parent="." unique_id=1045950830]
+
+[node name="TimePickup" parent="Pickups" unique_id=160521341 instance=ExtResource("4_jyhfs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.714367, 0, 0)
+respawns = true

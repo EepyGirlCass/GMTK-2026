@@ -5,11 +5,14 @@ var create_on_death: PackedScene
 
 var nav_agent: NavigationAgent3D
 var sprite: BillboardSprite3D
+
+var time_reward : float = 1
+
 @onready var player: Player = $"../../Player"
 
 func _ready() -> void:
 	speed = 100
-	health = 100
+	health = 20
 	weapons.append(Weapon.EnemyMelee.new(self))
 	create_on_death = preload("res://scenes/time_pickup.tscn")
 	
@@ -78,8 +81,10 @@ func hit_flash() -> void:
 
 
 func die():
-	player.change_time_with_message(10) # DEBUG
+	#player.change_time_with_message(10) # DEBUG
 	var scene = create_on_death.instantiate()
+	if scene.has_method(&"set_time"):
+		scene.set_time(time_reward)
 	$"..".add_child(scene)
 	scene.global_position = global_position - Vector3(0, 0.5, 0)
 	queue_free()

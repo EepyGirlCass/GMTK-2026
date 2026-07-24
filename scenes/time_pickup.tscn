@@ -1,3 +1,26 @@
 [gd_scene format=3 uid="uid://b4pvs2vf8df33"]
 
-[node name="Node3D" type="Node3D" unique_id=160521341]
+[ext_resource type="Texture2D" uid="uid://c3qn3ve5wccla" path="res://assets/clock_atlas.png" id="1_gf56s"]
+[ext_resource type="Script" uid="uid://bsam2a0obiqw2" path="res://scripts/time_pickup.gd" id="1_spusg"]
+[ext_resource type="Script" uid="uid://c1nljkc6e7imm" path="res://scripts/billboard_sprite_3d.gd" id="2_spusg"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_aqpbq"]
+radius = 1.0
+
+[node name="TimePickup" type="Node3D" unique_id=160521341]
+script = ExtResource("1_spusg")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=173102996]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=794132717]
+shape = SubResource("SphereShape3D_aqpbq")
+
+[node name="BillboardSprite3D" type="Sprite3D" parent="." unique_id=1498251765]
+pixel_size = 0.015
+texture = ExtResource("1_gf56s")
+script = ExtResource("2_spusg")
+metadata/_custom_type_script = "uid://c1nljkc6e7imm"
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
