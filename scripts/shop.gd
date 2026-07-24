@@ -76,22 +76,33 @@ func _on_sidearm_button_pressed() -> void:
 func _on_projectile_button_pressed() -> void:
 	load_weapons_page(3 as Weapon.WeaponClasses)
 
+
+#WHEN YOU CLICK ON A BUTTON TO BRING UP THAT SPECIFIC WEAPON TYPE, IT SORTS THROUGH ALL 
+#THE WEAPON CLASSES IN total_weapons, AND CHECKS IF THEY HAVE THEIR weapon.weapon_class BE EQUAL TO THE 
+#WEAPON CLASS SELECTED IN THE ARGUEMENT. WE THEN NEED TO CHECK WHEN ITERATING ON EACH VALID WEAPON IF
+#WE HAVE THEM EQUIPPED.
+
 func load_weapons_page(weapon_class:Weapon.WeaponClasses):
+	
+	#SORTS THROUGH THE WEAPONS AND FILTERS TOTAL WEAPONS INTO LOADED WEAPONS IF THEY MATCH WEAPON TYPE/CLASS
 	loaded_weapons.clear()
 	for weapon : Weapon in total_weapons:
 		if weapon.weapon_class == weapon_class:
 			loaded_weapons.append(weapon)
 	weapon_icons.clear()
+	
+	#SEE WHICH OF THE LOADED WEAPONS ARE EQUIPPED BY CHECKING IF THEIR CLASS IS IN player.weapons
 	for valid_weapon : Weapon in loaded_weapons:
 		var weapon_item_name : String = valid_weapon.weapon_name
+		var weapon_classes: Array= player.weapons.map(func(value): return value.get_script())
 		var weapon_equipped := false
 		for weapon2 :Weapon in player.weapons:
-			if selected_weapon == null: continue
-			if weapon2.get_script() == selected_weapon.get_script(): weapon_equipped = true
-			
+			if weapon_classes.has(weapon2.get_script()):
+				weapon_equipped = true
 		if weapon_equipped: weapon_item_name += "  (EQUIPPED)"
 		weapon_icons.add_item(weapon_item_name ,load(valid_weapon.weapon_icon_path))
 	
+	#SELECT THE FIRST ENTRY
 	weapon_icons.select(0)
 	_on_weapon_icons_item_clicked(0, Vector2.ZERO, 0)
 	
