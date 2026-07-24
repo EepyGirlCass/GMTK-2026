@@ -43,7 +43,7 @@ func _ready() -> void:
 	
 	weapons.append(Weapon.Shotgun.new(self))
 	weapons.append(Weapon.Nailgun.new(self))
-	#weapons.append(Weapon.Buckshot.new(self))
+	weapons.append(Weapon.Buckshot.new(self))
 	
 	
 	GameTime.time_timer = 360
@@ -52,6 +52,13 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	
 	if in_menu: return
+	delta *= GameTime.time_scale
+	
+	# more gravity while falling
+	if velocity.y < -0.1:
+		velocity.y -= 12 * delta
+	else:
+		velocity.y -= 5 * delta
 	
 	time_drain_multiplier = 1
 	#if health > 1:
@@ -188,7 +195,7 @@ func _input(event: InputEvent) -> void:
 func jump():
 	var current_jump_values = abilities_controller.jump_ability_values[abilities_controller.current_jump]
 	var jump_height = current_jump_values["height"]
-	velocity.y = jump_height
+	velocity.y = jump_height * 1.5
 	change_time_with_message(current_jump_values["cost"])
 	current_jumps += 1
 

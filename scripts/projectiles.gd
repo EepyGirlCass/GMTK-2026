@@ -51,7 +51,6 @@ func _process(delta: float) -> void:
 
 
 class Nail extends Projectile:
-	@warning_ignore("shadowed_variable_base_class")
 	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
 		texture = preload("res://assets/nail_atlas.png")
 		sprite_tile_size = Vector2i(32, 32)
@@ -78,17 +77,17 @@ class Nail extends Projectile:
 		queue_free()
 
 class Buckshot extends Projectile:
-	@warning_ignore("shadowed_variable_base_class")
 	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
 		texture = preload("res://assets/pellet_atlas.png")
 		sprite_tile_size = Vector2i(32, 32)
 		
 		Weapon.projectiles.add_child(self)
 		
-		speed = 50
+		speed = 100
 		gravity = 10
-		lifetime = 5
+		lifetime = 0.5
 		hitbox = Vector3.ONE * .05
+		pixel_size = 0.009
 		
 		expire_time = GameTime.time + lifetime
 		source_weapon = weapon_owner

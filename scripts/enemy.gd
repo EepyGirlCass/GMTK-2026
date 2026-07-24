@@ -62,8 +62,8 @@ func take_damage(damage:float):
 	health -= damage
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
-	tween.tween_property(sprite, "pixel_size", 0.0075, .1)
-	tween.tween_property(sprite, "pixel_size", 0.01, .1)
+	tween.tween_property(sprite, "pixel_size", 0.004, .1)
+	tween.tween_property(sprite, "pixel_size", 0.005, .1)
 	hit_flash()
 	if health <= 0:
 		die()
