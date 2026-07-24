@@ -43,7 +43,9 @@ func _ready() -> void:
 	
 	add_weapon(Weapon.Shotgun)
 	add_weapon(Weapon.Nailgun)
-	
+	add_weapon(Weapon.Revolver)
+	add_weapon(Weapon.RocketLauncher)
+	print(weapon_equip_list)
 	GameTime.time_timer = 360
 
 
@@ -66,7 +68,11 @@ func _physics_process(delta: float) -> void:
 	if is_sliding: 
 		time_drain_multiplier *= current_slide_values["multiplier"]
 	
+	
+	
 	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
+	
+	
 	
 	GameTime.time_scale = 1 * time_drain_multiplier
 	
@@ -132,10 +138,11 @@ func _physics_process(delta: float) -> void:
 			else:
 				dash_cooldown_timer = 0
 				
-	update_ui()
+	
 
 
 func _process(_delta: float) -> void:
+	update_ui()
 	if in_menu: return
 	if Input.is_action_pressed("Attack"):
 		if current_weapon.shoot():
@@ -146,9 +153,10 @@ func _input(event: InputEvent) -> void:
 	if in_menu:
 		if Input.is_action_just_pressed("OpenShop"):
 			player_ui.shop_ui._on_button_pressed()
+			
 		if Input.is_action_just_pressed("Pause"):
 			player_ui.main_menu._on_continue_button_pressed()
-
+			player_ui.shop_ui._on_button_pressed()
 		return
 	
 	if event is InputEventMouseMotion or event is InputEventJoypadMotion:

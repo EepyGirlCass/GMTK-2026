@@ -65,6 +65,8 @@ func _ready() -> void:
 	add_child(body_collider)
 	body_collider.global_position = global_position + Vector3(0, 0, 0)
 	
+	set_collision_mask_value(2, false)
+	set_collision_layer_value(3, true)
 	head_collider = CollisionShape3D.new()
 	head_collider.shape = SphereShape3D.new()
 	head_collider.shape.radius = 0.375
@@ -72,8 +74,11 @@ func _ready() -> void:
 	head_collider.global_position = global_position + Vector3(0, 0.75, 0)
 	
 	sprite = BillboardSprite3D.new()
-	add_child(sprite)
 
+	add_child(sprite)
+	
+	speed = 800
+	
 func _process(delta: float) -> void:
 	if GameTime.paused: return
 	delta *= GameTime.time_scale

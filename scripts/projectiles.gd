@@ -17,6 +17,8 @@ var blood_particle : PackedScene
 var particles : Node3D
 var collider_shape : Shape3D
 
+var has_hit : bool
+
 func _ready() -> void:
 	super()
 	blood_particle = preload("res://scenes/blood_particle.tscn")
@@ -33,6 +35,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if is_queued_for_deletion(): return
 	if GameTime.paused: return
+	if has_hit: return
 	delta *= GameTime.time_scale
 	
 	if GameTime.time > expire_time:
@@ -42,8 +45,14 @@ func _process(delta: float) -> void:
 	var results = shapecast()
 	if results:
 		for result in results:
+			
+			if result.collider is StaticBody3D:
+				on_hit()
 			if result.collider is Character:
-				if result.collider.has_method("take_damage"):
+				
+				on_hit()
+				
+				if result.collider.has_method("take_damage") and source_weapon.bullet_damage != 0:
 					
 					var collider = result.collider
 					var shape_index = result.shape
@@ -51,10 +60,12 @@ func _process(delta: float) -> void:
 					var owner_id = collider.shape_find_owner(shape_index)
 					var collision_shape_node = collider.shape_owner_get_owner(owner_id)
 					if collision_shape_node == collider.head_collider:
-						print("crit!")
+						#print("crit!")
 						result.collider.take_damage(source_weapon.bullet_damage * source_weapon.bullet_crit_mult)
 					else:
 						result.collider.take_damage(source_weapon.bullet_damage)
+					
+					
 					
 					var new_blood_particle = blood_particle.instantiate()
 					particles.add_child(new_blood_particle)
@@ -81,6 +92,7 @@ func shapecast() -> Array[Dictionary]:
 	
 	return space_state.intersect_shape(query)
 
+@abstract func on_hit()
 
 class Nail extends Projectile:
 	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
@@ -100,6 +112,79 @@ class Nail extends Projectile:
 		velocity = direction * speed # + source_character.velocity
 		set_deferred(&"global_position", source_character.bullet_start)
 		set_deferred(&"global_rotation", source_weapon.global_rotation)
+	
+	func on_hit():
+		pass
+	
+class Rocket extends Projectile:
+	
+	static var explosion_scene : PackedScene = preload("uid://b1n131e3hgrlh")
+	
+	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
+		texture = preload("res://assets/pellet_atlas.png")
+		sprite_tile_size = Vector2i(32, 32)
+		
+		Weapon.projectiles.add_child.call_deferred(self)
+		
+		speed = 10
+		gravity = 0
+		lifetime = 5
+		hitbox = Vector3.ONE * .15
+		pixel_size = .02
+		expire_time = GameTime.time + lifetime
+		source_weapon = weapon_owner
+		source_character = source_weapon.weapon_owner
+		velocity = direction * speed # + source_character.velocity
+		set_deferred(&"global_position", source_character.bullet_start)
+		set_deferred(&"global_rotation", source_weapon.global_rotation)
+	
+	func on_hit():
+		if is_queued_for_deletion(): return
+		if has_hit: return
+		has_hit = true
+		
+		var explosion := explosion_scene.instantiate()
+		explosion.damage = 10
+		explosion.size = 5
+		explosion.global_position = global_position
+		particles.add_child(explosion)
+		
+		queue_free()
+
+class Grenade extends Projectile:
+	
+	static var explosion_scene : PackedScene = preload("uid://b1n131e3hgrlh")
+	
+	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
+		texture = preload("res://assets/pellet_atlas.png")
+		sprite_tile_size = Vector2i(32, 32)
+		
+		Weapon.projectiles.add_child.call_deferred(self)
+		
+		speed = 15
+		gravity = 10
+		lifetime = 5
+		hitbox = Vector3.ONE * .15
+		pixel_size = .01
+		expire_time = GameTime.time + lifetime
+		source_weapon = weapon_owner
+		source_character = source_weapon.weapon_owner
+		velocity = direction * speed # + source_character.velocity
+		set_deferred(&"global_position", source_character.bullet_start)
+		set_deferred(&"global_rotation", source_weapon.global_rotation)
+	
+	func on_hit():
+		if is_queued_for_deletion(): return
+		if has_hit: return
+		has_hit = true
+		
+		var explosion := explosion_scene.instantiate()
+		explosion.damage = 4
+		explosion.size = 2.5
+		explosion.global_position = global_position
+		particles.add_child(explosion)
+		
+		queue_free()
 
 
 class Buckshot extends Projectile:
@@ -121,3 +206,5 @@ class Buckshot extends Projectile:
 		velocity = direction * speed # + source_character.velocity
 		global_position = source_character.bullet_start
 		global_rotation = source_weapon.global_rotation
+	func on_hit():
+		pass
