@@ -50,9 +50,10 @@ func _process(delta: float) -> void:
 					
 					var owner_id = collider.shape_find_owner(shape_index)
 					var collision_shape_node = collider.shape_owner_get_owner(owner_id)
-					if collision_shape_node == collider.head_collider:
-						print("crit!")
-						result.collider.take_damage(source_weapon.bullet_damage * source_weapon.bullet_crit_mult)
+					if "head_collider" in collider:
+						if collision_shape_node == collider.head_collider:
+							print("crit!")
+							result.collider.take_damage(source_weapon.bullet_damage * source_weapon.bullet_crit_mult)
 					else:
 						result.collider.take_damage(source_weapon.bullet_damage)
 					

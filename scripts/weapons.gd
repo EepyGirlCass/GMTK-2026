@@ -41,7 +41,7 @@ static var projectiles: Node3D
 var blood_particle : PackedScene
 
 # return if a shot happened
-@abstract func shoot() -> bool
+@abstract func shoot(direction_override: Vector3 = Vector3.INF) -> bool
 
 
 func _ready():
@@ -159,9 +159,10 @@ func fire_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.INF
 				
 				var owner_id = collider.shape_find_owner(shape_index)
 				var collision_shape_node = collider.shape_owner_get_owner(owner_id)
-				if collision_shape_node == collider.head_collider:
-					print("crit!")
-					result.collider.take_damage(bullet_damage * bullet_crit_mult)
+				if "head_collider" in collider:
+					if collision_shape_node == collider.head_collider:
+						print("crit!")
+						result.collider.take_damage(bullet_damage * bullet_crit_mult)
 				else:
 					result.collider.take_damage(bullet_damage)
 				
@@ -238,7 +239,7 @@ class EnemyMelee extends Weapon:
 		bullet_damage = 10
 		shoot_cooldown = 3
 	
-	func shoot() -> bool:
+	func shoot(_direction_override: Vector3 = Vector3.INF) -> bool:
 		if GameTime.time < can_shoot_time:
 			return false
 		if weapon_owner.global_position.distance_to(GlobalPlayer.player.global_position) <= melee_range:
@@ -275,8 +276,8 @@ class Shotgun extends Weapon:
 		
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
 		
-	func shoot():
-		return shoot_hitscan()
+	func shoot(direction_override: Vector3 = Vector3.INF):
+		return shoot_hitscan(true, direction_override)
 
 class Buckshot extends Shotgun:
 	func _init(character_owner: Character):
@@ -302,8 +303,8 @@ class Buckshot extends Shotgun:
 		
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
 		
-	func shoot():
-		return shoot_projectile()
+	func shoot(direction_override: Vector3 = Vector3.INF):
+		return shoot_projectile(direction_override)
 
 
 class Nailgun extends Weapon:
@@ -328,6 +329,6 @@ class Nailgun extends Weapon:
 		weapon_icon_path = "res://icon.svg"
 		
 		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
-	func shoot():
 		
-		return shoot_projectile()
+	func shoot(direction_override: Vector3 = Vector3.INF):
+		return shoot_projectile(direction_override)

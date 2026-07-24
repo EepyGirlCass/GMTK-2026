@@ -8,7 +8,7 @@ var enemy_types : Array = [
 	Fodder
 ]
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	#if GameTime.time >= next_wave_time: spawn_wave()
 	pass
 func spawn_wave():
