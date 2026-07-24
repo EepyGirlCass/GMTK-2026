@@ -21,6 +21,7 @@ var sprite_coords := Vector2i(0, 0)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	hide()
+	show.call_deferred()
 	region_enabled = true
 	billboard = BaseMaterial3D.BILLBOARD_ENABLED
 
@@ -28,7 +29,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	if playing:
-		show()
 		if GameTime.time > next_frame_time:
 			anim_frame += 1
 			anim_frame = anim_frame % animations[anim_name]
