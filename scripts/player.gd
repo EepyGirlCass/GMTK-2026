@@ -208,7 +208,7 @@ func dash():
 	
 	if dashes_charged == max_dashes:
 		dash_cooldown_timer = dash_cooldown
-		
+	
 	dashes_charged -= 1
 	
 	

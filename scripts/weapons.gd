@@ -230,7 +230,7 @@ class EnemyMelee extends Weapon:
 class Shotgun extends Weapon:
 	func _init(character_owner: Character):
 		weapon_owner = character_owner
-		weapon_owner.add_child(self)
+		weapon_owner.add_child.call_deferred(self)
 		
 		reload_duration = 1.25
 		reload_amount = -1 # full clip
@@ -284,7 +284,7 @@ class Buckshot extends Shotgun:
 class Nailgun extends Weapon:
 	func _init(character_owner: Character):
 		weapon_owner = character_owner
-		weapon_owner.add_child(self)
+		weapon_owner.add_child.call_deferred(self)
 		weapon_class = WeaponClasses.NAILGUN
 		reload_amount = 0 # no reload
 		
