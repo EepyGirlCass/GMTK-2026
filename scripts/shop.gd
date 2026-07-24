@@ -20,7 +20,13 @@ var shop_transitioning : bool = false
 @onready var total_weapons : Array = [
 	Weapon.Buckshot.new(player),
 	Weapon.Nailgun.new(player),
-	Weapon.Shotgun.new(player)
+	Weapon.Shotgun.new(player),
+	Weapon.Revolver.new(player),
+	Weapon.SixShooter.new(player),
+	Weapon.BurstNailgun.new(player),
+	Weapon.RocketLauncher.new(player),
+	Weapon.GrenadeLauncher.new(player),
+	
 ]
 
 var loaded_weapons : Array = []
@@ -94,12 +100,8 @@ func load_weapons_page(weapon_class:Weapon.WeaponClasses):
 	#SEE WHICH OF THE LOADED WEAPONS ARE EQUIPPED BY CHECKING IF THEIR CLASS IS IN player.weapons
 	for valid_weapon : Weapon in loaded_weapons:
 		var weapon_item_name : String = valid_weapon.weapon_name
-		var weapon_classes: Array= player.weapons.map(func(value): return value.get_script())
-		var weapon_equipped := false
-		for weapon2 :Weapon in player.weapons:
-			if weapon_classes.has(weapon2.get_script()):
-				weapon_equipped = true
-		if weapon_equipped: weapon_item_name += "  (EQUIPPED)"
+		if player.weapon_equip_list.keys().has(valid_weapon.get_script()):
+			weapon_item_name += "  (EQUIPPED)"
 		weapon_icons.add_item(weapon_item_name ,load(valid_weapon.weapon_icon_path))
 	
 	#SELECT THE FIRST ENTRY
@@ -124,15 +126,12 @@ func load_weapon_info(loaded_weapon_index:int):
 	weapon_description.text = str("Desc.: ", selected_weapon.weapon_description)
 	weapon_time_cost.text = str("Time Cost: ", selected_weapon.shoot_cost)
 	
+	#print("Equipped Scripts: ", player.weapon_equip_list.keys(), "\n Selected Weapon: ", selected_weapon.get_script())
 	
-	var weapon_classes: Array= player.weapons.map(func(value): return value.get_script())
-	var weapon_equipped := false
-	for weapon2 :Weapon in player.weapons:
-		if weapon_classes.has(weapon2.get_script()):
-			weapon_equipped = true
-	
-	if weapon_equipped: equip_button.text = "EQUIPPED"
-	if not selected_weapon.purchased: equip_button.text = "PURCHASE: " + player.convert_float_to_time(selected_weapon.weapon_shop_cost)
+	if player.weapon_equip_list.keys().has(selected_weapon.get_script()):
+		equip_button.text = "EQUIPPED"
+	elif selected_weapon.purchased: equip_button.text = "EQUIP"
+	elif not selected_weapon.purchased: equip_button.text = "PURCHASE: " + player.convert_float_to_time(selected_weapon.weapon_shop_cost)
 	
 func _on_weapon_icons_item_clicked(index: int, _at_position: Vector2, _mouse_button_index: int) -> void:
 	load_weapon_info(index)
@@ -140,10 +139,16 @@ func _on_weapon_icons_item_clicked(index: int, _at_position: Vector2, _mouse_but
 
 func _on_equip_button_pressed() -> void:
 	if selected_weapon.purchased:
+		#if player.weapon_equip_list.keys().has(selected_weapon.get_script()):
+		player.replace_weapon(selected_weapon.get_script(), selected_weapon.weapon_class)
 		equip_button.text = "EQUIPPED"
-		player.weapons.remove_at(selected_weapon.weapon_class)
-		player.weapons.insert(selected_weapon.weapon_class, selected_weapon)
+		
 	else:
-		if GameTime.time >= selected_weapon.weapon_shop_cost:
-			player.change_time_with_message(selected_weapon.weapon_shop_cost)
+		print(GameTime.time_timer ,' ', selected_weapon.weapon_shop_cost)
+		if GameTime.time_timer  >= selected_weapon.weapon_shop_cost:
+			player.change_time_with_message(-selected_weapon.weapon_shop_cost)
 			selected_weapon.purchased = true
+			player.replace_weapon(selected_weapon.get_script(), selected_weapon.weapon_class)
+			equip_button.text = "EQUIPPED"
+	load_weapons_page(selected_weapon.weapon_class)
+	load_weapon_info(loaded_weapons.find(selected_weapon))
