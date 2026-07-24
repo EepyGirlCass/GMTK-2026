@@ -1,13 +1,70 @@
 [gd_scene format=3 uid="uid://3ypv3308bhc8"]
 
-[node name="Control" type="Control" unique_id=1230554328]
+[ext_resource type="Script" uid="uid://bwcv31ikfnede" path="res://scripts/menu.gd" id="1_yqeox"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqeox"]
+
+[node name="MainMenu" type="Control" unique_id=1230554328]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -7.0
-offset_top = -12.0
-offset_right = -7.0
-offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_yqeox")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=83510844]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yqeox")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1670064632]
+layout_mode = 2
+theme_override_constants/margin_left = 450
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 450
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1967286392]
+layout_mode = 2
+theme_override_constants/separation = 253
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1923632753]
+layout_mode = 2
+theme_override_font_sizes/font_size = 79
+text = "Game Title!!"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=558147105]
+layout_mode = 2
+alignment = 1
+
+[node name="ContinueButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1919390825]
+layout_mode = 2
+theme_override_font_sizes/font_size = 66
+text = "Continue"
+
+[node name="NewGameButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1466084338]
+layout_mode = 2
+theme_override_font_sizes/font_size = 66
+text = "New Game"
+
+[node name="SettingsButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1835014215]
+layout_mode = 2
+theme_override_font_sizes/font_size = 66
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=2083207293]
+layout_mode = 2
+theme_override_font_sizes/font_size = 66
+text = "Quit
+"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

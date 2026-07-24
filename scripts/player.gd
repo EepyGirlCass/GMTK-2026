@@ -148,6 +148,9 @@ func _input(event: InputEvent) -> void:
 	if in_menu:
 		if Input.is_action_just_pressed("OpenShop"):
 			player_ui.shop_ui._on_button_pressed()
+		if Input.is_action_just_pressed("Pause"):
+			player_ui.main_menu._on_continue_button_pressed()
+
 		return
 	
 	if event is InputEventMouseMotion or event is InputEventJoypadMotion:
@@ -192,8 +195,12 @@ func _input(event: InputEvent) -> void:
 
 	if Input.is_action_just_pressed("Reload"):
 		current_weapon.start_reload()
-
-
+	
+	if Input.is_action_just_pressed("Pause"):
+		player_ui.main_menu.show()
+		GameTime.paused = true
+		in_menu = true
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 func jump():
 	var current_jump_values = abilities_controller.jump_ability_values[abilities_controller.current_jump]
 	var jump_height = current_jump_values["height"]

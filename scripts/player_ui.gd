@@ -1,6 +1,8 @@
 class_name PlayerUI
 extends Control
 
+@onready var player: Player = $".."
+
 
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var timer: Label = $Timer
@@ -11,3 +13,4 @@ extends Control
 @onready var drain_multiplier: Label = $DrainMultiplier
 @onready var shop_ui: Control = $ShopUI
 @onready var health_bar_white: ProgressBar = $HealthBarWhite
+@onready var main_menu: Control = $MainMenu

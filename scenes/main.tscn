@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://csehikqjwq7e5" path="res://scenes/player_character.tscn" id="2_sugp2"]
 [ext_resource type="Script" uid="uid://bv6qlhwcyj3lm" path="res://scripts/enemies/fodder.gd" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://b4pvs2vf8df33" path="res://scenes/time_pickup.tscn" id="4_jyhfs"]
+[ext_resource type="Script" uid="uid://f7ee4k2tvmb7" path="res://scripts/enemy_spawner.gd" id="5_tbgi4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -76,41 +77,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.7090855, 0.96858644, 12.442
 script = ExtResource("3_jyhfs")
 metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
 
-[node name="Enemy4" type="CharacterBody3D" parent="Enemies" unique_id=780405564]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.969764, 0.96858644, 14.819403)
-script = ExtResource("3_jyhfs")
-metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
-
-[node name="Enemy5" type="CharacterBody3D" parent="Enemies" unique_id=221078356]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.72017, 0.96858644, 11.202939)
-script = ExtResource("3_jyhfs")
-metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
-
-[node name="Enemy10" type="CharacterBody3D" parent="Enemies" unique_id=1540751886]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.72017, 0.96858644, 21.032314)
-script = ExtResource("3_jyhfs")
-metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
-
-[node name="Enemy9" type="CharacterBody3D" parent="Enemies" unique_id=1148210136]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.969764, 0.96858644, 24.648777)
-script = ExtResource("3_jyhfs")
-metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
-
-[node name="Enemy8" type="CharacterBody3D" parent="Enemies" unique_id=25514861]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.7090855, 0.96858644, 22.271734)
-script = ExtResource("3_jyhfs")
-metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
-
-[node name="Enemy7" type="CharacterBody3D" parent="Enemies" unique_id=1451058512]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5779805, 0.9685855, 22.002478)
-script = ExtResource("3_jyhfs")
-metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
-
-[node name="Enemy6" type="CharacterBody3D" parent="Enemies" unique_id=1939720321]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4118681, 0.96858644, 23.7207)
-script = ExtResource("3_jyhfs")
-metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
-
 [node name="Projectiles" type="Node3D" parent="." unique_id=1608317585]
 
 [node name="Pickups" type="Node3D" parent="." unique_id=1045950830]
@@ -118,3 +84,8 @@ metadata/_custom_type_script = "uid://bv6qlhwcyj3lm"
 [node name="TimePickup" parent="Pickups" unique_id=160521341 instance=ExtResource("4_jyhfs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.714367, 0, 0)
 respawns = true
+
+[node name="EnemySpawner" type="Node3D" parent="." unique_id=28113797]
+script = ExtResource("5_tbgi4")
+
+[node name="SpawnPoint" type="Node3D" parent="EnemySpawner" unique_id=1841829250]
