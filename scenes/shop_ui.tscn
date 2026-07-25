@@ -35,10 +35,9 @@ layout_mode = 2
 theme_override_constants/side_margin = 44
 theme_override_constants/tab_separation = 45
 theme_override_font_sizes/font_size = 55
-current_tab = 1
+current_tab = 0
 
 [node name="Abilities" type="Control" parent="PanelContainer/MarginContainer/TabContainer" unique_id=296922594]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -54,7 +53,122 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
+[node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer" unique_id=1989137028]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer" unique_id=1612074469]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="JumpsButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/VBoxContainer" unique_id=906741131]
+custom_minimum_size = Vector2(300, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 53
+toggle_mode = true
+text = "Jumps"
+
+[node name="DashesButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/VBoxContainer" unique_id=1154953882]
+custom_minimum_size = Vector2(300, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 53
+toggle_mode = true
+text = "Dashes"
+
+[node name="SlidesButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/VBoxContainer" unique_id=1002850293]
+custom_minimum_size = Vector2(300, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 53
+toggle_mode = true
+text = "Slides"
+
+[node name="MeleeButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/VBoxContainer" unique_id=1537954442]
+custom_minimum_size = Vector2(300, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 53
+toggle_mode = true
+text = "Melee"
+
+[node name="AbilityTabs" type="Control" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer" unique_id=1381689509]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VSplitContainer" type="VSplitContainer" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs" unique_id=578710638]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+dragging_enabled = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer" unique_id=664947965]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AbilityIcons" type="ItemList" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/ScrollContainer" unique_id=194084056]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 37
+auto_width = true
+auto_height = true
+wraparound_items = false
+fixed_icon_size = Vector2i(128, 128)
+
+[node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer" unique_id=1805416759]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AbilityStats" type="VBoxContainer" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/HSplitContainer" unique_id=1131873511]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AbilityName" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/HSplitContainer/AbilityStats" unique_id=1679350989]
+layout_mode = 2
+text = "Name:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="AbilityCost" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/HSplitContainer/AbilityStats" unique_id=235966676]
+layout_mode = 2
+text = "Time Cost:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="AbilityCooldown" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/HSplitContainer/AbilityStats" unique_id=1879704216]
+layout_mode = 2
+text = "Cooldown:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="AbilityStat1" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/HSplitContainer/AbilityStats" unique_id=1534266434]
+layout_mode = 2
+text = "Speed:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="AbilityStat2" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/HSplitContainer/AbilityStats" unique_id=422760391]
+layout_mode = 2
+text = "Amount:"
+label_settings = SubResource("LabelSettings_aqpbq")
+
+[node name="WeaponUpgrades" type="VBoxContainer" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/HSplitContainer" unique_id=1769165522]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AbilityEquipButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/HSplitContainer/WeaponUpgrades" unique_id=82141236]
+layout_mode = 2
+theme_override_font_sizes/font_size = 46
+text = "Equip"
+
+[node name="AbilityDescription" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/HSplitContainer/WeaponUpgrades" unique_id=695075826]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Description:"
+label_settings = SubResource("LabelSettings_aqpbq")
+autowrap_mode = 3
+
 [node name="Weapons" type="Control" parent="PanelContainer/MarginContainer/TabContainer" unique_id=1632048321]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -187,6 +301,7 @@ layout_mode = 2
 size_flags_vertical = 3
 text = "Description:"
 label_settings = SubResource("LabelSettings_aqpbq")
+autowrap_mode = 3
 
 [node name="Button" type="Button" parent="." unique_id=1947735997]
 layout_mode = 0
@@ -198,6 +313,12 @@ icon = ExtResource("2_18xnp")
 icon_alignment = 1
 expand_icon = true
 
+[connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/VBoxContainer/JumpsButton" to="." method="_on_jumps_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/VBoxContainer/DashesButton" to="." method="_on_dashes_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/VBoxContainer/SlidesButton" to="." method="_on_slides_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/VBoxContainer/MeleeButton" to="." method="_on_melee_button_pressed"]
+[connection signal="item_selected" from="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/ScrollContainer/AbilityIcons" to="." method="_on_ability_icons_item_selected"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/AbilityTabs/VSplitContainer/HSplitContainer/WeaponUpgrades/AbilityEquipButton" to="." method="_on_ability_equip_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer/ShotgunButton" to="." method="_on_shotgun_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer/NailgunButton" to="." method="_on_nailgun_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer/SidearmButton" to="." method="_on_sidearm_button_pressed"]

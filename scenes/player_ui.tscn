@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://c6b8adscv5ee1" path="res://scenes/shop_ui.tscn" id="4_8isll"]
 [ext_resource type="PackedScene" uid="uid://3ypv3308bhc8" path="res://scenes/menu.tscn" id="5_7ctsh"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ctsh"]
+bg_color = Color(2.4065375e-06, 0.712933, 0.44271353, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8isll"]
 bg_color = Color(1, 1, 1, 1)
 
@@ -42,6 +45,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jkj6h")
 
+[node name="MeleeChargeBar" type="ProgressBar" parent="." unique_id=696702211]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 1045.0
+offset_right = 609.0
+offset_bottom = 1067.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_7ctsh")
+value = 100.0
+show_percentage = false
+
 [node name="HealthBarWhite" type="ProgressBar" parent="." unique_id=1156586810]
 layout_mode = 1
 anchors_preset = 2
@@ -68,6 +81,7 @@ offset_bottom = -31.0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 29
 theme_override_styles/fill = SubResource("StyleBoxFlat_guxnq")
+value = 100.0
 
 [node name="DrainMultiplier" type="Label" parent="." unique_id=973890949]
 layout_mode = 0
@@ -94,34 +108,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Crosshair" type="TextureRect" parent="." unique_id=1354138477]
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 2
-auto_translate_mode = 0
-editor_description = ""
-visible = true
-modulate = Color(1, 1, 1, 1)
-self_modulate = Color(1, 1, 1, 1)
-show_behind_parent = false
-top_level = false
-clip_children = 0
-oversampling_with_scale = 0
-light_mask = 1
-visibility_layer = 1
-z_index = 0
-z_as_relative = true
-y_sort_enabled = false
-texture_filter = 0
-texture_repeat = 0
-material = null
-use_parent_material = false
 custom_minimum_size = Vector2(15, 15)
-custom_maximum_size = Vector2(-1, -1)
-propagate_maximum_size = false
-clip_contents = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -134,83 +121,11 @@ offset_right = 7.5
 offset_bottom = 7.5
 grow_horizontal = 2
 grow_vertical = 2
-rotation = 0.0
-scale = Vector2(1, 1)
-pivot_offset = Vector2(0, 0)
-pivot_offset_ratio = Vector2(0, 0)
-size_flags_horizontal = 1
-size_flags_vertical = 1
-size_flags_stretch_ratio = 1.0
-offset_transform_enabled = false
-offset_transform_position = Vector2(0, 0)
-offset_transform_position_ratio = Vector2(0, 0)
-offset_transform_scale = Vector2(1, 1)
-offset_transform_rotation = 0.0
-offset_transform_pivot = Vector2(0, 0)
-offset_transform_pivot_ratio = Vector2(0.5, 0.5)
-offset_transform_visual_only = true
-localize_numeral_system = true
-layout_direction = 0
-translation_context = &""
-tooltip_text = ""
-tooltip_auto_translate_mode = 0
-focus_neighbor_left = NodePath("")
-focus_neighbor_top = NodePath("")
-focus_neighbor_right = NodePath("")
-focus_neighbor_bottom = NodePath("")
-focus_next = NodePath("")
-focus_previous = NodePath("")
-focus_mode = 0
-focus_behavior_recursive = 0
-mouse_filter = 1
-mouse_behavior_recursive = 0
-mouse_force_pass_scroll_events = true
-mouse_default_cursor_shape = 0
-accessibility_name = ""
-accessibility_description = ""
-accessibility_live = 0
-accessibility_controls_nodes = Array[NodePath]([])
-accessibility_described_by_nodes = Array[NodePath]([])
-accessibility_labeled_by_nodes = Array[NodePath]([])
-accessibility_flow_to_nodes = Array[NodePath]([])
-theme = null
-theme_type_variation = &""
 texture = ExtResource("2_sk4pr")
 expand_mode = 1
-stretch_mode = 0
-flip_h = false
-flip_v = false
-script = null
 
 [node name="ReloadCircle" type="TextureRect" parent="." unique_id=1304401142]
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 2
-auto_translate_mode = 0
-editor_description = ""
-visible = true
-modulate = Color(1, 1, 1, 1)
-self_modulate = Color(1, 1, 1, 1)
-show_behind_parent = false
-top_level = false
-clip_children = 0
-oversampling_with_scale = 0
-light_mask = 1
-visibility_layer = 1
-z_index = 0
-z_as_relative = true
-y_sort_enabled = false
-texture_filter = 0
-texture_repeat = 0
 material = SubResource("ShaderMaterial_8isll")
-use_parent_material = false
-custom_minimum_size = Vector2(0, 0)
-custom_maximum_size = Vector2(-1, -1)
-propagate_maximum_size = false
-clip_contents = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -223,53 +138,7 @@ offset_right = 64.0
 offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
-rotation = 0.0
-scale = Vector2(1, 1)
-pivot_offset = Vector2(0, 0)
-pivot_offset_ratio = Vector2(0, 0)
-size_flags_horizontal = 1
-size_flags_vertical = 1
-size_flags_stretch_ratio = 1.0
-offset_transform_enabled = false
-offset_transform_position = Vector2(0, 0)
-offset_transform_position_ratio = Vector2(0, 0)
-offset_transform_scale = Vector2(1, 1)
-offset_transform_rotation = 0.0
-offset_transform_pivot = Vector2(0, 0)
-offset_transform_pivot_ratio = Vector2(0.5, 0.5)
-offset_transform_visual_only = true
-localize_numeral_system = true
-layout_direction = 0
-translation_context = &""
-tooltip_text = ""
-tooltip_auto_translate_mode = 0
-focus_neighbor_left = NodePath("")
-focus_neighbor_top = NodePath("")
-focus_neighbor_right = NodePath("")
-focus_neighbor_bottom = NodePath("")
-focus_next = NodePath("")
-focus_previous = NodePath("")
-focus_mode = 0
-focus_behavior_recursive = 0
-mouse_filter = 1
-mouse_behavior_recursive = 0
-mouse_force_pass_scroll_events = true
-mouse_default_cursor_shape = 0
-accessibility_name = ""
-accessibility_description = ""
-accessibility_live = 0
-accessibility_controls_nodes = Array[NodePath]([])
-accessibility_described_by_nodes = Array[NodePath]([])
-accessibility_labeled_by_nodes = Array[NodePath]([])
-accessibility_flow_to_nodes = Array[NodePath]([])
-theme = null
-theme_type_variation = &""
 texture = ExtResource("2_sk4pr")
-expand_mode = 0
-stretch_mode = 0
-flip_h = false
-flip_v = false
-script = null
 
 [node name="DashBarContainer" type="HBoxContainer" parent="." unique_id=175181754]
 layout_mode = 1

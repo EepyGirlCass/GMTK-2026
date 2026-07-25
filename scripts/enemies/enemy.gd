@@ -176,6 +176,8 @@ func _process(delta: float) -> void:
 		
 		velocity = direction * speed * delta
 	
+	shadow.visible = is_on_floor()
+	
 	# Apply gravity & decay knockback
 	if not is_on_floor():
 		knockback_velocity += get_gravity() * delta
@@ -208,9 +210,9 @@ func take_damage(damage:float, is_crit:bool=false):
 	
 	damage_number.amount = damage
 	damage_number.is_crit = is_crit
-	damage_number.global_position = global_position
-	
+	damage_number.start_pos = global_position
 	particles.add_child(damage_number)
+	#damage_number.global_position = global_position
 	
 	if health <= 0:
 		die()

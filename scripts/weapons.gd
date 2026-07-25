@@ -165,9 +165,9 @@ func fire_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.INF
 						result.collider.take_damage(bullet_damage, false)
 				else:
 					result.collider.take_damage(bullet_damage)
-		var new_blood_particle = blood_particle.instantiate()
-		particles.add_child(new_blood_particle)
-		new_blood_particle.global_position = result.position 
+			var new_blood_particle = blood_particle.instantiate()
+			particles.add_child(new_blood_particle)
+			new_blood_particle.global_position = result.position 
 	
 	if draw_tracer:
 		var gun_tracer : GunTracer = preload("res://scenes/gun_tracer.tscn").instantiate()

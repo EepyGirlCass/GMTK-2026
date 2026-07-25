@@ -23,6 +23,9 @@ var new_delta : float
 var jump_amount : int = 3
 var current_jumps : int = 0
 
+var melee_cooldown : float
+var melee_cooldown_max : float
+
 var time_drain_multiplier:float=1
 var time_drain_multiplier_ui:float=1
 @onready var player_ui: PlayerUI = $PlayerUI
@@ -71,7 +74,7 @@ func _physics_process(delta: float) -> void:
 	
 	
 	
-	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
+	
 	
 	
 	
@@ -154,13 +157,13 @@ func _physics_process(delta: float) -> void:
 	
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	update_ui()
 	if in_menu: return
 	if Input.is_action_pressed("Attack"):
 		if current_weapon.shoot():
 			change_time_with_message(-current_weapon.shoot_cost)
-	
+	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
 
 func _input(event: InputEvent) -> void:
 	if in_menu:
@@ -203,6 +206,9 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Jump") and (is_on_floor() or current_jumps < jump_amount):
 		jump()
 	
+	if Input.is_action_just_pressed("Melee"):
+		melee()
+	
 	if Input.is_action_just_pressed("Slot1"):
 		select_weapon(0)
 	if Input.is_action_just_pressed("Slot2"):
@@ -220,6 +226,7 @@ func _input(event: InputEvent) -> void:
 		GameTime.paused = true
 		in_menu = true
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		
 func jump():
 	var current_jump_values = abilities_controller.jump_ability_values[abilities_controller.current_jump]
 	var jump_height = current_jump_values["height"]
@@ -230,6 +237,7 @@ func jump():
 
 func dash():
 	var current_dash_values = abilities_controller.dash_ability_values[abilities_controller.current_dash]
+	print(current_dash_values)
 	if dashes_charged <= 0: return
 	
 	if dashes_charged == max_dashes:
@@ -263,7 +271,10 @@ func dash():
 	var dash_cost : float = current_dash_values["cost"]
 	change_time_with_message(dash_cost)
 
-
+func melee():
+	var current_melee_values := abilities_controller.melee_ability_values
+	print(current_melee_values)
+	
 func update_dash_ability(amount:int, cooldown:float):
 	max_dashes = amount
 	dashes_charged = amount

@@ -8,9 +8,11 @@ var is_crit: bool = false
 @export var shrink_time: float = 0.35
 @export var base_scale: Vector3 = Vector3.ONE
 @export var crit_scale: Vector3 = Vector3(1.5, 1.5, 1.5)
+var start_pos: Vector3
 
 func _ready() -> void:
 	billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	global_position = start_pos
 	text = str(amount)
 	
 	if is_crit:
@@ -24,7 +26,6 @@ func animate() -> void:
 	# Randomize direction (-1.0 to 1.0)
 	var random_x: float = randf_range(-.5, .5)
 	var random_y: float = randf_range(.5, 1.0)
-	var start_pos: Vector3 = position
 	var target_pos: Vector3 = start_pos + Vector3(random_x * 1.5,random_y * 1.8, 0.0) # Up and side arc
 	var fall_pos: Vector3 = target_pos + Vector3(random_x * 0.5,random_y * -.2, 0.0) # Gravity fall-off
 
