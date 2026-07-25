@@ -249,6 +249,27 @@ class EnemyMelee extends Weapon:
 		return false
 
 
+class OrbShooter extends Weapon:
+	func _init(character_owner: Character):
+		weapon_owner = character_owner
+		weapon_owner.add_child.call_deferred(self)
+		reload_amount = 0 # no reload
+		
+		
+		projectile = Projectile.MagicOrb
+		
+		shoot_cooldown = 1.5
+		bullet_spread = 10
+		bullet_damage = 15
+		bullet_crit_mult = 2
+		bullet_amount = 5
+		
+		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
+	
+	func shoot(direction_override: Vector3 = Vector3.INF):
+		return shoot_projectile(direction_override)
+
+
 class Shotgun extends Weapon:
 	func _init(character_owner: Character):
 		weapon_owner = character_owner

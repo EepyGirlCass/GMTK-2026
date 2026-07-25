@@ -18,7 +18,7 @@ func _ready() -> void:
 	for channel: String in AudioChannel:
 		var audio_player := AudioStreamPlayer.new()
 		audio_player.name = "AudioStreamPlayerChannel" + channel.to_pascal_case()
-		call_deferred("add_child", audio_player)
+		add_child(audio_player)
 
 
 func play_sound(

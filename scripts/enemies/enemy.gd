@@ -128,8 +128,8 @@ func _ready() -> void:
 	
 	body_collider = CollisionShape3D.new()
 	body_collider.shape = CapsuleShape3D.new()
-	body_collider.shape.radius = 0.25
-	body_collider.shape.height = 1.5
+	body_collider.shape.radius = 0.375
+	body_collider.shape.height = 2
 	add_child(body_collider)
 	body_collider.global_position = global_position + Vector3(0, 0, 0)
 	
@@ -137,7 +137,7 @@ func _ready() -> void:
 	head_collider.shape = SphereShape3D.new()
 	head_collider.shape.radius = 0.375
 	add_child(head_collider)
-	head_collider.global_position = global_position + Vector3(0, 0.75, 0)
+	head_collider.global_position = global_position + Vector3(0, 1.25, 0)
 	
 	set_collision_mask_value(2, false)
 	collision_layer = 0

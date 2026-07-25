@@ -37,6 +37,7 @@ var time_drain_multiplier_ui:float=1
 
 func _ready() -> void:
 	set_health(100)
+	AudioController.set_volume.call_deferred(AudioController.AudioChannel.PLAYER, 0.2)
 	
 	GlobalPlayer.player = self
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
