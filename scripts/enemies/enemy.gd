@@ -9,6 +9,7 @@ var nav_agent: NavigationAgent3D
 var body_collider: CollisionShape3D
 var head_collider: CollisionShape3D
 var sprite: BillboardSprite3D
+var shadow: Sprite3D
 
 var time_reward : float = 1
 
@@ -104,7 +105,6 @@ func do_ai(_delta: float) -> void:
 @abstract func _init(spawn_position: Vector3 = Vector3.INF) -> void
 
 func _ready() -> void:
-	
 	bullet_start_node = Node3D.new()
 	add_child(bullet_start_node)
 	bullet_start_node.global_position = global_position + Vector3(0, 0, -0.5)
@@ -130,10 +130,15 @@ func _ready() -> void:
 	head_collider.global_position = global_position + Vector3(0, 0.75, 0)
 	
 	sprite = BillboardSprite3D.new()
-
 	add_child(sprite)
+	sprite.global_position = global_position + Vector3(0, 0.25, 0)
 	
-	speed = 800
+	shadow = Sprite3D.new()
+	add_child(shadow)
+	shadow.global_position = global_position - Vector3(0, 0.75, 0)
+	shadow.texture = preload("res://assets/shadow.png")
+	shadow.global_rotation_degrees = Vector3(-90, 0, 0)
+	shadow.pixel_size = 0.03
 	
 func _process(delta: float) -> void:
 	if GameTime.paused: return
@@ -148,14 +153,18 @@ func _process(delta: float) -> void:
 	
 	if nav_agent.is_navigation_finished():
 		velocity = Vector3.ZERO
-		return
+		if target:
+			look_at(Vector3(target.global_position.x, global_position.y, target.global_position.z))
+	else:
+		
+		var next_path_position: Vector3 = nav_agent.get_next_path_position()
+		
+		var direction: Vector3 = (next_path_position - global_position).normalized()
+		if not Vector3(next_path_position.x, global_position.y, next_path_position.z).is_equal_approx(global_position):
+			look_at(Vector3(next_path_position.x, global_position.y, next_path_position.z))
+		
+		velocity = direction * speed * delta
 	
-	var next_path_position: Vector3 = nav_agent.get_next_path_position()
-	
-	var direction: Vector3 = (next_path_position - global_position).normalized()
-	look_at(Vector3(direction.x, global_position.y, direction.z))
-	
-	velocity = direction * speed * delta 
 	if not is_on_floor():
 		velocity += get_gravity() * delta * 100
 	move_and_slide()

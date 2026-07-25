@@ -306,3 +306,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.550909, 4.6811295, 23.93184
 
 [node name="SpawnPoint4" type="Node3D" parent="EnemySpawner" unique_id=1098999594]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.6811295, 23.931845)
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=737591117]

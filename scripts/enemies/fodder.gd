@@ -18,7 +18,6 @@ func _init(spawn_position: Vector3 = Vector3.INF):
 
 func _process(delta: float) -> void:
 	super(delta)
-	attack()
 
 func _ready() -> void:
 	super()
@@ -35,4 +34,5 @@ func _ready() -> void:
 	sprite.pixel_size = .005
 
 func attack() -> void:
-	current_weapon.shoot(get_projectile_direction())
+	pass
+	#current_weapon.shoot(get_projectile_direction())
