@@ -193,11 +193,13 @@ func _process(delta: float) -> void:
 	move_and_slide()
 
 
-func take_damage(damage:float, is_crit:bool=false):
+func take_damage(damage:float, is_crit:bool=false) -> bool:
 	
 	if not is_on_floor(): 
 		damage *= 1.5
 		is_crit = true
+	
+	if GlobalPlayer.player.slide_damage_boost: damage *= 1.5
 	
 	health -= damage
 	var tween = create_tween()
@@ -216,8 +218,9 @@ func take_damage(damage:float, is_crit:bool=false):
 	
 	if health <= 0:
 		die()
-
-	
+		return true
+		
+	return false
 func hit_flash() -> void:
 	var mat = sprite.material_override as ShaderMaterial
 	if mat:

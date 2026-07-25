@@ -55,7 +55,7 @@ func _process(_delta: float) -> void:
 		# auto restart incremental reloads
 		if not reload():
 			start_reload()
-
+	
 
 func get_reload_progress() -> float:
 	if not reloading: return 0

@@ -21,7 +21,7 @@ var current_weapon: Weapon:
 
 var knockback_velocity : Vector3
 
-@abstract func take_damage(damage:float, is_crit:bool=false) -> void
+@abstract func take_damage(damage:float, is_crit:bool=false) -> bool
 
 func add_weapon(weapon_class: GDScript):
 	var weapon_object: Weapon = weapon_class.new(self)

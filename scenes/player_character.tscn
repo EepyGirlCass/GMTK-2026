@@ -9,6 +9,9 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kww55"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_aqpbq"]
+size = Vector3(3, 3, 3)
+
 [node name="Player" type="CharacterBody3D" unique_id=250732500]
 collision_layer = 2
 collision_mask = 3
@@ -33,7 +36,19 @@ script = ExtResource("2_6r27q")
 [node name="GunShotPoint" type="Node3D" parent="CameraPivot" unique_id=88076736]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
+[node name="MeleeDetector" type="Area3D" parent="CameraPivot" unique_id=1167791783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0.5)
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraPivot/MeleeDetector" unique_id=1332907459]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.6475798)
+shape = SubResource("BoxShape3D_aqpbq")
+
 [node name="PlayerUI" parent="." unique_id=1038248244 instance=ExtResource("3_kww55")]
 
 [node name="AbilitiesController" type="Node" parent="." unique_id=1784290977]
 script = ExtResource("5_uj7mf")
+
+[connection signal="body_entered" from="CameraPivot/MeleeDetector" to="." method="_on_melee_detector_body_entered"]
+[connection signal="body_exited" from="CameraPivot/MeleeDetector" to="." method="_on_melee_detector_body_exited"]
