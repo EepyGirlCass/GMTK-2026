@@ -65,7 +65,6 @@ custom_minimum_size = Vector2(300, 120)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 53
-toggle_mode = true
 text = "Jumps"
 
 [node name="DashesButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/VBoxContainer" unique_id=1154953882]
@@ -73,7 +72,6 @@ custom_minimum_size = Vector2(300, 120)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 53
-toggle_mode = true
 text = "Dashes"
 
 [node name="SlidesButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/VBoxContainer" unique_id=1002850293]
@@ -81,7 +79,6 @@ custom_minimum_size = Vector2(300, 120)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 53
-toggle_mode = true
 text = "Slides"
 
 [node name="MeleeButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer/VBoxContainer" unique_id=1537954442]
@@ -89,7 +86,6 @@ custom_minimum_size = Vector2(300, 120)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 53
-toggle_mode = true
 text = "Melee"
 
 [node name="AbilityTabs" type="Control" parent="PanelContainer/MarginContainer/TabContainer/Abilities/MarginContainer/HSplitContainer" unique_id=1381689509]
@@ -196,7 +192,6 @@ custom_minimum_size = Vector2(300, 120)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 53
-toggle_mode = true
 text = "Shotguns"
 
 [node name="NailgunButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer" unique_id=273892754]
@@ -204,7 +199,6 @@ custom_minimum_size = Vector2(300, 120)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 53
-toggle_mode = true
 text = "Nailguns"
 
 [node name="SidearmButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer" unique_id=135441173]
@@ -212,7 +206,6 @@ custom_minimum_size = Vector2(300, 120)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 53
-toggle_mode = true
 text = "Sidearms"
 
 [node name="ProjectileButton" type="Button" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/VBoxContainer" unique_id=181071514]
@@ -220,7 +213,6 @@ custom_minimum_size = Vector2(300, 120)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 53
-toggle_mode = true
 text = "Projectiles"
 
 [node name="WeaponTabs" type="Control" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer" unique_id=308422039]

@@ -16,14 +16,16 @@ extends Control
 var shop_transitioning : bool = false
 
 @onready var total_weapons : Array = [
+	Weapon.Shotgun.new(player),
 	Weapon.Buckshot.new(player),
 	Weapon.Nailgun.new(player),
-	Weapon.Shotgun.new(player),
 	Weapon.Revolver.new(player),
 	Weapon.SixShooter.new(player),
 	Weapon.BurstNailgun.new(player),
 	Weapon.RocketLauncher.new(player),
 	Weapon.GrenadeLauncher.new(player),
+	Weapon.Slugger.new(player),
+	Weapon.ChunkyNailgun.new(player),
 ]
 
 var loaded_weapons : Array = []

@@ -299,6 +299,34 @@ class Shotgun extends Weapon:
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_hitscan(true, direction_override)
 
+class Slugger extends Weapon:
+	func _init(character_owner: Character):
+		weapon_owner = character_owner
+		weapon_owner.add_child.call_deferred(self)
+		
+		reload_duration = 1.25
+		reload_amount = -1 # full clip
+		
+		ammo_max_clip = 6
+		ammo_clip = 6
+		
+		shoot_cooldown = 1
+		shoot_cost = 1
+		bullet_spread = 0
+		bullet_damage = 18
+		bullet_crit_mult = 1.1
+		bullet_amount = 1
+		
+		weapon_class = WeaponClasses.SHOTGUN
+		weapon_name = "Slugger"
+		weapon_shop_cost = 45
+		weapon_description = "blah blah"
+		weapon_icon_path = "res://icon.svg"
+		purchased = false
+		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
+		
+	func shoot(direction_override: Vector3 = Vector3.INF):
+		return shoot_hitscan(true, direction_override)
 
 class Buckshot extends Shotgun:
 	func _init(character_owner: Character):
@@ -356,6 +384,32 @@ class Nailgun extends Weapon:
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_projectile(direction_override)
 
+class ChunkyNailgun extends Weapon:
+	func _init(character_owner: Character):
+		weapon_owner = character_owner
+		weapon_owner.add_child.call_deferred(self)
+		weapon_class = WeaponClasses.NAILGUN
+		reload_amount = 0 # no reload
+		purchased = false
+		
+		projectile = Projectile.Nail
+		
+		shoot_cooldown = 0.2
+		shoot_cost = 0.25
+		bullet_spread = 1
+		bullet_damage = 10
+		bullet_crit_mult = 2
+		bullet_amount = 1
+	
+		weapon_name = "Chunky Nailgun"
+		weapon_shop_cost = 45
+		weapon_description = "blah blah"
+		weapon_icon_path = "res://icon.svg"
+		
+		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
+		
+	func shoot(direction_override: Vector3 = Vector3.INF):
+		return shoot_projectile(direction_override)
 
 class Revolver extends Weapon:
 	func _init(character_owner: Character):
