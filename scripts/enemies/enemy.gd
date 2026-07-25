@@ -165,7 +165,7 @@ func _process(delta: float) -> void:
 	
 	if nav_agent.is_navigation_finished():
 		velocity = Vector3.ZERO
-		if target:
+		if target and not global_position.is_equal_approx(Vector3(target.global_position.x, global_position.y, target.global_position.z)):
 			look_at(Vector3(target.global_position.x, global_position.y, target.global_position.z))
 	else:
 		var next_path_position: Vector3 = nav_agent.get_next_path_position()

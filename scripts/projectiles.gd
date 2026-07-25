@@ -39,7 +39,7 @@ func _process(delta: float) -> void:
 		queue_free()
 		return
 	
-	var results = shapecast()
+	var results = shapecast(delta)
 	if results:
 		on_hit()
 		for result in results:
@@ -70,7 +70,7 @@ func _process(delta: float) -> void:
 	super(delta)
 
 
-func shapecast() -> Array[Dictionary]:
+func shapecast(delta: float) -> Array[Dictionary]:
 	if is_queued_for_deletion(): return []
 	if not source_character: return []
 	if source_character.is_queued_for_deletion(): return []
@@ -80,7 +80,7 @@ func shapecast() -> Array[Dictionary]:
 	# 3. Create the Query
 	var query = PhysicsShapeQueryParameters3D.new()
 	query.shape = collider_shape
-	query.motion = velocity
+	query.motion = velocity * delta
 	query.transform = transform
 	
 	query.exclude = [source_character, source_weapon, self] # Don't shoot yourself
@@ -138,11 +138,11 @@ class Rocket extends Projectile:
 		if is_queued_for_deletion(): return
 		
 		var explosion :Explosion= explosion_scene.instantiate()
+		particles.add_child(explosion)
 		explosion.damage = 10
 		explosion.size = 5
 		explosion.global_position = global_position
 		explosion.force = 12.5
-		particles.add_child(explosion)
 		
 		queue_free()
 

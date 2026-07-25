@@ -3,6 +3,7 @@ extends Node
 var paused: bool = false
 var time_scale: float = 1.0
 var time_scale_timer: float = 1.0
+var time_scale_bullettime: float = 1.0
 
 var time: float = 0.0
 var time_timer: float = 0.0
