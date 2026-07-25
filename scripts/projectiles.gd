@@ -84,7 +84,18 @@ func shapecast(delta: float) -> Array[Dictionary]:
 	
 	query.exclude = [source_character, source_weapon, self] # Don't shoot yourself
 	
-	return space_state.intersect_shape(query)
+	var safe_dist := space_state.cast_motion(query)
+	if safe_dist == PackedFloat32Array([1.0, 1.0]):
+		return []
+	global_position += velocity * delta * safe_dist[0]
+	query.transform = transform
+	var results := space_state.intersect_shape(query)
+	if not results:
+		global_position += velocity * delta * safe_dist[0] * 0.1
+		query.transform = transform
+		results = space_state.intersect_shape(query)
+	return results
+
 
 @abstract func on_hit()
 

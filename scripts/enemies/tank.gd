@@ -3,14 +3,13 @@ extends Enemy
 
 func _init(spawn_position: Vector3 = Vector3.INF):
 	if spawn_position != Vector3.INF:
-		set_deferred("global_position", spawn_position)
-	global_position.y += 2
+		set_deferred("global_position", spawn_position + Vector3.UP)
 	speed = 300
 	health = 500
 	
-	too_close_range = 1
-	too_far_range = 10
-	attack_range = 2
+	too_close_range = 3
+	too_far_range = 5
+	attack_range = 5
 	attack_when_close = true
 	attack_when_far = false
 	
@@ -30,6 +29,7 @@ func _ready() -> void:
 	super()
 	
 	add_weapon(Weapon.EnemyMelee)
+	current_weapon.melee_range = 5
 	target = GlobalPlayer.player
 	
 	sprite.sprite_tile_size = Vector2i(256, 512)
