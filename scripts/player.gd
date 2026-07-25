@@ -7,6 +7,7 @@ const SPEED = 12.5
 var in_menu : bool
 
 var is_sliding : bool = false
+var slide_damage_boost : float = 1.0
 var slide_dir : Vector2
 
 var max_dashes : int
@@ -38,6 +39,8 @@ var time_drain_multiplier_ui:float=1
 func _ready() -> void:
 	set_health(100)
 	AudioController.set_volume.call_deferred(AudioController.AudioChannel.PLAYER, 0.2)
+	AudioController.play_sound(AudioController.AudioChannel.MUSIC, preload("res://assets/sounds/music/to_yourself.wav"))
+	AudioController.set_looping(AudioController.AudioChannel.MUSIC, true)
 	
 	GlobalPlayer.player = self
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -72,13 +75,6 @@ func _physics_process(delta: float) -> void:
 	var slide_speed : float = current_slide_values["speed"]
 	if is_sliding: 
 		time_drain_multiplier *= current_slide_values["multiplier"]
-	
-	
-	
-	
-	
-	
-	
 	GameTime.time_scale = 1 * time_drain_multiplier
 	
 	# Ignore gravity while dashing so upward Y isn't immediately killed
@@ -303,6 +299,7 @@ func take_damage(damage:float, is_crit : bool = false):
 	tween.tween_property(player_ui.health_bar, "value", player_ui.health_bar.value - damage, 0.5)
 	tween.parallel().tween_property(player_ui.health_bar_white, "value", player_ui.health_bar.value - damage, 1.5)
 	health -= damage
+	return health <= 0
 
 func update_ui() -> void:
 	player_ui.timer.text = convert_float_to_time(GameTime.time_timer)

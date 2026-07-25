@@ -10,7 +10,7 @@ var enemy_types : Array = [
 ]
 
 func _process(_delta: float) -> void:
-	#if GameTime.time >= next_wave_time: spawn_wave()
+	if GameTime.time >= next_wave_time: spawn_wave()
 	pass
 func spawn_wave():
 	next_wave_time = GameTime.time + spawn_wave_time

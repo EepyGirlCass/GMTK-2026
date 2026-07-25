@@ -10,6 +10,7 @@ enum AudioChannel {
 }
 
 var _pause_positions: Array[float] # TODO: use stream_paused instead
+@onready var filter_low_pass := AudioEffectLowPassFilter.new()
 
 func _ready() -> void:
 	_pause_positions.resize(AudioChannel.size())
@@ -19,6 +20,18 @@ func _ready() -> void:
 		var audio_player := AudioStreamPlayer.new()
 		audio_player.name = "AudioStreamPlayerChannel" + channel.to_pascal_case()
 		add_child(audio_player)
+		
+	for channel_idx: AudioChannel in AudioChannel.values():
+		set_effects(channel_idx, [filter_low_pass])
+	filter_low_pass.cutoff_hz = 20_000
+
+func _physics_process(_delta: float) -> void:
+	for channel_idx: AudioChannel in AudioChannel.values():
+		if channel_idx == AudioChannel.MUSIC: continue
+		var channel = get_audio_stream_player(channel_idx)
+		channel.pitch_scale = GameTime.time_scale
+	
+	filter_low_pass.cutoff_hz = 20_000 * pow(GameTime.time_scale * GameTime.time_scale_timer, 8)
 
 
 func play_sound(
