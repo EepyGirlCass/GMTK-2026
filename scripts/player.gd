@@ -37,7 +37,8 @@ func _ready() -> void:
 	
 	GlobalPlayer.player = self
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	bullet_start_node = $CameraPivot/GunShotPoint
+	bullet_start_node = $CameraPivot/Camera3D
+	visual_bullet_start_node = $CameraPivot/GunShotPoint
 	update_dash_ability(abilities_controller.dash_ability_values[abilities_controller.current_dash]["amount"],
 	abilities_controller.dash_ability_values[abilities_controller.current_dash]["cooldown"] )
 	

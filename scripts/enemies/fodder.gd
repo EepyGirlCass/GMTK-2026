@@ -8,22 +8,28 @@ func _init(spawn_position: Vector3 = Vector3.INF):
 	speed = 100
 	health = 20
 	
-	too_close_range = 5
-	too_far_range = 20
-	attack_range = 1000
+	too_close_range = 1
+	too_far_range = 5
+	attack_range = 2
 	attack_when_close = true
-	attack_when_far = true
+	attack_when_far = false
 	
 	create_on_death = preload("res://scenes/time_pickup.tscn")
 
 func _process(delta: float) -> void:
 	super(delta)
+	
+	if velocity == Vector3.ZERO:
+		if sprite.anim_name != &"idle":
+			sprite.set_animation(&"idle")
+	else:
+		if sprite.anim_name != &"walk":
+			sprite.set_animation(&"walk")
 
 func _ready() -> void:
 	super()
 	
-	add_weapon(Weapon.Nailgun)
-	current_weapon.bullet_damage = 0
+	add_weapon(Weapon.EnemyMelee)
 	target = GlobalPlayer.player
 	
 	sprite.sprite_tile_size = Vector2i(256, 512)
@@ -34,5 +40,5 @@ func _ready() -> void:
 	sprite.pixel_size = .005
 
 func attack() -> void:
-	pass
+	current_weapon.shoot()
 	#current_weapon.shoot(get_projectile_direction())

@@ -7,6 +7,9 @@ var speed: float
 var bullet_start_node : Node3D
 var bullet_start: Vector3:
 	get: return bullet_start_node.global_position
+var visual_bullet_start_node : Node3D
+var visual_bullet_start: Vector3:
+	get: return visual_bullet_start_node.global_position
 
 var weapons: Array[Weapon] = []
 

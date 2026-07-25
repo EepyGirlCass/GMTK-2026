@@ -171,7 +171,7 @@ func fire_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.INF
 	
 	if draw_tracer:
 		var gun_tracer : GunTracer = preload("res://scenes/gun_tracer.tscn").instantiate()
-		gun_tracer.start_pos = weapon_owner.bullet_start
+		gun_tracer.start_pos = weapon_owner.visual_bullet_start
 		
 		if result:
 			gun_tracer.end_pos = result.position

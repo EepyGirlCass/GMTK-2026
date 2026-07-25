@@ -101,7 +101,7 @@ class Nail extends Projectile:
 		source_weapon = weapon_owner
 		source_character = source_weapon.weapon_owner
 		velocity = direction * speed # + source_character.velocity
-		set_deferred(&"global_position", source_character.bullet_start)
+		set_deferred(&"global_position", source_character.visual_bullet_start)
 		set_deferred(&"global_rotation", source_weapon.global_rotation)
 	
 	func on_hit():
@@ -127,17 +127,17 @@ class Rocket extends Projectile:
 		source_weapon = weapon_owner
 		source_character = source_weapon.weapon_owner
 		velocity = direction * speed # + source_character.velocity
-		set_deferred(&"global_position", source_character.bullet_start)
+		set_deferred(&"global_position", source_character.visual_bullet_start)
 		set_deferred(&"global_rotation", source_weapon.global_rotation)
 	
 	func on_hit():
 		if is_queued_for_deletion(): return
 		
 		var explosion := explosion_scene.instantiate()
+		particles.add_child(explosion)
 		explosion.damage = 10
 		explosion.size = 5
 		explosion.global_position = global_position
-		particles.add_child(explosion)
 		
 		queue_free()
 
@@ -161,7 +161,7 @@ class Grenade extends Projectile:
 		source_weapon = weapon_owner
 		source_character = source_weapon.weapon_owner
 		velocity = direction * speed # + source_character.velocity
-		set_deferred(&"global_position", source_character.bullet_start)
+		set_deferred(&"global_position", source_character.visual_bullet_start)
 		set_deferred(&"global_rotation", source_weapon.global_rotation)
 	
 	func on_hit():
@@ -193,7 +193,7 @@ class Buckshot extends Projectile:
 		source_weapon = weapon_owner
 		source_character = source_weapon.weapon_owner
 		velocity = direction * speed # + source_character.velocity
-		global_position = source_character.bullet_start
+		global_position = source_character.visual_bullet_start
 		global_rotation = source_weapon.global_rotation
 	func on_hit():
 		pass

@@ -80,19 +80,19 @@ func do_ai(_delta: float) -> void:
 	
 	if target_distance < too_close_range:
 		# move away
-		nav_agent.target_position = target.global_position + -1.1 * target_direction * too_close_range + Vector3(randf(), 0, randf())
+		nav_agent.target_position = target.global_position + -1.1 * target_direction * too_close_range + Vector3(randf_range(-1.5, 1.5), 0, randf_range(-1.5, 1.5))
 		
 		if attack_when_close and target_distance < attack_range:
 			attack()
 	elif target_distance > too_far_range:
 		# move closer
-		nav_agent.target_position = target.global_position + -0.9 * target_direction * too_far_range + Vector3(randf(), 0, randf())
+		nav_agent.target_position = target.global_position  + Vector3(randf_range(-too_close_range, too_close_range), 0, randf_range(-too_close_range, too_close_range))
 		
 		if attack_when_far and target_distance < attack_range:
 			attack()
 	else:
 		# good distance
-		nav_agent.target_position += Vector3(randf(), 0, randf())
+		nav_agent.target_position += Vector3(randf_range(-1.5, 1.5), 0, randf_range(-1.5, 1.5))
 	
 		if target_distance < attack_range:
 			attack()
@@ -108,6 +108,7 @@ func _ready() -> void:
 	bullet_start_node = Node3D.new()
 	add_child(bullet_start_node)
 	bullet_start_node.global_position = global_position + Vector3(0, 0, -0.5)
+	visual_bullet_start_node = bullet_start_node
 	
 	nav_agent = NavigationAgent3D.new()
 	add_child(nav_agent)
@@ -121,17 +122,19 @@ func _ready() -> void:
 	add_child(body_collider)
 	body_collider.global_position = global_position + Vector3(0, 0, 0)
 	
-	set_collision_mask_value(2, false)
-	set_collision_layer_value(3, true)
 	head_collider = CollisionShape3D.new()
 	head_collider.shape = SphereShape3D.new()
 	head_collider.shape.radius = 0.375
 	add_child(head_collider)
 	head_collider.global_position = global_position + Vector3(0, 0.75, 0)
 	
+	set_collision_mask_value(2, false)
+	collision_layer = 0
+	set_collision_layer_value(3, true)
+	
 	sprite = BillboardSprite3D.new()
 	add_child(sprite)
-	sprite.global_position = global_position + Vector3(0, 0.25, 0)
+	sprite.global_position = global_position + Vector3(0, 0.5, 0)
 	
 	shadow = Sprite3D.new()
 	add_child(shadow)
@@ -148,8 +151,6 @@ func _process(delta: float) -> void:
 	if time_since_ai > ai_recalculate_period:
 		time_since_ai = 0
 		do_ai(time_since_ai)
-	
-	nav_agent.target_position = GlobalPlayer.player.global_position
 	
 	if nav_agent.is_navigation_finished():
 		velocity = Vector3.ZERO
@@ -196,5 +197,5 @@ func die():
 	if scene.has_method(&"set_time"):
 		scene.set_time(time_reward)
 	$"..".add_child(scene)
-	scene.global_position = global_position - Vector3(0, 0.5, 0)
+	scene.global_position = global_position - Vector3(0, 0.25, 0)
 	queue_free()
