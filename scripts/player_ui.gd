@@ -15,3 +15,4 @@ extends Control
 @onready var shop_ui: Control = $ShopUI
 @onready var health_bar_white: ProgressBar = $HealthBarWhite
 @onready var main_menu: Control = $MainMenu
+@onready var tutorial: Control = $Tutorial

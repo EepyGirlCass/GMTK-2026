@@ -71,6 +71,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	
+	if Input.is_action_pressed("tutorial"): return
+	
 	health = clamp(health, 0, 400)
 	
 	if in_menu: return
@@ -187,6 +189,13 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("Attack"):
 		if current_weapon.shoot():
 			change_time_with_message(-current_weapon.shoot_cost)
+	if Input.is_action_pressed("tutorial"):
+		player_ui.tutorial.visible = true
+		GameTime.paused = true
+		GameTime.time_scale = 0
+	else:
+		player_ui.tutorial.visible = false
+		GameTime.paused = false
 	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
 	if time_stop_timer > 0: time_stop_timer -= delta
 	

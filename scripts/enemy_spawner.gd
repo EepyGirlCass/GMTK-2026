@@ -1,7 +1,7 @@
 extends Node3D
 @onready var enemies: Node3D = $"../Enemies"
 
-var spawn_wave_time :float= 5
+var spawn_wave_time :float= 2.5
 var next_wave_time:float
 
 var enemy_types : Dictionary[GDScript, int] = {

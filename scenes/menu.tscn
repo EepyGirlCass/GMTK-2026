@@ -4,6 +4,15 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqeox"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqpbq"]
+bg_color = Color(0.29219002, 0.29219005, 0.29218993, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_aqpbq"]
+font_size = 118
+
+[sub_resource type="LabelSettings" id="LabelSettings_pvcdl"]
+font_size = 54
+
 [node name="MainMenu" type="Control" unique_id=1230554328]
 layout_mode = 3
 anchors_preset = 15
@@ -53,10 +62,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 66
 text = "New Game"
 
-[node name="SettingsButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1835014215]
+[node name="ControlsButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1835014215]
 layout_mode = 2
 theme_override_font_sizes/font_size = 66
-text = "Settings"
+text = "Controls"
 
 [node name="QuitButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=2083207293]
 layout_mode = 2
@@ -64,7 +73,107 @@ theme_override_font_sizes/font_size = 66
 text = "Quit
 "
 
+[node name="ControlsPage" type="MarginContainer" parent="PanelContainer" unique_id=1524068420]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/ControlsPage" unique_id=1126823098]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_aqpbq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/ControlsPage/PanelContainer" unique_id=2008622809]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer" unique_id=860195364]
+layout_mode = 2
+text = "CONTROLS"
+label_settings = SubResource("LabelSettings_aqpbq")
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer" unique_id=905112970]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer/PanelContainer" unique_id=1083202306]
+layout_mode = 2
+text = "MOVEMENT : W A S D"
+label_settings = SubResource("LabelSettings_pvcdl")
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer" unique_id=2090685636]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer/PanelContainer2" unique_id=2003572794]
+layout_mode = 2
+text = "JUMP : SPACE"
+label_settings = SubResource("LabelSettings_pvcdl")
+horizontal_alignment = 1
+
+[node name="PanelContainer7" type="PanelContainer" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer" unique_id=1828823191]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer/PanelContainer7" unique_id=1282984711]
+layout_mode = 2
+text = "PUNCH : F"
+label_settings = SubResource("LabelSettings_pvcdl")
+horizontal_alignment = 1
+
+[node name="PanelContainer8" type="PanelContainer" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer" unique_id=1369550594]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer/PanelContainer8" unique_id=237607410]
+layout_mode = 2
+text = "RELOAD : R"
+label_settings = SubResource("LabelSettings_pvcdl")
+horizontal_alignment = 1
+
+[node name="PanelContainer6" type="PanelContainer" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer" unique_id=1837435195]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer/PanelContainer6" unique_id=2085919545]
+layout_mode = 2
+text = "STORE : E"
+label_settings = SubResource("LabelSettings_pvcdl")
+horizontal_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer" unique_id=404975801]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer/PanelContainer3" unique_id=1055339983]
+layout_mode = 2
+text = "SLIDE : CTRL"
+label_settings = SubResource("LabelSettings_pvcdl")
+horizontal_alignment = 1
+
+[node name="PanelContainer4" type="PanelContainer" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer" unique_id=1472524347]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer/PanelContainer4" unique_id=2113756763]
+layout_mode = 2
+text = "DASH : SHIFT"
+label_settings = SubResource("LabelSettings_pvcdl")
+horizontal_alignment = 1
+
+[node name="PanelContainer5" type="PanelContainer" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer" unique_id=1809503447]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer/PanelContainer5" unique_id=1110712753]
+layout_mode = 2
+text = "PAUSE : ESC"
+label_settings = SubResource("LabelSettings_pvcdl")
+horizontal_alignment = 1
+
+[node name="CloseControls" type="Button" parent="PanelContainer/ControlsPage/PanelContainer/VBoxContainer" unique_id=1600800985]
+layout_mode = 2
+theme_override_font_sizes/font_size = 55
+text = "CLOSE"
+
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ControlsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ControlsButton" to="." method="_on_controls_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="PanelContainer/ControlsPage/PanelContainer/VBoxContainer/CloseControls" to="." method="_on_close_controls_pressed"]

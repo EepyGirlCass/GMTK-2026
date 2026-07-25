@@ -3,7 +3,9 @@
 [ext_resource type="Script" uid="uid://dwv8khx1hune1" path="res://scripts/player_ui.gd" id="1_jkj6h"]
 [ext_resource type="Texture2D" uid="uid://c62cs0p6r37b0" path="res://icon.svg" id="2_sk4pr"]
 [ext_resource type="Shader" uid="uid://d050avdq3lue5" path="res://scripts/shaders/reload_circle.gdshader" id="3_48xfa"]
+[ext_resource type="Texture2D" uid="uid://j510gtfw0oog" path="res://assets/storefront_500dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" id="3_bkx2g"]
 [ext_resource type="PackedScene" uid="uid://c6b8adscv5ee1" path="res://scenes/shop_ui.tscn" id="4_8isll"]
+[ext_resource type="Texture2D" uid="uid://dfqhdwyi1sxf0" path="res://assets/help_500dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" id="4_n31oh"]
 [ext_resource type="PackedScene" uid="uid://3ypv3308bhc8" path="res://scenes/menu.tscn" id="5_7ctsh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ctsh"]
@@ -25,6 +27,9 @@ font_size = 90
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_pvcdl"]
+font_size = 35
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8isll"]
 shader = ExtResource("3_48xfa")
 shader_parameter/width = 0.22
@@ -35,6 +40,12 @@ shader_parameter/fill_ratio = 0.8
 font_size = 90
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqpbq"]
+bg_color = Color(0, 0, 0, 0.115)
+
+[sub_resource type="LabelSettings" id="LabelSettings_aqpbq"]
+font_size = 27
 
 [node name="PlayerUI" type="Control" unique_id=1038248244]
 layout_mode = 3
@@ -138,6 +149,66 @@ grow_vertical = 2
 texture = ExtResource("2_sk4pr")
 expand_mode = 1
 
+[node name="ShopIcon" type="Control" parent="." unique_id=446106040]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShopIcon" type="PanelContainer" parent="ShopIcon" unique_id=1186501273]
+layout_mode = 0
+offset_left = 1792.0
+offset_top = 32.0
+offset_right = 1888.0
+offset_bottom = 128.0
+
+[node name="TextureRect" type="TextureRect" parent="ShopIcon/ShopIcon" unique_id=205877722]
+layout_mode = 2
+texture = ExtResource("3_bkx2g")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="ShopIcon" unique_id=1558888851]
+layout_mode = 0
+offset_left = 1792.0
+offset_top = 128.0
+offset_right = 1888.0
+offset_bottom = 192.0
+text = "E"
+label_settings = SubResource("LabelSettings_pvcdl")
+horizontal_alignment = 1
+
+[node name="TutorialIcon" type="Control" parent="." unique_id=1172590904]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShopIcon" type="PanelContainer" parent="TutorialIcon" unique_id=523050171]
+layout_mode = 0
+offset_left = 1664.0
+offset_top = 32.0
+offset_right = 1760.0
+offset_bottom = 128.0
+
+[node name="TextureRect" type="TextureRect" parent="TutorialIcon/ShopIcon" unique_id=1521778515]
+layout_mode = 2
+texture = ExtResource("4_n31oh")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="TutorialIcon" unique_id=2049861044]
+layout_mode = 0
+offset_left = 1664.0
+offset_top = 128.0
+offset_right = 1760.0
+offset_bottom = 224.0
+text = "T"
+label_settings = SubResource("LabelSettings_pvcdl")
+horizontal_alignment = 1
+
 [node name="ReloadCircle" type="TextureRect" parent="." unique_id=1304401142]
 material = SubResource("ShaderMaterial_8isll")
 layout_mode = 1
@@ -199,3 +270,98 @@ grow_vertical = 2
 [node name="MainMenu" parent="." unique_id=1230554328 instance=ExtResource("5_7ctsh")]
 visible = false
 layout_mode = 1
+
+[node name="Tutorial" type="Control" parent="." unique_id=1777925702]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Tutorial" unique_id=1897233998]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_aqpbq")
+
+[node name="HealthText" type="PanelContainer" parent="Tutorial" unique_id=1019032171]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 640.0
+offset_top = 672.0
+offset_right = -768.0
+offset_bottom = -216.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Tutorial/HealthText" unique_id=1851601100]
+layout_mode = 2
+text = "This is your health bar. The lower it is, the faster time moves. The higher it is, the slower it moves. Heal by punching enemies."
+label_settings = SubResource("LabelSettings_aqpbq")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ShopText" type="PanelContainer" parent="Tutorial" unique_id=1681973014]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1312.0
+offset_top = 192.0
+offset_right = -224.0
+offset_bottom = -696.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Tutorial/ShopText" unique_id=464414383]
+layout_mode = 2
+text = "This is the shop. Spend your time here to unlock better abilities and weapons!"
+label_settings = SubResource("LabelSettings_aqpbq")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TimerText" type="PanelContainer" parent="Tutorial" unique_id=636926298]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1312.0
+offset_top = 672.0
+offset_right = -96.0
+offset_bottom = -216.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Tutorial/TimerText" unique_id=353920859]
+layout_mode = 2
+text = "This is your timer. Once it reaches zero, you lose. Everything from ammo to jumping costs time, so spend it wisely!"
+label_settings = SubResource("LabelSettings_aqpbq")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="DashMeleeSlide" type="PanelContainer" parent="Tutorial" unique_id=280885629]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 640.0
+offset_top = 896.0
+offset_right = -768.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Tutorial/DashMeleeSlide" unique_id=1255534607]
+layout_mode = 2
+text = "The Green Meter is your Melee (F).
+The Blue Meter is your Dash (Shift).
+Sliding (Ctrl) will slow time down."
+label_settings = SubResource("LabelSettings_aqpbq")
+horizontal_alignment = 1
+autowrap_mode = 3
