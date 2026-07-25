@@ -58,7 +58,7 @@ func _physics_process(delta: float) -> void:
 	delta *= GameTime.time_scale
 	
 	
-	#time_drain_multiplier = 1
+	time_drain_multiplier = 1
 	#if health > 100:
 		#time_drain_multiplier = lerp(1.0,.25 , health/400)
 	#if health < 100:
@@ -120,6 +120,18 @@ func _physics_process(delta: float) -> void:
 			else:
 				velocity.x = move_toward(velocity.x, 0, SPEED)
 				velocity.z = move_toward(velocity.z, 0, SPEED)
+	
+	knockback_velocity = knockback_velocity.clamp(Vector3(-5, -5, -5), Vector3(5, 5, 5))
+	knockback_velocity.x = move_toward(knockback_velocity.x, 0.0, 30.0 * delta)
+	knockback_velocity.y = move_toward(knockback_velocity.x, 0.0, 30.0 * delta)
+	knockback_velocity.z = move_toward(knockback_velocity.z, 0.0, 30.0 * delta)
+	if knockback_velocity.y < 0:
+		knockback_velocity.y = 0
+
+	# Combine movement velocity with active knockback force
+	velocity += knockback_velocity
+	
+	
 	move_and_slide()
 	
 	if is_sliding:
@@ -273,7 +285,7 @@ func set_health(value:float):
 	player_ui.health_bar.value = value
 	player_ui.health_bar_white.value = value
 	
-func take_damage(damage:float):
+func take_damage(damage:float, is_crit : bool = false):
 	var tween := create_tween()
 	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(player_ui.health_bar, "value", player_ui.health_bar.value - damage, 0.5)

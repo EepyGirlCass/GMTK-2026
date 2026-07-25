@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dgmllihookwy1"]
+
+[ext_resource type="Script" uid="uid://cp73mk4evuyx2" path="res://scripts/damage_number.gd" id="1_aie4f"]
+
+[node name="DamageNumber" type="Label3D" unique_id=10500997]
+no_depth_test = true
+script = ExtResource("1_aie4f")
+base_scale = Vector3(2, 2, 2)
+crit_scale = Vector3(2.5, 2.5, 2.5)

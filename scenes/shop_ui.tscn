@@ -173,12 +173,6 @@ layout_mode = 2
 text = "Bullet Amount:"
 label_settings = SubResource("LabelSettings_aqpbq")
 
-[node name="WeaponDescription" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats" unique_id=827454476]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Description:"
-label_settings = SubResource("LabelSettings_aqpbq")
-
 [node name="WeaponUpgrades" type="VBoxContainer" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer" unique_id=1323697241]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -187,6 +181,12 @@ size_flags_horizontal = 3
 layout_mode = 2
 theme_override_font_sizes/font_size = 46
 text = "Equip"
+
+[node name="WeaponDescription" type="Label" parent="PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponUpgrades" unique_id=827454476]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Description:"
+label_settings = SubResource("LabelSettings_aqpbq")
 
 [node name="Button" type="Button" parent="." unique_id=1947735997]
 layout_mode = 0

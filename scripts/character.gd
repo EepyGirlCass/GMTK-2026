@@ -19,7 +19,9 @@ var current_weapon_idx: int = 0
 var current_weapon: Weapon:
 	get: return weapons[current_weapon_idx]
 
-@abstract func take_damage(damage:float) -> void
+var knockback_velocity : Vector3
+
+@abstract func take_damage(damage:float, is_crit:bool=false) -> void
 
 func add_weapon(weapon_class: GDScript):
 	var weapon_object: Weapon = weapon_class.new(self)
@@ -47,3 +49,6 @@ func select_weapon(index: int) -> void:
 	if not weapons[index]: return
 	current_weapon.start_reload()
 	current_weapon_idx = index
+
+func take_knockback(knockback:Vector3):
+	knockback_velocity += knockback

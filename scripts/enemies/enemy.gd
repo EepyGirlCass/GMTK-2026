@@ -5,6 +5,7 @@ var create_on_death: PackedScene
 
 var nav_agent: NavigationAgent3D
 @onready var nav_region: NavigationRegion3D = $/root/Main/NavigationRegion3D
+const DAMAGE_NUMBER = preload("uid://dgmllihookwy1")
 
 var body_collider: CollisionShape3D
 var head_collider: CollisionShape3D
@@ -12,6 +13,10 @@ var sprite: BillboardSprite3D
 var shadow: Sprite3D
 
 var time_reward : float = 1
+
+static var particles: Node3D
+
+
 
 #region AI
 var target: Character
@@ -38,6 +43,9 @@ var ai_recalculate_period: float = 1.0
 
 var aim_lead: float = 0.0
 var counter_gravity: float = 0.0
+
+
+
 
 func get_projectile_direction() -> Vector3:
 	var test_projectile = current_weapon.projectile.new(current_weapon, Vector3.ZERO)
@@ -105,6 +113,9 @@ func do_ai(_delta: float) -> void:
 @abstract func _init(spawn_position: Vector3 = Vector3.INF) -> void
 
 func _ready() -> void:
+	#sorry cass
+	particles = get_node("/root/Main/Particles")
+	
 	bullet_start_node = Node3D.new()
 	add_child(bullet_start_node)
 	bullet_start_node.global_position = global_position + Vector3(0, 0, -0.5)
@@ -157,7 +168,6 @@ func _process(delta: float) -> void:
 		if target:
 			look_at(Vector3(target.global_position.x, global_position.y, target.global_position.z))
 	else:
-		
 		var next_path_position: Vector3 = nav_agent.get_next_path_position()
 		
 		var direction: Vector3 = (next_path_position - global_position).normalized()
@@ -166,22 +176,46 @@ func _process(delta: float) -> void:
 		
 		velocity = direction * speed * delta
 	
+	# Apply gravity & decay knockback
 	if not is_on_floor():
-		velocity += get_gravity() * delta * 100
+		knockback_velocity += get_gravity() * delta
+	else:
+		knockback_velocity.x = move_toward(knockback_velocity.x, 0.0, 30.0 * delta)
+		knockback_velocity.z = move_toward(knockback_velocity.z, 0.0, 30.0 * delta)
+		if knockback_velocity.y < 0:
+			knockback_velocity.y = 0
+
+	# Combine original velocity with knockback force
+	velocity += knockback_velocity
+
 	move_and_slide()
 
 
-func take_damage(damage:float):
+func take_damage(damage:float, is_crit:bool=false):
+	
+	if not is_on_floor(): 
+		damage *= 1.5
+		is_crit = true
+	
 	health -= damage
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
 	tween.tween_property(sprite, "pixel_size", 0.004, .1)
 	tween.tween_property(sprite, "pixel_size", 0.005, .1)
 	hit_flash()
+	
+	var damage_number :DamageNumber= DAMAGE_NUMBER.instantiate()
+	
+	damage_number.amount = damage
+	damage_number.is_crit = is_crit
+	damage_number.global_position = global_position
+	
+	particles.add_child(damage_number)
+	
 	if health <= 0:
 		die()
 
-
+	
 func hit_flash() -> void:
 	var mat = sprite.material_override as ShaderMaterial
 	if mat:

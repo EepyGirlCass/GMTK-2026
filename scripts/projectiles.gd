@@ -44,8 +44,8 @@ func _process(delta: float) -> void:
 		on_hit()
 		for result in results:
 			if result.collider is Character:
+				
 				if result.collider.has_method("take_damage") and source_weapon.bullet_damage != 0:
-					
 					var collider = result.collider
 					var shape_index = result.shape
 					
@@ -53,9 +53,12 @@ func _process(delta: float) -> void:
 					var collision_shape_node = collider.shape_owner_get_owner(owner_id)
 					if "head_collider" in collider:
 						if collision_shape_node == collider.head_collider:
-							result.collider.take_damage(source_weapon.bullet_damage * source_weapon.bullet_crit_mult)
+							result.collider.take_damage(source_weapon.bullet_damage * source_weapon.bullet_crit_mult, true)
+						else:
+							result.collider.take_damage(source_weapon.bullet_damage, false)
 					else:
-						result.collider.take_damage(source_weapon.bullet_damage)
+						
+						result.collider.take_damage(source_weapon.bullet_damage, false)
 			
 			var new_blood_particle = blood_particle.instantiate()
 			particles.add_child(new_blood_particle)
@@ -94,7 +97,7 @@ class Nail extends Projectile:
 		
 		speed = 50
 		gravity = 10
-		lifetime = 5
+		lifetime = 15
 		hitbox = Vector3.ONE * .05
 		
 		expire_time = GameTime.time + lifetime
@@ -118,9 +121,9 @@ class Rocket extends Projectile:
 		
 		Weapon.projectiles.add_child.call_deferred(self)
 		
-		speed = 10
+		speed = 20
 		gravity = 0
-		lifetime = 5
+		lifetime = 15
 		hitbox = Vector3.ONE * .15
 		pixel_size = .02
 		expire_time = GameTime.time + lifetime
@@ -133,11 +136,12 @@ class Rocket extends Projectile:
 	func on_hit():
 		if is_queued_for_deletion(): return
 		
-		var explosion := explosion_scene.instantiate()
-		particles.add_child(explosion)
+		var explosion :Explosion= explosion_scene.instantiate()
 		explosion.damage = 10
 		explosion.size = 5
 		explosion.global_position = global_position
+		explosion.force = 12.5
+		particles.add_child(explosion)
 		
 		queue_free()
 
@@ -154,7 +158,7 @@ class Grenade extends Projectile:
 		
 		speed = 15
 		gravity = 10
-		lifetime = 5
+		lifetime = 15
 		hitbox = Vector3.ONE * .15
 		pixel_size = .01
 		expire_time = GameTime.time + lifetime
@@ -171,6 +175,8 @@ class Grenade extends Projectile:
 		explosion.damage = 4
 		explosion.size = 2.5
 		explosion.global_position = global_position
+		explosion.force = 7.5
+		
 		particles.add_child(explosion)
 		
 		queue_free()
@@ -193,7 +199,7 @@ class Buckshot extends Projectile:
 		source_weapon = weapon_owner
 		source_character = source_weapon.weapon_owner
 		velocity = direction * speed # + source_character.velocity
-		global_position = source_character.visual_bullet_start
-		global_rotation = source_weapon.global_rotation
+		set_deferred(&"global_position", source_character.visual_bullet_start)
+		set_deferred(&"global_rotation", source_weapon.global_rotation)
 	func on_hit():
 		pass

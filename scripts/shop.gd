@@ -7,11 +7,11 @@ extends Control
 @onready var weapon_name: Label = $PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats/WeaponName
 @onready var weapon_damage: Label = $PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats/WeaponDamage
 @onready var weapon_fire_rate: Label = $PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats/WeaponFireRate
-@onready var weapon_description: Label = $PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats/WeaponDescription
 @onready var weapon_bullet_amount: Label = $PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats/WeaponBulletAmount
 @onready var weapon_reload_speed: Label = $PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats/WeaponReloadSpeed
 @onready var weapon_time_cost: Label = $PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponStats/WeaponTimeCost
 @onready var equip_button: Button = $PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponUpgrades/EquipButton
+@onready var weapon_description: Label = $PanelContainer/MarginContainer/TabContainer/Weapons/MarginContainer/HSplitContainer/WeaponTabs/VSplitContainer/HSplitContainer/WeaponUpgrades/WeaponDescription
 
 
 
@@ -61,8 +61,8 @@ func show_shop():
 	show()
 	var tween := create_tween()
 	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-	tween.tween_property(self, "position:x", 0, .75)
-	tween.parallel().tween_property(self, "scale", Vector2.ONE, .75)
+	tween.tween_property(self, "position:x", 0, .25)
+	tween.parallel().tween_property(self, "scale", Vector2.ONE, .25)
 	tween.tween_callback(transition_end)
 	load_weapons_page(0 as Weapon.WeaponClasses)
 

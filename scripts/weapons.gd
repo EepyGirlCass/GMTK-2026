@@ -160,9 +160,9 @@ func fire_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.INF
 				var collision_shape_node = collider.shape_owner_get_owner(owner_id)
 				if "head_collider" in collider:
 					if collision_shape_node == collider.head_collider:
-						result.collider.take_damage(bullet_damage * bullet_crit_mult)
+						result.collider.take_damage(bullet_damage * bullet_crit_mult, true)
 					else:
-						result.collider.take_damage(bullet_damage)
+						result.collider.take_damage(bullet_damage, false)
 				else:
 					result.collider.take_damage(bullet_damage)
 		var new_blood_particle = blood_particle.instantiate()
@@ -243,7 +243,7 @@ class EnemyMelee extends Weapon:
 			return false
 		if weapon_owner.global_position.distance_to(GlobalPlayer.player.global_position) <= melee_range:
 			
-			GlobalPlayer.player.take_damage(bullet_damage)
+			GlobalPlayer.player.take_damage(bullet_damage, false)
 			can_shoot_time = GameTime.time + shoot_cooldown
 			return true
 		return false
@@ -292,8 +292,8 @@ class Buckshot extends Shotgun:
 		ammo_max_clip = 18
 		ammo_clip = 18
 		
-		shoot_cooldown = 0.25
-		bullet_damage = 0.1
+		shoot_cooldown = 0.5
+		bullet_damage = 0.5
 		bullet_amount = 16
 		
 		weapon_class = WeaponClasses.SHOTGUN
