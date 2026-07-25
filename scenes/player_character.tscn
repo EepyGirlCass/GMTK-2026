@@ -8,6 +8,7 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_6r27q"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kww55"]
+radius = 0.55
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_aqpbq"]
 size = Vector3(3, 3, 3)

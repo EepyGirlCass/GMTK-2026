@@ -8,6 +8,7 @@ var weapon_name : String
 var weapon_description : String
 var weapon_shop_cost : float
 var weapon_icon_path : String
+var sprite_image: CompressedTexture2D
 
 var purchased : bool = false
 
@@ -295,6 +296,7 @@ class Shotgun extends Weapon:
 		weapon_icon_path = "res://icon.svg"
 		purchased = true
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
+		sprite_image = preload("res://assets/sounds/shotgun_atlas.png")
 		
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_hitscan(true, direction_override)
@@ -324,6 +326,7 @@ class Slugger extends Weapon:
 		weapon_icon_path = "res://icon.svg"
 		purchased = false
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
+		sprite_image = preload("res://assets/sounds/shotgun_atlas.png")
 		
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_hitscan(true, direction_override)

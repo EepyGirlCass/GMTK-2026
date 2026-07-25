@@ -29,7 +29,7 @@ func _physics_process(_delta: float) -> void:
 	for channel_idx: AudioChannel in AudioChannel.values():
 		if channel_idx == AudioChannel.MUSIC: continue
 		var channel = get_audio_stream_player(channel_idx)
-		channel.pitch_scale = GameTime.time_scale
+		channel.pitch_scale = clampf(GameTime.time_scale, 0.00001, 4)
 	
 	if GameTime.paused:
 		filter_low_pass.cutoff_hz = 2_000

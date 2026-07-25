@@ -1,10 +1,8 @@
 [gd_scene format=3 uid="uid://cl2u6qcwk4y31"]
 
 [ext_resource type="Material" uid="uid://rhy8ltx2c51c" path="res://assets/wood_floor_mat.tres" id="1_tefeu"]
-[ext_resource type="Script" uid="uid://bi4g83bm1vels" path="res://scripts/enemies/ranger.gd" id="2_jyhfs"]
 [ext_resource type="Material" uid="uid://cofrmsdtomu3e" path="res://assets/stone_wall_mat.tres" id="2_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://csehikqjwq7e5" path="res://scenes/player_character.tscn" id="2_sugp2"]
-[ext_resource type="Script" uid="uid://cnjm2e1bbm6cb" path="res://scripts/enemies/tank.gd" id="3_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://b4pvs2vf8df33" path="res://scenes/time_pickup.tscn" id="4_jyhfs"]
 [ext_resource type="Script" uid="uid://f7ee4k2tvmb7" path="res://scripts/enemy_spawner.gd" id="5_tbgi4"]
 
@@ -1139,15 +1137,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.69760084, 0)
 [node name="Particles" type="Node3D" parent="." unique_id=984812865]
 
 [node name="Enemies" type="Node3D" parent="." unique_id=63575663]
-
-[node name="Ranger" type="CharacterBody3D" parent="Enemies" unique_id=580150545]
-script = ExtResource("2_jyhfs")
-metadata/_custom_type_script = "uid://bi4g83bm1vels"
-
-[node name="Tank" type="CharacterBody3D" parent="Enemies" unique_id=1006909930]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.386426, 0)
-script = ExtResource("3_tbgi4")
-metadata/_custom_type_script = "uid://cnjm2e1bbm6cb"
 
 [node name="Projectiles" type="Node3D" parent="." unique_id=1608317585]
 
