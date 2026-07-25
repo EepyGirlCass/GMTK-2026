@@ -56,15 +56,15 @@ var dash_ability_values : Dictionary = {
 
 var melee_ability_values : Dictionary = {
 	MeleeAbilityID.BASIC : {"purchased" : true, "name": "Basic Melee", "shop_cost" : 0, 
-	"heal" : 33, "damage" : 10, "cooldown" : 2, "knockback" : 10, "description" : "A basic Melee. Heals on Kill.", 'icon' : preload("res://icon.svg") },
+	"heal" : 20, "damage" : 10, "cooldown" : 2, "knockback" : 10, "description" : "A basic Melee. Heals on Hit.", 'icon' : preload("res://icon.svg") },
 	MeleeAbilityID.KNOCKBACK : {"purchased" : false, "name": "Knockback Melee", "shop_cost" : 30, 
-	"heal" : 33, "damage" : 12.5, "cooldown" : 2, "knockback" : 25, "description" : "A Melee with more Knockback.", 'icon' : preload("res://icon.svg") },
+	"heal" : 20, "damage" : 12.5, "cooldown" : 2, "knockback" : 25, "description" : "A Melee with more Knockback.", 'icon' : preload("res://icon.svg") },
 	MeleeAbilityID.EXTRA_TIME : {"purchased" : false, "name": "Bonus Time Melee", "shop_cost" : 30, 
-	"heal" : 33, "damage" : 12.5, "cooldown" : 4, "knockback" : 10, "description" : "A Melee that gives extra time on Kill.", 'icon' : preload("res://icon.svg") },
+	"heal" : 20, "damage" : 12.5, "cooldown" : 4, "knockback" : 10, "description" : "A Melee that gives extra time on Kill.", 'icon' : preload("res://icon.svg") },
 	MeleeAbilityID.EXPLOSIVE : {"purchased" : false, "name": "Explosive Melee", "shop_cost" : 60, 
-	"heal" : 40, "damage" : 10, "cooldown" : 2, "knockback" : 10, "description" : "A Melee that creates an explosion on Kill.", 'icon' : preload("res://icon.svg") },
+	"heal" : 33, "damage" : 10, "cooldown" : 2, "knockback" : 10, "description" : "A Melee that creates an explosion on Kill.", 'icon' : preload("res://icon.svg") },
 	MeleeAbilityID.COMBO : {"purchased" : false, "name": "Combo Melee", "shop_cost" : 60, 
-	"heal" : 40, "damage" : 25, "cooldown" : 4, "knockback" : 10, "description" : "A Melee that instantly recharges on Kill.", 'icon' : preload("res://icon.svg") },
+	"heal" : 33, "damage" : 25, "cooldown" : 4, "knockback" : 10, "description" : "A Melee that instantly recharges on Kill.", 'icon' : preload("res://icon.svg") },
 	MeleeAbilityID.TIME_STOP : {"purchased" : false, "name": "Time-Stop Melee", "shop_cost" : 60, 
 	"heal" : 50, "damage" : 10, "cooldown" : 2, "knockback" : 10, "description" : "A Melee that slows time for a period on Kill.", 'icon' : preload("res://icon.svg") },
 }
