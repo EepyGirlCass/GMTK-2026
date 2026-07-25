@@ -17,6 +17,9 @@ bg_color = Color(1, 1, 1, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_guxnq"]
 bg_color = Color(0.9525445, 0.19520909, 0.2222574, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_82y3s"]
+font_size = 33
+
 [sub_resource type="LabelSettings" id="LabelSettings_uj7mf"]
 font_size = 29
 outline_size = 4
@@ -42,10 +45,16 @@ outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqpbq"]
-bg_color = Color(0, 0, 0, 0.115)
+bg_color = Color(0, 0, 0, 0.36600003)
 
 [sub_resource type="LabelSettings" id="LabelSettings_aqpbq"]
 font_size = 27
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pvcdl"]
+bg_color = Color(0.24216348, 0.054752097, 0.11382807, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_linq4"]
+font_size = 91
 
 [node name="PlayerUI" type="Control" unique_id=1038248244]
 layout_mode = 3
@@ -101,6 +110,20 @@ theme_override_font_sizes/font_size = 29
 theme_override_styles/fill = SubResource("StyleBoxFlat_guxnq")
 value = 100.0
 allow_greater = true
+
+[node name="WeaponLabel" type="Label" parent="." unique_id=1836446612]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 800.0
+offset_top = 992.0
+offset_right = -800.0
+offset_bottom = -24.0
+text = "Shotgun"
+label_settings = SubResource("LabelSettings_82y3s")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DrainMultiplier" type="Label" parent="." unique_id=973890949]
 layout_mode = 1
@@ -272,6 +295,7 @@ visible = false
 layout_mode = 1
 
 [node name="Tutorial" type="Control" parent="." unique_id=1777925702]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -365,3 +389,38 @@ Sliding (Ctrl) will slow time down."
 label_settings = SubResource("LabelSettings_aqpbq")
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="GameOver" type="Control" parent="." unique_id=739982113]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="GameOver" unique_id=1987077125]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pvcdl")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOver/PanelContainer" unique_id=2065467086]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="GameOver/PanelContainer/VBoxContainer" unique_id=517585650]
+layout_mode = 2
+text = "GAME OVER"
+label_settings = SubResource("LabelSettings_linq4")
+horizontal_alignment = 1
+
+[node name="start_over" type="Button" parent="GameOver/PanelContainer/VBoxContainer" unique_id=2077811277]
+layout_mode = 2
+theme_override_font_sizes/font_size = 71
+text = "START OVER"
+
+[connection signal="pressed" from="GameOver/PanelContainer/VBoxContainer/start_over" to="." method="_on_start_over_pressed"]

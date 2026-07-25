@@ -4,6 +4,7 @@ extends Control
 @onready var player: Player = $".."
 @onready var melee_charge_bar: ProgressBar = $MeleeChargeBar
 
+@onready var weapon_label: Label = $WeaponLabel
 
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var timer: Label = $Timer
@@ -16,3 +17,8 @@ extends Control
 @onready var health_bar_white: ProgressBar = $HealthBarWhite
 @onready var main_menu: Control = $MainMenu
 @onready var tutorial: Control = $Tutorial
+@onready var game_over: Control = $GameOver
+
+
+func _on_start_over_pressed() -> void:
+	get_tree().reload_current_scene()

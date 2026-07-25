@@ -66,7 +66,7 @@ func _ready() -> void:
 	add_weapon(Weapon.Nailgun)
 	add_weapon(Weapon.Revolver)
 	add_weapon(Weapon.RocketLauncher)
-	GameTime.time_timer = 360
+	GameTime.time_timer = 120
 	
 
 func _physics_process(delta: float) -> void:
@@ -198,6 +198,13 @@ func _process(delta: float) -> void:
 		GameTime.paused = false
 	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
 	if time_stop_timer > 0: time_stop_timer -= delta
+	
+	if GameTime.time_timer <= 0:
+		var tween := create_tween()
+		tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+		tween.tween_property(GameTime, "time_scale", 0.1, 1)
+		tween.tween_callback(die)
+	
 	
 func _input(event: InputEvent) -> void:
 	if in_menu:
@@ -371,15 +378,27 @@ func set_health(value:float):
 	
 func take_damage(damage:float, _is_crit : bool = false):
 	if health_bar_tween: health_bar_tween.kill()
+	health -= damage
 	health_bar_tween = create_tween()
 	health_bar_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-	health_bar_tween.tween_property(player_ui.health_bar, "value", player_ui.health_bar.value - damage, 0.5)
-	health_bar_tween.parallel().tween_property(player_ui.health_bar_white, "value", player_ui.health_bar.value - damage, 1.5)
-	health -= damage
+	health_bar_tween.tween_property(player_ui.health_bar, "value", health, 0.5)
+	health_bar_tween.parallel().tween_property(player_ui.health_bar_white, "value",health, 1.5)
+	
 	return health <= 0
 
 func update_ui() -> void:
+	
 	player_ui.timer.text = convert_float_to_time(GameTime.time_timer)
+	
+	player_ui.weapon_label.text = current_weapon.weapon_name
+	
+	if GameTime.time_timer < 60:
+		if int(GameTime.time_timer) % 2:
+			player_ui.timer.modulate = Color.RED
+		else:
+			player_ui.timer.modulate = Color.WHITE
+	else:
+		player_ui.timer.modulate = Color.WHITE
 	
 	if current_weapon:
 		if current_weapon.reload_amount == 0:
@@ -461,3 +480,7 @@ func create_explosion_melee():
 	explosion.force = 12.5
 	explosion.ignore_player = true
 	particles.add_child(explosion)
+
+func die():
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	player_ui.game_over.show()

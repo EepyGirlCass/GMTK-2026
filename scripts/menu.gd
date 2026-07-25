@@ -3,6 +3,7 @@ extends Control
 var player_ui: PlayerUI
 
 @onready var controls_page: MarginContainer = $PanelContainer/ControlsPage
+@onready var sound_page: MarginContainer = $PanelContainer/SoundPage
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,8 +19,7 @@ func _on_controls_button_pressed() -> void:
 
 
 func _on_new_game_button_pressed() -> void:
-	pass # Replace with function body.
-
+	get_tree().reload_current_scene()
 
 func _on_continue_button_pressed() -> void:
 	GameTime.paused = false
@@ -30,3 +30,11 @@ func _on_continue_button_pressed() -> void:
 
 func _on_close_controls_pressed() -> void:
 	controls_page.hide()
+
+
+func _on_sound_button_pressed() -> void:
+	sound_page.show()
+
+
+func _on_close_sounds_pressed() -> void:
+	sound_page.hide()

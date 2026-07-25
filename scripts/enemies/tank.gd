@@ -4,7 +4,7 @@ extends Enemy
 func _init(spawn_position: Vector3 = Vector3.INF):
 	if spawn_position != Vector3.INF:
 		set_deferred("global_position", spawn_position + Vector3.UP)
-	speed = 300
+	speed = 500
 	health = 500
 	
 	too_close_range = 3
@@ -12,6 +12,8 @@ func _init(spawn_position: Vector3 = Vector3.INF):
 	attack_range = 5
 	attack_when_close = true
 	attack_when_far = false
+	
+	time_reward = 30
 	
 	create_on_death = preload("res://scenes/time_pickup.tscn")
 

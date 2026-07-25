@@ -5,9 +5,9 @@ func _init(spawn_position: Vector3 = Vector3.INF):
 	if spawn_position != Vector3.INF:
 		set_deferred("global_position", spawn_position)
 	
-	speed = 100
+	speed = 300
 	health = 20
-	
+	time_reward = 5
 	too_close_range = 1
 	too_far_range = 5
 	attack_range = 2
