@@ -72,29 +72,31 @@ func _physics_process(delta: float) -> void:
 	health = clamp(health, 0, 400)
 	
 	if in_menu: return
-	delta *= GameTime.time_scale
+	
 	
 	
 	time_drain_multiplier = 1
 	if health > 100:
-		time_drain_multiplier = lerp(1.0, .25 , health/400)
-	if health < 100:
-		time_drain_multiplier = lerp(2.0, 1.0, health/100)
+		time_drain_multiplier = lerp(1.0, 0.25, (health - 100.0) / 300.0)
+	elif health < 100:
+		time_drain_multiplier = lerp(2.0, 1.0, health / 100.0)
 		
 	var current_slide_values = abilities_controller.slide_ability_values[abilities_controller.current_slide]
 	var slide_speed : float = current_slide_values["speed"]
 	if is_sliding: 
 		time_drain_multiplier *= current_slide_values["multiplier"]
 	
-	var tween := create_tween()
-	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(GameTime, "time_scale", time_drain_multiplier, 1)
-	
 	if slow_mo_jump: time_drain_multiplier = .1
 	if time_stop_timer > 0: 
 		time_drain_multiplier = .1
 	
-	#GameTime.time_scale = 1 * time_drain_multiplier
+	#var tween := create_tween()
+	#tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	#tween.tween_property(GameTime, "time_scale", time_drain_multiplier, 1)
+	
+	print(GameTime.time_scale)
+	delta *= GameTime.time_scale
+	GameTime.time_scale = 1 * time_drain_multiplier
 	
 	# Ignore gravity while dashing so upward Y isn't immediately killed
 	if not is_on_floor() and dash_timer <= 0.0:
@@ -106,6 +108,7 @@ func _physics_process(delta: float) -> void:
 		
 	if is_on_floor():
 		current_jumps = 0
+		slow_mo_jump = false
 	var input_dir := Input.get_vector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward")
 	
 	# Movement logic (Only active when NOT dashing)
