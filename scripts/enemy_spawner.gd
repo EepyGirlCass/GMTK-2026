@@ -10,10 +10,13 @@ var enemy_types : Dictionary[GDScript, int] = {
 	Tank: 1
 }
 
+var max_enemies : int = 25
+
 func _process(_delta: float) -> void:
 	if GameTime.time >= next_wave_time: spawn_wave()
 	pass
 func spawn_wave():
+	if enemies.get_child_count() > max_enemies: return
 	next_wave_time = GameTime.time + spawn_wave_time
 	for node3d : Node3D in get_children():
 		spawn_enemy(choose_enemy(), node3d.global_position)

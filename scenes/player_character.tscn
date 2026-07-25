@@ -50,5 +50,11 @@ shape = SubResource("BoxShape3D_aqpbq")
 [node name="AbilitiesController" type="Node" parent="." unique_id=1784290977]
 script = ExtResource("5_uj7mf")
 
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1063824747]
+light_energy = 0.929
+light_indirect_energy = 1.786
+omni_range = 5.803
+omni_attenuation = 0.911
+
 [connection signal="body_entered" from="CameraPivot/MeleeDetector" to="." method="_on_melee_detector_body_entered"]
 [connection signal="body_exited" from="CameraPivot/MeleeDetector" to="." method="_on_melee_detector_body_exited"]

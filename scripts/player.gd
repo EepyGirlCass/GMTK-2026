@@ -45,6 +45,8 @@ var reload_skip : bool = false
 var blood_particle : PackedScene
 var slow_mo_jump : bool = false
 
+var health_bar_tween : Tween
+
 func _ready() -> void:
 	particles = get_node("/root/Main/Particles")
 	blood_particle = preload("res://scenes/blood_particle.tscn")
@@ -76,7 +78,7 @@ func _physics_process(delta: float) -> void:
 	
 	
 	time_drain_multiplier = 1
-	if health > 100:
+	if health >= 100:
 		time_drain_multiplier = lerp(1.0, 0.25, (health - 100.0) / 300.0)
 	elif health < 100:
 		time_drain_multiplier = lerp(2.0, 1.0, health / 100.0)
@@ -359,10 +361,11 @@ func set_health(value:float):
 	player_ui.health_bar_white.value = value
 	
 func take_damage(damage:float, _is_crit : bool = false):
-	var tween := create_tween()
-	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(player_ui.health_bar, "value", player_ui.health_bar.value - damage, 0.5)
-	tween.parallel().tween_property(player_ui.health_bar_white, "value", player_ui.health_bar.value - damage, 1.5)
+	if health_bar_tween: health_bar_tween.kill()
+	health_bar_tween = create_tween()
+	health_bar_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	health_bar_tween.tween_property(player_ui.health_bar, "value", player_ui.health_bar.value - damage, 0.5)
+	health_bar_tween.parallel().tween_property(player_ui.health_bar_white, "value", player_ui.health_bar.value - damage, 1.5)
 	health -= damage
 	return health <= 0
 
