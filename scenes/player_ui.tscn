@@ -82,6 +82,7 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 29
 theme_override_styles/fill = SubResource("StyleBoxFlat_guxnq")
 value = 100.0
+allow_greater = true
 
 [node name="DrainMultiplier" type="Label" parent="." unique_id=973890949]
 layout_mode = 0

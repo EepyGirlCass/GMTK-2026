@@ -76,10 +76,10 @@ func _physics_process(delta: float) -> void:
 	
 	
 	time_drain_multiplier = 1
-	#if health > 100:
-		#time_drain_multiplier = lerp(1.0,.25 , health/400)
-	#if health < 100:
-		#time_drain_multiplier = lerp(4.0, 1.0, health/100)
+	if health > 100:
+		time_drain_multiplier = lerp(1.0, .25 , health/400)
+	if health < 100:
+		time_drain_multiplier = lerp(2.0, 1.0, health/100)
 		
 	var current_slide_values = abilities_controller.slide_ability_values[abilities_controller.current_slide]
 	var slide_speed : float = current_slide_values["speed"]
