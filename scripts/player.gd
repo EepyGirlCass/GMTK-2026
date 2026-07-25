@@ -75,7 +75,11 @@ func _physics_process(delta: float) -> void:
 	var slide_speed : float = current_slide_values["speed"]
 	if is_sliding: 
 		time_drain_multiplier *= current_slide_values["multiplier"]
-	GameTime.time_scale = 1 * time_drain_multiplier
+	
+	var tween := create_tween()
+	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(GameTime, "time_scale", time_drain_multiplier, 1)
+	#GameTime.time_scale = 1 * time_drain_multiplier
 	
 	# Ignore gravity while dashing so upward Y isn't immediately killed
 	if not is_on_floor() and dash_timer <= 0.0:
@@ -87,6 +91,7 @@ func _physics_process(delta: float) -> void:
 		
 	if is_on_floor():
 		current_jumps = 0
+	var input_dir := Input.get_vector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward")
 	
 	# Movement logic (Only active when NOT dashing)
 	if dash_timer > 0.0:
@@ -107,12 +112,11 @@ func _physics_process(delta: float) -> void:
 			dash_velocity = Vector3.ZERO
 	else:
 		if is_sliding:
-			# Lock movement velocity to the slide direction
+			slide_dir = slide_dir.rotated(1 * input_dir.x * delta)
 			velocity.x = slide_dir.x * slide_speed
 			velocity.z = slide_dir.y * slide_speed
 		else:
 			# Standard WASD movement
-			var input_dir := Input.get_vector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward")
 			var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 			if direction:
 				velocity.x = direction.x * SPEED
