@@ -217,7 +217,7 @@ class MagicOrb extends Buckshot:
 		gravity = 0
 		lifetime = 3
 		hitbox = Vector3.ONE * 0.1
-		pixel_size = 0.1
+		pixel_size = 0.075
 		
 		expire_time = GameTime.time + lifetime
 		source_weapon = weapon_owner

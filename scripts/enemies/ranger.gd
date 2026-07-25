@@ -44,5 +44,5 @@ func _ready() -> void:
 	sprite.pixel_size = .005
 
 func attack() -> void:
-	current_weapon.shoot(target_direction + target.velocity * aim_lead)
-	#current_weapon.shoot(get_projectile_direction())
+	#current_weapon.shoot(target_direction + target.velocity * aim_lead)
+	current_weapon.shoot(get_projectile_direction())

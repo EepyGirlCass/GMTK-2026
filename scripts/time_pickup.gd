@@ -9,9 +9,13 @@ var cooldown : float = amount * 2
 var pickup_cooldown_start_time : float
 var pickup_cooldown_end_time : float
 
+var death_time: float = 0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	rotate(Vector3.UP, randf_range(0, TAU))
+	if not respawns:
+		death_time = GameTime.time + 15
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -19,6 +23,8 @@ func _process(delta: float) -> void:
 	rotate(Vector3.UP, delta * GameTime.time_scale)
 	if GameTime.time >= pickup_cooldown_end_time:
 		enable_pickup(true)
+	if GameTime.time >= death_time and not respawns:
+		queue_free()
 		
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if GameTime.time < pickup_cooldown_end_time: return
