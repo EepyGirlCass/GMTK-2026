@@ -94,7 +94,6 @@ func _physics_process(delta: float) -> void:
 	#tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	#tween.tween_property(GameTime, "time_scale", time_drain_multiplier, 1)
 	
-	print(GameTime.time_scale)
 	delta *= GameTime.time_scale
 	GameTime.time_scale = 1 * time_drain_multiplier
 	

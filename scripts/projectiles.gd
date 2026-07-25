@@ -43,7 +43,6 @@ func _process(delta: float) -> void:
 	if results:
 		on_hit()
 		for result in results:
-			print(result.collider.name)
 			if result.collider is Character:
 				if result.collider.has_method("take_damage") and source_weapon.bullet_damage != 0:
 					var collider = result.collider
@@ -218,6 +217,8 @@ class MagicOrb extends Buckshot:
 		lifetime = 3
 		hitbox = Vector3.ONE * 0.1
 		pixel_size = 0.075
+		
+		modulate = Color.PURPLE
 		
 		expire_time = GameTime.time + lifetime
 		source_weapon = weapon_owner

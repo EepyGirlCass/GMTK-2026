@@ -42,6 +42,8 @@ func _ready() -> void:
 	sprite.framerate = 8
 	sprite.set_animation(&"walk")
 	sprite.pixel_size = .005
+	
+	sprite.modulate = Color.REBECCA_PURPLE
 
 func attack() -> void:
 	#current_weapon.shoot(target_direction + target.velocity * aim_lead)

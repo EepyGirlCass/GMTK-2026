@@ -202,10 +202,10 @@ func take_damage(damage:float, is_crit:bool=false) -> bool:
 	if GlobalPlayer.player.slide_damage_boost: damage *= 1.5
 	
 	health -= damage
-	var tween = create_tween()
-	tween.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
-	tween.tween_property(sprite, "pixel_size", 0.004, .1)
-	tween.tween_property(sprite, "pixel_size", 0.005, .1)
+	#var tween = create_tween()
+	#tween.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
+	#tween.tween_property(sprite, "pixel_size", 0.004, .1)
+	#tween.tween_property(sprite, "pixel_size", 0.005, .1)
 	hit_flash()
 	
 	var damage_number :DamageNumber= DAMAGE_NUMBER.instantiate()
@@ -221,6 +221,7 @@ func take_damage(damage:float, is_crit:bool=false) -> bool:
 		return true
 		
 	return false
+
 func hit_flash() -> void:
 	var mat = sprite.material_override as ShaderMaterial
 	if mat:

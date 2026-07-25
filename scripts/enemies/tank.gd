@@ -1,15 +1,15 @@
-class_name Fodder
+class_name Tank
 extends Enemy
 
 func _init(spawn_position: Vector3 = Vector3.INF):
 	if spawn_position != Vector3.INF:
 		set_deferred("global_position", spawn_position)
-	
-	speed = 100
-	health = 20
+	global_position.y += 2
+	speed = 300
+	health = 500
 	
 	too_close_range = 1
-	too_far_range = 5
+	too_far_range = 10
 	attack_range = 2
 	attack_when_close = true
 	attack_when_far = false
@@ -37,8 +37,25 @@ func _ready() -> void:
 	sprite.texture = preload("res://assets/skeleton_atlas.png")
 	sprite.framerate = 8
 	sprite.set_animation(&"walk")
-	sprite.pixel_size = .005
+	sprite.pixel_size = .01
+	
+	bullet_start_node.global_position = global_position + Vector3(0, 0, -1)
+	sprite.global_position = global_position + Vector3(0, 1, 0)
+	
+	body_collider.shape.radius = 0.75
+	body_collider.shape.height = 3
+	body_collider.global_position = global_position + Vector3(0, 0.5, 0)
+	
+	head_collider.shape.radius = 0.75
+	head_collider.global_position = global_position + Vector3(0, 2.5, 0)
+	
+	sprite.modulate = Color.BLACK
 
 func attack() -> void:
 	current_weapon.shoot()
 	#current_weapon.shoot(get_projectile_direction())
+
+func take_damage(damage:float, is_crit:bool=false) -> bool:
+	if damage < 8 and not is_crit:
+		return super(0)
+	return super(damage, is_crit)
