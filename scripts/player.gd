@@ -25,6 +25,8 @@ var current_jumps : int = 0
 
 var melee_cooldown : float
 var melee_cooldown_max : float
+var enemies_in_melee_range : Array[Enemy]
+
 
 var time_drain_multiplier:float=1
 var time_drain_multiplier_ui:float=1
@@ -33,17 +35,23 @@ var time_drain_multiplier_ui:float=1
 @onready var abilities_controller: AbilitiesController = $AbilitiesController
 @onready var camera_3d: Camera = $CameraPivot/Camera3D
 
+var particles :Node3D
+static var explosion_scene : PackedScene = preload("uid://b1n131e3hgrlh")
 
+var time_stop_timer : float
 
+var reload_skip : bool = false
+var slide_damage_boost : bool = false
 func _ready() -> void:
 	set_health(100)
-	
+	particles = get_node("/root/Main/Particles")
 	GlobalPlayer.player = self
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	bullet_start_node = $CameraPivot/Camera3D
 	visual_bullet_start_node = $CameraPivot/GunShotPoint
 	update_dash_ability(abilities_controller.dash_ability_values[abilities_controller.current_dash]["amount"],
 	abilities_controller.dash_ability_values[abilities_controller.current_dash]["cooldown"] )
+	update_melee_ability(abilities_controller.melee_ability_values[abilities_controller.current_melee]["cooldown"])
 	
 	add_weapon(Weapon.Shotgun)
 	add_weapon(Weapon.Nailgun)
@@ -76,8 +84,8 @@ func _physics_process(delta: float) -> void:
 	
 	
 	
-	
-	
+	if time_stop_timer > 0: 
+		time_drain_multiplier = .1
 	GameTime.time_scale = 1 * time_drain_multiplier
 	
 	# Ignore gravity while dashing so upward Y isn't immediately killed
@@ -153,9 +161,12 @@ func _physics_process(delta: float) -> void:
 				dash_cooldown_timer = dash_cooldown
 			else:
 				dash_cooldown_timer = 0
-				
 	
-
+	if melee_cooldown < melee_cooldown_max:
+		melee_cooldown += delta
+	
+	reload_skip = abilities_controller.current_slide == AbilitiesController.SlideAbilityID.NO_RELOAD and is_sliding
+	slide_damage_boost = abilities_controller.current_slide == AbilitiesController.SlideAbilityID.DAMAGE_BOOST and is_sliding
 
 func _process(delta: float) -> void:
 	update_ui()
@@ -164,6 +175,7 @@ func _process(delta: float) -> void:
 		if current_weapon.shoot():
 			change_time_with_message(-current_weapon.shoot_cost)
 	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
+	if time_stop_timer > 0: time_stop_timer -= delta
 
 func _input(event: InputEvent) -> void:
 	if in_menu:
@@ -219,7 +231,8 @@ func _input(event: InputEvent) -> void:
 		select_weapon(3)
 
 	if Input.is_action_just_pressed("Reload"):
-		current_weapon.start_reload()
+		if reload_skip: current_weapon.reload()
+		else: current_weapon.start_reload()
 	
 	if Input.is_action_just_pressed("Pause"):
 		player_ui.main_menu.show()
@@ -233,7 +246,8 @@ func jump():
 	velocity.y = jump_height * 1.5
 	change_time_with_message(current_jump_values["cost"])
 	current_jumps += 1
-
+	if abilities_controller.current_jump == AbilitiesController.JumpAbilityID.EXPLOSIVE:
+		create_explosion_melee()
 
 func dash():
 	var current_dash_values = abilities_controller.dash_ability_values[abilities_controller.current_dash]
@@ -245,7 +259,10 @@ func dash():
 	
 	dashes_charged -= 1
 	
-	
+	if abilities_controller.current_dash == AbilitiesController.DashAbilityID.EXPLOSIVE:
+		create_explosion_melee()
+	if abilities_controller.current_dash == AbilitiesController.DashAbilityID.TIME_SLOW:
+		time_stop_timer += 2
 	var input_dir := Input.get_vector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward")
 	
 	var dash_dir_3d : Vector3
@@ -273,8 +290,35 @@ func dash():
 
 func melee():
 	var current_melee_values := abilities_controller.melee_ability_values
-	print(current_melee_values)
-	
+	if melee_cooldown >= melee_cooldown_max:
+		melee_cooldown = 0
+		for enemy in enemies_in_melee_range:
+			if not is_instance_valid(enemy): continue
+			var killed_enemy : bool = enemy.take_damage(current_melee_values[abilities_controller.current_melee]['damage'])
+			
+			if killed_enemy: 
+				take_damage(-current_melee_values[abilities_controller.current_melee]['heal'])
+				
+				if abilities_controller.current_melee == AbilitiesController.MeleeAbilityID.EXTRA_TIME:
+					change_time_with_message(15)
+				if abilities_controller.current_melee == AbilitiesController.MeleeAbilityID.COMBO:
+					melee_cooldown = melee_cooldown_max
+				if abilities_controller.current_melee == AbilitiesController.MeleeAbilityID.EXPLOSIVE:
+					create_explosion_melee()
+				if abilities_controller.current_melee == AbilitiesController.MeleeAbilityID.TIME_STOP:
+					time_stop_timer += 3
+			var knockback_dir: Vector3 = (enemy.global_position - global_position)
+		
+			if knockback_dir.is_zero_approx():
+				knockback_dir = Vector3.UP
+			else:
+				knockback_dir = knockback_dir.normalized()
+			
+			knockback_dir.y += 0.3
+			knockback_dir = knockback_dir.normalized()
+			
+			enemy.take_knockback(current_melee_values[abilities_controller.current_melee]['knockback'] * knockback_dir)
+			
 func update_dash_ability(amount:int, cooldown:float):
 	max_dashes = amount
 	dashes_charged = amount
@@ -287,6 +331,9 @@ func update_dash_ability(amount:int, cooldown:float):
 		var dash_bar := preload("uid://rsri0ek20iac").instantiate()
 		player_ui.dash_bar_container.add_child(dash_bar)
 
+func update_melee_ability(cooldown:float):
+	melee_cooldown = cooldown
+	melee_cooldown_max = cooldown
 
 func change_timer(amount) -> void:
 	GameTime.time_timer += amount
@@ -302,6 +349,7 @@ func take_damage(damage:float, is_crit : bool = false):
 	tween.tween_property(player_ui.health_bar, "value", player_ui.health_bar.value - damage, 0.5)
 	tween.parallel().tween_property(player_ui.health_bar_white, "value", player_ui.health_bar.value - damage, 1.5)
 	health -= damage
+	return false
 
 func update_ui() -> void:
 	player_ui.timer.text = convert_float_to_time(GameTime.time_timer)
@@ -330,7 +378,8 @@ func update_ui() -> void:
 			bar.value = 0
 	
 	player_ui.drain_multiplier.text = str("x", roundf(time_drain_multiplier_ui*1000)*.001 )
-
+	
+	player_ui.melee_charge_bar.value = melee_cooldown / melee_cooldown_max * 100
 
 func convert_float_to_time(time: float) -> String:
 	var total_seconds: int = max(0, int(time))
@@ -354,9 +403,28 @@ func change_time_with_message(amount:float):
 	if amount > 0:
 		timer_label.global_position.x -= 100
 
-
 func open_shop():
 	in_menu = true
 	GameTime.paused = true
 	
 	player_ui.shop_ui.show_shop()
+
+
+func _on_melee_detector_body_entered(body: Node3D) -> void:
+	if body is Enemy:
+		if enemies_in_melee_range.has(body): return
+		enemies_in_melee_range.append(body)
+
+
+func _on_melee_detector_body_exited(body: Node3D) -> void:
+	if body is Enemy:
+		if enemies_in_melee_range.has(body): enemies_in_melee_range.erase(body)
+		
+func create_explosion_melee():
+	var explosion :Explosion= explosion_scene.instantiate()
+	explosion.damage = 20
+	explosion.size = 5
+	explosion.global_position = global_position
+	explosion.force = 12.5
+	explosion.ignore_player = true
+	particles.add_child(explosion)

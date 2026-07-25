@@ -5,7 +5,7 @@ enum JumpAbilityID {BASIC, DOUBLE, EXPLOSIVE,TRIPLE, SLOWMO, INFINITE}
 
 enum SlideAbilityID {BASIC, DAMAGE_BOOST, NO_RELOAD, SLOW_MO, SUPER, TIME_STOP}
 
-enum DashAbilityID {BASIC, TRIPLE, NAIL_STORM, TIME_GAIN, QUINTUPLE, TIME_SLOW}
+enum DashAbilityID {BASIC, TRIPLE, EXPLOSIVE, TIME_GAIN, QUINTUPLE, TIME_SLOW}
 
 enum MeleeAbilityID {BASIC, KNOCKBACK, EXTRA_TIME, EXPLOSIVE, COMBO, TIME_STOP}
 
@@ -44,8 +44,8 @@ var dash_ability_values : Dictionary = {
 	"cost" : -1, "distance" : 10, "cooldown" : 2, "amount" : 1, "description" : "A basic Dash.", 'icon' : preload("res://icon.svg") },
 	DashAbilityID.TRIPLE : {"purchased" : false, "name": "Triple Dash", "shop_cost" : 30, 
 	"cost" : -1, "distance" : 10, "cooldown" : 2, "amount" : 3, "description" : "A triple Dash.", 'icon' : preload("res://icon.svg") },
-	DashAbilityID.NAIL_STORM : {"purchased" : false, "name": "Nail Storm Dash", "shop_cost" : 30, 
-	"cost" : -3, "distance" : 10, "cooldown" : 4, "amount" : 1, "description" : "A Dash that shoots Nails.", 'icon' : preload("res://icon.svg") },
+	DashAbilityID.EXPLOSIVE : {"purchased" : false, "name": "Explosive Dash", "shop_cost" : 30, 
+	"cost" : -3, "distance" : 10, "cooldown" : 4, "amount" : 1, "description" : "A Dash that creates an Explosion.", 'icon' : preload("res://icon.svg") },
 	DashAbilityID.TIME_GAIN : {"purchased" : false, "name": "Time Gain Dash", "shop_cost" : 60, 
 	"cost" : 2, "distance" : 7, "cooldown" : 2, "amount" : 3, "description" : "A worse Dash that gives time instead of costing it.", 'icon' : preload("res://icon.svg") },
 	DashAbilityID.QUINTUPLE : {"purchased" : false, "name": "Quintuple Dash", "shop_cost" : 60, 
@@ -56,17 +56,17 @@ var dash_ability_values : Dictionary = {
 
 var melee_ability_values : Dictionary = {
 	MeleeAbilityID.BASIC : {"purchased" : true, "name": "Basic Melee", "shop_cost" : 0, 
-	"heal" : 33, "damage" : 10, "cooldown" : 2, "knockback" : 1, "description" : "A basic Dash.", 'icon' : preload("res://icon.svg") },
+	"heal" : 33, "damage" : 10, "cooldown" : 2, "knockback" : 10, "description" : "A basic Melee. Heals on Kill.", 'icon' : preload("res://icon.svg") },
 	MeleeAbilityID.KNOCKBACK : {"purchased" : false, "name": "Knockback Melee", "shop_cost" : 30, 
-	"heal" : 33, "damage" : 10, "cooldown" : 2, "knockback" : 3, "description" : "A triple Dash.", 'icon' : preload("res://icon.svg") },
+	"heal" : 33, "damage" : 12.5, "cooldown" : 2, "knockback" : 25, "description" : "A Melee with more Knockback.", 'icon' : preload("res://icon.svg") },
 	MeleeAbilityID.EXTRA_TIME : {"purchased" : false, "name": "Bonus Time Melee", "shop_cost" : 30, 
-	"heal" : 33, "damage" : 10, "cooldown" : 4, "knockback" : 1, "description" : "A Dash that shoots Nails.", 'icon' : preload("res://icon.svg") },
+	"heal" : 33, "damage" : 12.5, "cooldown" : 4, "knockback" : 10, "description" : "A Melee that gives extra time on Kill.", 'icon' : preload("res://icon.svg") },
 	MeleeAbilityID.EXPLOSIVE : {"purchased" : false, "name": "Explosive Melee", "shop_cost" : 60, 
-	"heal" : 40, "damage" : 10, "cooldown" : 2, "knockback" : 1, "description" : "A worse Dash that gives time instead of costing it.", 'icon' : preload("res://icon.svg") },
+	"heal" : 40, "damage" : 10, "cooldown" : 2, "knockback" : 10, "description" : "A Melee that creates an explosion on Kill.", 'icon' : preload("res://icon.svg") },
 	MeleeAbilityID.COMBO : {"purchased" : false, "name": "Combo Melee", "shop_cost" : 60, 
-	"heal" : 40, "damage" : 10, "cooldown" : 2, "knockback" : 1, "description" : "A Quintuple Dash.", 'icon' : preload("res://icon.svg") },
+	"heal" : 40, "damage" : 25, "cooldown" : 4, "knockback" : 10, "description" : "A Melee that instantly recharges on Kill.", 'icon' : preload("res://icon.svg") },
 	MeleeAbilityID.TIME_STOP : {"purchased" : false, "name": "Time-Stop Melee", "shop_cost" : 60, 
-	"heal" : 50, "damage" : 10, "cooldown" : 2, "knockback" : 1, "description" : "A Dash that slows time for a period after dashing.", 'icon' : preload("res://icon.svg") },
+	"heal" : 50, "damage" : 10, "cooldown" : 2, "knockback" : 10, "description" : "A Melee that slows time for a period on Kill.", 'icon' : preload("res://icon.svg") },
 }
 
 var current_jump : JumpAbilityID

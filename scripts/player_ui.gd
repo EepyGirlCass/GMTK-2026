@@ -2,6 +2,7 @@ class_name PlayerUI
 extends Control
 
 @onready var player: Player = $".."
+@onready var melee_charge_bar: ProgressBar = $MeleeChargeBar
 
 
 @onready var health_bar: ProgressBar = $HealthBar

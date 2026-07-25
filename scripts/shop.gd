@@ -268,4 +268,8 @@ func equip_selected_ability(key) -> void:
 				player.abilities_controller.dash_ability_values[key]["cooldown"]
 			)
 		AbilityTypes.SLIDE: player.abilities_controller.current_slide = key
-		AbilityTypes.MELEE: player.abilities_controller.current_melee = key
+		AbilityTypes.MELEE: 
+			player.abilities_controller.current_melee = key
+			player.update_melee_ability(
+				player.abilities_controller.melee_ability_values[key]["cooldown"],
+				)
