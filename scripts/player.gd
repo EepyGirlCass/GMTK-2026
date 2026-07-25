@@ -359,7 +359,7 @@ func set_health(value:float):
 	player_ui.health_bar.value = value
 	player_ui.health_bar_white.value = value
 	
-func take_damage(damage:float, is_crit : bool = false):
+func take_damage(damage:float, _is_crit : bool = false):
 	var tween := create_tween()
 	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(player_ui.health_bar, "value", player_ui.health_bar.value - damage, 0.5)

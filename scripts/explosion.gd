@@ -23,6 +23,7 @@ func _ready() -> void:
 	set_collision_mask_value(2, true)
 	set_collision_mask_value(3, true)
 	$CollisionShape3D.shape = $CollisionShape3D.shape.duplicate()
+	await get_tree().process_frame
 	$CollisionShape3D.shape.radius = size 
 	$MeshInstance3D.mesh.radius = size  
 	$MeshInstance3D.mesh.height = size * 2
@@ -32,7 +33,7 @@ func _ready() -> void:
 	
 	delete_time = GameTime.time + DURATION
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if GameTime.time >= delete_time: queue_free()
 
 
