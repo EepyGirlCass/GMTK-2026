@@ -5,10 +5,10 @@ var spawn_wave_time :float= 2.5
 var next_wave_time:float
 
 var enemy_types : Dictionary[GDScript, int] = {
-	Fodder: 20,
-	Ranger: 10,
+	Fodder: 40,
+	Ranger: 20,
 	Soldier: 1,
-	Tank: 1
+	Tank: 2
 }
 
 var max_enemies : int = 25

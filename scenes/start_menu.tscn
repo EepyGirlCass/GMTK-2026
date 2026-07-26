@@ -1,9 +1,36 @@
 [gd_scene format=3 uid="uid://bega4ks2hetil"]
 
 [ext_resource type="Script" uid="uid://crqq2i8020pkm" path="res://scripts/start_menu.gd" id="1_ouf4f"]
+[ext_resource type="Shader" uid="uid://0onmiv8xow8h" path="res://scripts/shaders/start_menu.gdshader" id="2_thu50"]
+[ext_resource type="Texture2D" uid="uid://go2y7bth3tyf" path="res://assets/skull_lock.png" id="3_m7x51"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wsb5h"]
+shader = ExtResource("2_thu50")
+shader_parameter/scroll_speed = 0.02000000095
+shader_parameter/angle_degrees = 45.0
+shader_parameter/repeat_x = 4.000000142499999
+shader_parameter/repeat_y = 2.4000000665
+shader_parameter/row_offset = 0.310000014725
+shader_parameter/texture_to_scroll = ExtResource("3_m7x51")
+shader_parameter/original_color = Color(1, 1, 1, 1)
+shader_parameter/replace_color = Color(0.7934428, 0.5948957, 0.9677221, 1)
+shader_parameter/tolerance = 0.1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m7x51"]
+bg_color = Color(0, 0, 0, 0.40500003)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_linq4"]
+bg_color = Color(0, 0, 0, 0.372)
+corner_radius_top_left = 125
+corner_radius_top_right = 125
+corner_radius_bottom_right = 125
+corner_radius_bottom_left = 125
 
 [sub_resource type="LabelSettings" id="LabelSettings_aqpbq"]
 font_size = 101
+
+[sub_resource type="LabelSettings" id="LabelSettings_m7x51"]
+font_size = 41
 
 [node name="StartMenu" type="Control" unique_id=103039775]
 layout_mode = 3
@@ -15,36 +42,54 @@ grow_vertical = 2
 script = ExtResource("1_ouf4f")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1794035502]
+modulate = Color(0.7260272, 0.7449283, 0.9811483, 1)
+material = SubResource("ShaderMaterial_wsb5h")
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1088.0
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1579052629]
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer" unique_id=707292573]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_m7x51")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/PanelContainer" unique_id=1579052629]
 layout_mode = 2
 theme_override_constants/margin_left = 400
-theme_override_constants/margin_top = 50
+theme_override_constants/margin_top = 200
 theme_override_constants/margin_right = 400
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=225408476]
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/PanelContainer/MarginContainer" unique_id=2033730176]
 layout_mode = 2
-theme_override_constants/separation = 256
+theme_override_styles/panel = SubResource("StyleBoxFlat_linq4")
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=704142972]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/PanelContainer/MarginContainer/PanelContainer" unique_id=225408476]
+layout_mode = 2
+theme_override_constants/separation = 111
+
+[node name="Label" type="Label" parent="PanelContainer/PanelContainer/MarginContainer/PanelContainer/VBoxContainer" unique_id=704142972]
 layout_mode = 2
 text = "CHRONOCIDE"
 label_settings = SubResource("LabelSettings_aqpbq")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StartGame" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=286854227]
+[node name="Label3" type="Label" parent="PanelContainer/PanelContainer/MarginContainer/PanelContainer/VBoxContainer" unique_id=1965383430]
+layout_mode = 2
+text = "Time is Money. 
+Spend it wisely!"
+label_settings = SubResource("LabelSettings_m7x51")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartGame" type="Button" parent="PanelContainer/PanelContainer/MarginContainer/PanelContainer/VBoxContainer" unique_id=286854227]
 layout_mode = 2
 theme_override_font_sizes/font_size = 71
 text = "START GAME"
 
-[node name="Label2" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=807173954]
+[node name="Label2" type="Label" parent="PanelContainer/PanelContainer/MarginContainer/PanelContainer/VBoxContainer" unique_id=807173954]
 layout_mode = 2
 text = "A Scuffed Game by Cass and MayaMogus"
 horizontal_alignment = 1
 
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="PanelContainer/PanelContainer/MarginContainer/PanelContainer/VBoxContainer/StartGame" to="." method="_on_start_game_pressed"]
