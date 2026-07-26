@@ -334,9 +334,6 @@ func jump():
 	
 	if abilities_controller.current_jump == AbilitiesController.JumpAbilityID.EXPLOSIVE:
 		create_explosion_melee()
-	
-	if abilities_controller.current_jump == AbilitiesController.JumpAbilityID.SLOWMO:
-		slow_mo_jump = true
 
 func dash():
 	var current_dash_values = abilities_controller.dash_ability_values[abilities_controller.current_dash]

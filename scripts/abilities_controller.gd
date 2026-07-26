@@ -1,7 +1,7 @@
 class_name AbilitiesController
 extends Node
 
-enum JumpAbilityID {BASIC, DOUBLE, EXPLOSIVE,TRIPLE, SLOWMO, INFINITE}
+enum JumpAbilityID {BASIC, DOUBLE, EXPLOSIVE,TRIPLE, INFINITE}
 
 enum SlideAbilityID {BASIC, DAMAGE_BOOST, NO_RELOAD, SLOW_MO, SUPER, TIME_STOP}
 
@@ -11,17 +11,17 @@ enum MeleeAbilityID {BASIC, KNOCKBACK, EXTRA_TIME, EXPLOSIVE, COMBO, TIME_STOP}
 
 var jump_ability_values : Dictionary = {
 	JumpAbilityID.BASIC : {"purchased" : true, "name": "Basic Jump", "shop_cost" : 0, 
-	"cost" : -1, "height" : 6, "amount" : 1, "description" : "A basic Jump", 'icon' : preload("res://icon.svg") },
+	"cost" : -1, "height" : 8, "amount" : 1, "description" : "A basic Jump", 'icon' : preload("res://icon.svg") },
 	JumpAbilityID.DOUBLE : {"purchased" : false, "name": "Double Jump", "shop_cost" : 30, 
-	"cost" : -1.5, "height" : 6, "amount" : 2, "description" : "A double Jump", 'icon' : preload("res://icon.svg") },
+	"cost" : -1.5, "height" : 10, "amount" : 2, "description" : "A double Jump", 'icon' : preload("res://icon.svg") },
 	JumpAbilityID.EXPLOSIVE : {"purchased" : false, "name": "Explosive Jump", "shop_cost" : 45, 
-	"cost" : -3, "height" : 6, "amount" : 1, "description" : "A Jump that creates an explosion at your feet. (Damages both you and enemies)", 'icon' : preload("res://icon.svg") },
+	"cost" : -5, "height" : 8, "amount" : 1, "description" : "A Jump that creates an explosion at your feet. (Damages both you and enemies)", 'icon' : preload("res://icon.svg") },
 	JumpAbilityID.TRIPLE : {"purchased" : false, "name": "Triple Jump", "shop_cost" : 45, 
-	"cost" : -2, "height" : 6, "amount" : 3, "description" : "A Triple Jump", 'icon' : preload("res://icon.svg") },
-	JumpAbilityID.SLOWMO : {"purchased" : false, "name": "Slow-mo Jump", "shop_cost" : 60, 
-	"cost" : -8, "height" : 8, "amount" : 1, "description" : "A Jump that slows time until you touch the ground.", 'icon' : preload("res://icon.svg") },
+	"cost" : -2, "height" : 10, "amount" : 3, "description" : "A Triple Jump", 'icon' : preload("res://icon.svg") },
+#	JumpAbilityID.SLOWMO : {"purchased" : false, "name": "Slow-mo Jump", "shop_cost" : 60, 
+#	"cost" : -8, "height" : 10, "amount" : 1, "description" : "A Jump that slows time until you touch the ground.", 'icon' : preload("res://icon.svg") },
 	JumpAbilityID.INFINITE : {"purchased" : false, "name": "Infinite Jump", "shop_cost" : 60, 
-	"cost" : -3, "height" : 6, "amount" : 999, "description" : "An Infinite Jump", 'icon' : preload("res://icon.svg") },
+	"cost" : -3, "height" : 8, "amount" : 999, "description" : "An Infinite Jump", 'icon' : preload("res://icon.svg") },
 } 
 
 var slide_ability_values : Dictionary = {
