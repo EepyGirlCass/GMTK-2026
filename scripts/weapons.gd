@@ -159,6 +159,7 @@ func fire_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.INF
 	if result:
 		if result.collider is Character:
 			if result.collider.has_method("take_damage"):
+				var character := result.collider as Character
 				var collider = result.collider
 				var shape_index = result.shape
 				
@@ -167,6 +168,10 @@ func fire_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.INF
 				if weapon_owner is Player:
 					if weapon_owner.current_weapon.weapon_class == 2: #revolver
 						damage_multiplier *= 1.5
+					if weapon_owner.current_weapon.weapon_name == "Marksman":
+						if not character.is_on_floor():
+							if weapon_owner is Player:
+								weapon_owner.add_temporary_slowdown(.75, 1)
 				
 				var owner_id = collider.shape_find_owner(shape_index)
 				var collision_shape_node = collider.shape_owner_get_owner(owner_id)
@@ -356,7 +361,7 @@ class Buckshot extends Shotgun:
 		ammo_clip = 18
 		
 		shoot_cooldown = 0.5
-		bullet_damage = 0.5
+		bullet_damage = 2
 		bullet_amount = 16
 		
 		weapon_class = WeaponClasses.SHOTGUN
@@ -427,6 +432,34 @@ class ChunkyNailgun extends Weapon:
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_projectile(direction_override)
 
+class RefunderNailgun extends Weapon:
+	func _init(character_owner: Character):
+		weapon_owner = character_owner
+		weapon_owner.add_child.call_deferred(self)
+		weapon_class = WeaponClasses.NAILGUN
+		reload_amount = 0 # no reload
+		purchased = false
+		
+		projectile = Projectile.Nail
+		
+		shoot_cooldown = 0.1
+		shoot_cost = 0.5
+		bullet_spread = 1
+		bullet_damage = 4
+		bullet_crit_mult = 2
+		bullet_amount = 1
+	
+		weapon_name = "Refunder Nailgun"
+		weapon_shop_cost = 60
+		weapon_description = "Refunds Time Cost on Hit"
+		weapon_icon_path = "res://icon.svg"
+		
+		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
+		sprite_image = preload("res://assets/nailgun_atlas.png")
+		
+	func shoot(direction_override: Vector3 = Vector3.INF):
+		return shoot_projectile(direction_override)
+
 class Revolver extends Weapon:
 	func _init(character_owner: Character):
 		weapon_owner = character_owner
@@ -492,7 +525,7 @@ class SixShooter extends Weapon:
 		bullet_amount = 1
 		
 		weapon_class = WeaponClasses.SIDEARM
-		weapon_name = "SixShooter"
+		weapon_name = "Six Shooter"
 		weapon_shop_cost = 60
 		weapon_description = "Tumbleweed strolls by"
 		weapon_icon_path = "res://icon.svg"
@@ -502,6 +535,35 @@ class SixShooter extends Weapon:
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_hitscan(true, direction_override)
 
+class Marksman extends Weapon:
+	func _init(character_owner: Character):
+		weapon_owner = character_owner
+		weapon_owner.add_child.call_deferred(self)
+		
+		reload_duration = 0
+		reload_amount = 0 # full clip
+		
+		ammo_max_clip = 6
+		ammo_clip = 6
+		
+		shoot_cooldown = 1.1
+		shoot_cost = .75
+		bullet_spread = .05
+		bullet_damage = 15
+		bullet_crit_mult = 1.25
+		bullet_amount = 1
+		
+		weapon_class = WeaponClasses.SIDEARM
+		weapon_name = "Marksman"
+		weapon_shop_cost = 60
+		weapon_description = "Slows time on succesful airshot."
+		weapon_icon_path = "res://icon.svg"
+		purchased = false
+		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
+		sprite_image = preload("res://assets/pistol_atlas.png")
+		
+	func shoot(direction_override: Vector3 = Vector3.INF):
+		return shoot_hitscan(true, direction_override)
 
 class BurstNailgun extends Weapon:
 	func _init(character_owner: Character):
@@ -589,5 +651,64 @@ class GrenadeLauncher extends Weapon:
 		weapon_icon_path = "res://icon.svg"
 		
 		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
+	func shoot(direction_override: Vector3 = Vector3.INF):
+		return shoot_projectile(direction_override)
+
+class ScatterBomber extends Weapon:
+	func _init(character_owner: Character):
+		weapon_owner = character_owner
+		weapon_owner.add_child.call_deferred(self)
+		weapon_class = WeaponClasses.PROJECTILE
+		
+		ammo_max_clip = 1
+		ammo_clip = 1
+		reload_duration = 1.25
+		reload_amount = 1
+		
+		projectile = Projectile.Grenade
+		
+		shoot_cooldown = 1.5
+		shoot_cost = 7.5
+		bullet_spread = 25
+		bullet_damage = 0
+		bullet_crit_mult = 2
+		bullet_amount = 8
+		
+		purchased = false
+		weapon_name = "Scatter Bomber"
+		weapon_shop_cost = 60
+		weapon_description = "Shoots multiple grenades at once."
+		weapon_icon_path = "res://icon.svg"
+		
+		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
+		sprite_image = preload("res://assets/rocket_launcher_atlas.png")
+	func shoot(direction_override: Vector3 = Vector3.INF):
+		return shoot_projectile(direction_override)
+
+class Airshotter extends Weapon:
+	func _init(character_owner: Character):
+		weapon_owner = character_owner
+		weapon_owner.add_child.call_deferred(self)
+		weapon_class = WeaponClasses.PROJECTILE
+		reload_amount = 0 # no reload
+		
+		
+		projectile = Projectile.AirshotRocket
+		
+		shoot_cooldown = 1.5
+		shoot_cost = 5
+		bullet_spread = 0
+		bullet_damage = 0
+		bullet_crit_mult = 2
+		bullet_amount = 1
+		
+		purchased = false
+		weapon_name = "Air Shotter"
+		weapon_shop_cost = 60
+		weapon_description = "Does Increased Blast Radius and Damage on Airshot"
+		weapon_icon_path = "res://icon.svg"
+		
+		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
+		sprite_image = preload("res://assets/rocket_launcher_atlas.png")
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_projectile(direction_override)

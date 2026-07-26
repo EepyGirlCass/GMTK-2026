@@ -336,7 +336,6 @@ visible = false
 layout_mode = 1
 
 [node name="Tutorial" type="Control" parent="." unique_id=1777925702]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -377,16 +376,35 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1312.0
-offset_top = 192.0
-offset_right = -224.0
-offset_bottom = -696.0
+offset_left = 1568.0
+offset_top = 224.0
+offset_right = -32.0
+offset_bottom = -664.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="Tutorial/ShopText" unique_id=464414383]
 layout_mode = 2
 text = "This is the shop. Spend your time here to unlock better abilities and weapons!"
+label_settings = SubResource("LabelSettings_aqpbq")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TutorialText" type="PanelContainer" parent="Tutorial" unique_id=677500869]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1312.0
+offset_top = 32.0
+offset_right = -288.0
+offset_bottom = -952.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Tutorial/TutorialText" unique_id=466215802]
+layout_mode = 2
+text = "Press T to Open and Close this help menu."
 label_settings = SubResource("LabelSettings_aqpbq")
 horizontal_alignment = 1
 autowrap_mode = 3

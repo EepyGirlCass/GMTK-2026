@@ -47,7 +47,14 @@ func _process(delta: float) -> void:
 				if result.collider.has_method("take_damage") and source_weapon.bullet_damage != 0:
 					var collider = result.collider
 					var shape_index = result.shape
-					
+					if not result.collider.is_on_floor():
+						if source_weapon == Weapon.Airshotter:
+							on_airshot_hit()
+					print(source_weapon)
+					if source_weapon.get_script() == Weapon.RefunderNailgun:
+						
+						var player := source_character as Player
+						player.change_time_with_message(source_weapon.shoot_cost)
 					var owner_id = collider.shape_find_owner(shape_index)
 					var collision_shape_node = collider.shape_owner_get_owner(owner_id)
 					if "head_collider" in collider:
@@ -99,6 +106,8 @@ func shapecast(delta: float) -> Array[Dictionary]:
 
 @abstract func on_hit()
 
+@abstract func on_airshot_hit()
+
 class Nail extends Projectile:
 	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
 		texture = preload("res://assets/nail_atlas.png")
@@ -119,6 +128,9 @@ class Nail extends Projectile:
 		set_deferred(&"global_rotation", source_weapon.global_rotation)
 	
 	func on_hit():
+		pass
+	
+	func on_airshot_hit():
 		pass
 
 
@@ -155,8 +167,55 @@ class Rocket extends Projectile:
 		explosion.force = 12.5
 		
 		queue_free()
-
-
+	
+	func on_airshot_hit():
+		pass
+	
+class AirshotRocket extends Projectile:
+	
+	static var explosion_scene : PackedScene = preload("uid://b1n131e3hgrlh")
+	
+	var explosion_damage : float = 10
+	var explosion_size : float = 5
+	var is_airshot : bool = false
+	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
+		texture = preload("res://assets/pellet_atlas.png")
+		sprite_tile_size = Vector2i(32, 32)
+		
+		Weapon.projectiles.add_child.call_deferred(self)
+		
+		speed = 30
+		gravity = 0
+		lifetime = 15
+		hitbox = Vector3.ONE * .2
+		pixel_size = .02
+		expire_time = GameTime.time + lifetime
+		source_weapon = weapon_owner
+		source_character = source_weapon.weapon_owner
+		velocity = direction * speed # + source_character.velocity
+		set_deferred(&"global_position", source_character.visual_bullet_start)
+		set_deferred(&"global_rotation", source_weapon.global_rotation)
+	
+	func on_hit():
+		if is_queued_for_deletion(): return
+		
+		var explosion :Explosion= explosion_scene.instantiate()
+		particles.add_child(explosion)
+		explosion.damage = 10
+		explosion.size = 5
+		explosion.global_position = global_position
+		explosion.force = 20
+		
+		if is_airshot:
+			explosion.damage *= 2
+			explosion.size *= 4
+		
+		queue_free()
+	
+	func on_airshot_hit():
+		is_airshot = true
+		
+	
 class Grenade extends Projectile:
 	
 	static var explosion_scene : PackedScene = preload("uid://b1n131e3hgrlh")
@@ -183,15 +242,17 @@ class Grenade extends Projectile:
 		if is_queued_for_deletion(): return
 		
 		var explosion := explosion_scene.instantiate()
+		particles.add_child(explosion)
+		
 		explosion.damage = 8
 		explosion.size = 2.5
 		explosion.global_position = global_position
 		explosion.force = 7.5
 		
-		particles.add_child(explosion)
 		
 		queue_free()
-
+	func on_airshot_hit():
+		pass
 
 class Buckshot extends Projectile:
 	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
@@ -214,7 +275,8 @@ class Buckshot extends Projectile:
 		set_deferred(&"global_rotation", source_weapon.global_rotation)
 	func on_hit():
 		pass
-
+	func on_airshot_hit():
+		pass
 
 class MagicOrb extends Buckshot:
 	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
@@ -238,4 +300,6 @@ class MagicOrb extends Buckshot:
 		set_deferred(&"global_position", source_character.visual_bullet_start)
 		set_deferred(&"global_rotation", source_weapon.global_rotation)
 	func on_hit():
+		pass
+	func on_airshot_hit():
 		pass

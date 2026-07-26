@@ -52,6 +52,11 @@ var camera_tween : Tween
 
 var is_dead : bool = false
 
+var tutorial_open : bool = false
+
+var active_slowdowns : Array[Dictionary] = []
+
+
 var weapon_viewmodels : Array = [
 	preload("res://assets/stock_shotgun_viewmodel_atlas.png"),
 	preload("res://assets/stock_nailgun_viewmodel_atlas.png"),
@@ -84,11 +89,11 @@ func _ready() -> void:
 	add_weapon(Weapon.Revolver)
 	add_weapon(Weapon.RocketLauncher)
 	GameTime.time_timer = 120
-	
+	toggle_tutorial()
 
 func _physics_process(delta: float) -> void:
 	
-	if Input.is_action_pressed("tutorial"): return
+	if tutorial_open: return
 	
 	health = clamp(health, 0, 400)
 	
@@ -106,6 +111,18 @@ func _physics_process(delta: float) -> void:
 	var slide_speed : float = current_slide_values["speed"]
 	if is_sliding: 
 		time_drain_multiplier *= current_slide_values["multiplier"]
+	
+	# - TEMPORARY SLOWDOWN - (LIKE IF WE WANT IT TO BE .75x for 2s)
+	for i in range(active_slowdowns.size() - 1, -1, -1):
+		var slowdown = active_slowdowns[i]
+		
+		slowdown["length"] -= delta
+		
+		time_drain_multiplier *= slowdown["multiplier"]
+		
+		if slowdown["length"] <= 0.0:
+			active_slowdowns.remove_at(i)
+	
 	
 	if slow_mo_jump: time_drain_multiplier = .1
 	if time_stop_timer > 0: 
@@ -210,13 +227,7 @@ func _process(delta: float) -> void:
 			tilt_weapon_back()
 			
 			
-	if Input.is_action_pressed("tutorial"):
-		player_ui.tutorial.visible = true
-		GameTime.paused = true
-		GameTime.time_scale = 0
-	else:
-		player_ui.tutorial.visible = false
-		GameTime.paused = false
+
 	time_drain_multiplier_ui = lerp(time_drain_multiplier_ui, time_drain_multiplier, delta * 3)
 	if time_stop_timer > 0: time_stop_timer -= delta
 	
@@ -228,6 +239,10 @@ func _process(delta: float) -> void:
 	
 	
 func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("tutorial"):
+		toggle_tutorial()
+	if tutorial_open: return
+	
 	if in_menu:
 		if Input.is_action_just_pressed("OpenShop"):
 			player_ui.shop_ui._on_button_pressed()
@@ -575,3 +590,20 @@ func shake_camera(amount:float):
 	camera_pivot.rotation_degrees.z = randf_range(-amount, amount)
 	camera_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE)
 	camera_tween.tween_property(camera_pivot, "rotation_degrees:z", 0, 0.5)
+
+func toggle_tutorial():
+	tutorial_open = !tutorial_open
+	if tutorial_open:
+		player_ui.tutorial.visible = true
+		GameTime.paused = true
+		GameTime.time_scale = 0
+	else:
+		player_ui.tutorial.visible = false
+		GameTime.paused = false
+	
+
+func add_temporary_slowdown(multiplier: float, length: float) -> void:
+	active_slowdowns.append({
+		"multiplier": multiplier,
+		"length": length
+	})
