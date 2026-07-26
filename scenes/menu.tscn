@@ -232,7 +232,6 @@ theme_override_font_sizes/font_size = 55
 text = "CLOSE"
 
 [node name="SoundPage" type="MarginContainer" parent="PanelContainer" unique_id=180893169]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
@@ -272,7 +271,7 @@ label_settings = SubResource("LabelSettings_linq4")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSlider" type="HSlider" parent="PanelContainer/SoundPage/PanelContainer/MarginContainer/VBoxContainer/Music" unique_id=2133891202]
+[node name="MusicSlider" type="HSlider" parent="PanelContainer/SoundPage/PanelContainer/MarginContainer/VBoxContainer/Music" unique_id=2133891202]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -290,7 +289,7 @@ label_settings = SubResource("LabelSettings_linq4")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSlider" type="HSlider" parent="PanelContainer/SoundPage/PanelContainer/MarginContainer/VBoxContainer/Misc" unique_id=789717039]
+[node name="MiscSlider" type="HSlider" parent="PanelContainer/SoundPage/PanelContainer/MarginContainer/VBoxContainer/Misc" unique_id=789717039]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -307,4 +306,6 @@ text = "CLOSE"
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/SoundButton" to="." method="_on_sound_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="PanelContainer/ControlsPage/PanelContainer/VBoxContainer2/CloseControls" to="." method="_on_close_controls_pressed"]
+[connection signal="value_changed" from="PanelContainer/SoundPage/PanelContainer/MarginContainer/VBoxContainer/Music/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="PanelContainer/SoundPage/PanelContainer/MarginContainer/VBoxContainer/Misc/MiscSlider" to="." method="_on_misc_slider_value_changed"]
 [connection signal="pressed" from="PanelContainer/SoundPage/PanelContainer/MarginContainer/VBoxContainer/CloseSounds" to="." method="_on_close_sounds_pressed"]

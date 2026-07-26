@@ -162,15 +162,21 @@ func fire_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.INF
 				var collider = result.collider
 				var shape_index = result.shape
 				
+				var damage_multiplier : float = 1
+				
+				if weapon_owner is Player:
+					if weapon_owner.current_weapon.weapon_class == 2: #revolver
+						damage_multiplier *= 1.5
+				
 				var owner_id = collider.shape_find_owner(shape_index)
 				var collision_shape_node = collider.shape_owner_get_owner(owner_id)
 				if "head_collider" in collider:
 					if collision_shape_node == collider.head_collider:
-						result.collider.take_damage(bullet_damage * bullet_crit_mult, true)
+						result.collider.take_damage(bullet_damage * bullet_crit_mult * damage_multiplier, true)
 					else:
-						result.collider.take_damage(bullet_damage, false)
+						result.collider.take_damage(bullet_damage * damage_multiplier, false)
 				else:
-					result.collider.take_damage(bullet_damage)
+					result.collider.take_damage(bullet_damage * damage_multiplier)
 			var new_blood_particle = blood_particle.instantiate()
 			particles.add_child(new_blood_particle)
 			new_blood_particle.global_position = result.position 
@@ -297,7 +303,7 @@ class Shotgun extends Weapon:
 		weapon_class = WeaponClasses.SHOTGUN
 		weapon_name = "Stock Shotgun"
 		weapon_shop_cost = 0
-		weapon_description = "blah blah"
+		weapon_description = "Videogames have no good shotguns"
 		weapon_icon_path = "res://icon.svg"
 		purchased = true
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
@@ -327,7 +333,7 @@ class Slugger extends Weapon:
 		weapon_class = WeaponClasses.SHOTGUN
 		weapon_name = "Slugger"
 		weapon_shop_cost = 45
-		weapon_description = "blah blah"
+		weapon_description = "Big Boolet"
 		weapon_icon_path = "res://icon.svg"
 		purchased = false
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
@@ -356,13 +362,14 @@ class Buckshot extends Shotgun:
 		weapon_class = WeaponClasses.SHOTGUN
 		weapon_name = "Buckshot"
 		weapon_shop_cost = 30
-		weapon_description = "blah blah"
+		weapon_description = "Roulette joke here. Shoots many Projectiles pellets"
 		weapon_icon_path = "res://icon.svg"
 		
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
 		
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_projectile(direction_override)
+
 
 
 class Nailgun extends Weapon:
@@ -384,7 +391,7 @@ class Nailgun extends Weapon:
 	
 		weapon_name = "Nailgun"
 		weapon_shop_cost = 0
-		weapon_description = "blah blah"
+		weapon_description = "Beta Content"
 		weapon_icon_path = "res://icon.svg"
 		
 		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
@@ -404,7 +411,7 @@ class ChunkyNailgun extends Weapon:
 		projectile = Projectile.Nail
 		
 		shoot_cooldown = 0.2
-		shoot_cost = 0.25
+		shoot_cost = 1
 		bullet_spread = 1
 		bullet_damage = 10
 		bullet_crit_mult = 2
@@ -412,7 +419,7 @@ class ChunkyNailgun extends Weapon:
 	
 		weapon_name = "Chunky Nailgun"
 		weapon_shop_cost = 45
-		weapon_description = "blah blah"
+		weapon_description = "Shoots Heavier Nails. Is also beta content"
 		weapon_icon_path = "res://icon.svg"
 		
 		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
@@ -441,7 +448,7 @@ class Revolver extends Weapon:
 		weapon_class = WeaponClasses.SIDEARM
 		weapon_name = "Revolver"
 		weapon_shop_cost = 0
-		weapon_description = "blah blah"
+		weapon_description = "Does Increased Damage to Airborne Targets"
 		weapon_icon_path = "res://icon.svg"
 		purchased = true
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
@@ -450,6 +457,21 @@ class Revolver extends Weapon:
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_hitscan(true, direction_override)
 
+class BigIron extends Revolver:
+	func _init(character_owner: Character):
+		weapon_owner = character_owner
+		weapon_owner.add_child.call_deferred(self)
+		weapon_class = WeaponClasses.SIDEARM
+		bullet_damage = 15
+		shoot_cooldown = 1.25
+		weapon_name = "Big Iron"
+		weapon_shop_cost = 30
+		weapon_description = "Big Iron on They hip"
+		weapon_icon_path = "res://icon.svg"
+		purchased = false
+		
+	func shoot(direction_override: Vector3 = Vector3.INF):
+		return shoot_hitscan(true, direction_override)
 
 class SixShooter extends Weapon:
 	func _init(character_owner: Character):
@@ -472,7 +494,7 @@ class SixShooter extends Weapon:
 		weapon_class = WeaponClasses.SIDEARM
 		weapon_name = "SixShooter"
 		weapon_shop_cost = 60
-		weapon_description = "blah blah"
+		weapon_description = "Tumbleweed strolls by"
 		weapon_icon_path = "res://icon.svg"
 		purchased = false
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
@@ -501,7 +523,7 @@ class BurstNailgun extends Weapon:
 		purchased = false
 		weapon_name = "Burst Nailgun"
 		weapon_shop_cost = 60
-		weapon_description = "blah blah"
+		weapon_description = "Burst Content"
 		weapon_icon_path = "res://icon.svg"
 		
 		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
@@ -529,7 +551,7 @@ class RocketLauncher extends Weapon:
 		purchased = true
 		weapon_name = "Rocket Launcher"
 		weapon_shop_cost = 0
-		weapon_description = "blah blah"
+		weapon_description = "Knocks enemies and you back. Deals self damage"
 		weapon_icon_path = "res://icon.svg"
 		
 		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
@@ -563,7 +585,7 @@ class GrenadeLauncher extends Weapon:
 		purchased = false
 		weapon_name = "Grenade Launcher"
 		weapon_shop_cost = 60
-		weapon_description = "blah blah"
+		weapon_description = "Shoots Grenades. duh"
 		weapon_icon_path = "res://icon.svg"
 		
 		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")

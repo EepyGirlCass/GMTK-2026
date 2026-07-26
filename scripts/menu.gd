@@ -38,3 +38,11 @@ func _on_sound_button_pressed() -> void:
 
 func _on_close_sounds_pressed() -> void:
 	sound_page.hide()
+
+
+func _on_music_slider_value_changed(value: float) -> void:
+	AudioController.set_volume(AudioController.AudioChannel.MUSIC, value * .01)
+
+
+func _on_misc_slider_value_changed(value: float) -> void:
+	AudioController.set_volume(AudioController.AudioChannel.PLAYER, value * .01)

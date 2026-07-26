@@ -6,6 +6,8 @@ extends Control
 
 @onready var weapon_label: Label = $WeaponLabel
 @onready var weapon_sprite: TextureRect = $WeaponSprite
+@onready var cass_fister: TextureRect = $CassFister
+@onready var time_alive: Label = $GameOver/PanelContainer/VBoxContainer/TimeAlive
 
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var timer: Label = $Timer

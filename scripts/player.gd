@@ -50,6 +50,7 @@ var viewmodel_tween : Tween
 var timer_tween : Tween
 var camera_tween : Tween
 
+var is_dead : bool = false
 
 var weapon_viewmodels : Array = [
 	preload("res://assets/stock_shotgun_viewmodel_atlas.png"),
@@ -92,7 +93,7 @@ func _physics_process(delta: float) -> void:
 	health = clamp(health, 0, 400)
 	
 	if in_menu: return
-	
+	if is_dead: return
 	
 	
 	time_drain_multiplier = 1
@@ -364,6 +365,7 @@ func dash():
 func melee():
 	var current_melee_values := abilities_controller.melee_ability_values
 	if melee_cooldown >= melee_cooldown_max:
+		play_melee_animation()
 		melee_cooldown = 0
 		shake_camera(3)
 		for enemy in enemies_in_melee_range:
@@ -395,7 +397,20 @@ func melee():
 			
 			enemy.take_knockback(current_melee_values[abilities_controller.current_melee]['knockback'] * knockback_dir)
 			
-	
+func play_melee_animation():
+	var atlas := player_ui.cass_fister.texture as AtlasTexture
+	player_ui.cass_fister.show()
+	atlas.region = Rect2(0, 0, 96, 96)
+	await get_tree().create_timer(.01).timeout
+	atlas.region = Rect2(0, 96, 96, 96)
+	await get_tree().create_timer(.01).timeout
+	atlas.region = Rect2(0, 192, 96, 96)
+	await get_tree().create_timer(.25).timeout
+	atlas.region = Rect2(0, 96, 96, 96)
+	await get_tree().create_timer(.05).timeout
+	atlas.region = Rect2(0, 0, 96, 96)
+	await get_tree().create_timer(.05).timeout
+	player_ui.cass_fister.hide()
 func update_dash_ability(amount:int, cooldown:float):
 	max_dashes = amount
 	dashes_charged = amount
@@ -428,6 +443,7 @@ func set_health(value:float):
 func take_damage(damage:float, _is_crit : bool = false):
 	if health_bar_tween: health_bar_tween.kill()
 	health -= damage
+	health = clamp(health, 0, 200)
 	health_bar_tween = create_tween()
 	health_bar_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	health_bar_tween.tween_property(player_ui.health_bar, "value", health, 0.5)
@@ -535,6 +551,15 @@ func create_explosion_melee():
 
 func die():
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	#AudioController.pause(AudioController.AudioChannel.MUSIC)
+	is_dead = true
+	GameTime.paused = true
+	GameTime.time_scale = 1
+	AudioController.set_looping(AudioController.AudioChannel.MUSIC, false)
+	AudioController.play_sound(AudioController.AudioChannel.MUSIC, preload("res://assets/sounds/music/PEBKAC.wav"))
+	AudioController.set_looping(AudioController.AudioChannel.MUSIC, true)
+	
+	player_ui.time_alive.text = str("TIME ALIVE: ", convert_float_to_time(GameTime.time_true))
 	player_ui.game_over.show()
 
 func tilt_weapon_back():

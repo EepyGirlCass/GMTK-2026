@@ -26,6 +26,7 @@ var shop_transitioning : bool = false
 	Weapon.GrenadeLauncher.new(player),
 	Weapon.Slugger.new(player),
 	Weapon.ChunkyNailgun.new(player),
+	Weapon.BigIron.new(player),
 ]
 
 var loaded_weapons : Array = []

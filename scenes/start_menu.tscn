@@ -42,4 +42,9 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 71
 text = "START GAME"
 
+[node name="Label2" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=807173954]
+layout_mode = 2
+text = "A Scuffed Game by Cass and MayaMogus"
+horizontal_alignment = 1
+
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/StartGame" to="." method="_on_start_game_pressed"]

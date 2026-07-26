@@ -183,7 +183,7 @@ class Grenade extends Projectile:
 		if is_queued_for_deletion(): return
 		
 		var explosion := explosion_scene.instantiate()
-		explosion.damage = 4
+		explosion.damage = 8
 		explosion.size = 2.5
 		explosion.global_position = global_position
 		explosion.force = 7.5

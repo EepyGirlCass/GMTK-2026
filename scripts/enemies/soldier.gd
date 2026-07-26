@@ -13,7 +13,7 @@ func _init(spawn_position: Vector3 = Vector3.INF):
 	attack_range = INF
 	attack_when_close = true
 	attack_when_far = true
-	time_reward = 5
+	time_reward = 30
 	aim_lead = -0.1
 	
 	create_on_death = preload("res://scenes/time_pickup.tscn")
