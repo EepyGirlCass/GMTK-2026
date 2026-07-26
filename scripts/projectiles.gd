@@ -50,7 +50,6 @@ func _process(delta: float) -> void:
 					if not result.collider.is_on_floor():
 						if source_weapon == Weapon.Airshotter:
 							on_airshot_hit()
-					print(source_weapon)
 					if source_weapon.get_script() == Weapon.RefunderNailgun:
 						
 						var player := source_character as Player

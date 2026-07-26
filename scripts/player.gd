@@ -232,10 +232,11 @@ func _process(delta: float) -> void:
 	if time_stop_timer > 0: time_stop_timer -= delta
 	
 	if GameTime.time_timer <= 0:
-		var tween := create_tween()
-		tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-		tween.tween_property(GameTime, "time_scale", 0.1, 1)
-		tween.tween_callback(die)
+		die()
+		#var tween := create_tween()
+		#tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+		#tween.tween_property(GameTime, "time_scale", 0.1, 1)
+		#tween.tween_callback(die)
 	
 	
 func _input(event: InputEvent) -> void:
@@ -564,10 +565,10 @@ func create_explosion_melee():
 func die():
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	#AudioController.pause(AudioController.AudioChannel.MUSIC)
+	if is_dead: return
 	is_dead = true
 	GameTime.paused = true
 	GameTime.time_scale = 1
-	AudioController.set_looping(AudioController.AudioChannel.MUSIC, false)
 	AudioController.play_sound(AudioController.AudioChannel.MUSIC, preload("res://assets/sounds/music/PEBKAC.wav"))
 	AudioController.set_looping(AudioController.AudioChannel.MUSIC, true)
 	

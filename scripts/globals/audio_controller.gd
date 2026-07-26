@@ -42,6 +42,7 @@ func play_sound(
 		sound: AudioStream,
 		starting_position_seconds: float = 0.0
 ):
+	set_looping(channel, false)
 	var audio_player := get_audio_stream_player(channel)
 	audio_player.stream = sound
 	audio_player.play(starting_position_seconds)
@@ -59,9 +60,9 @@ func set_volume(channel: AudioChannel, volume: float, linear := true) -> void:
 
 func set_looping(channel: AudioChannel, enable: bool) -> void:
 	var audio_player := get_audio_stream_player(channel)
-	if enable:
+	if enable and not audio_player.finished.is_connected(_loop):
 		audio_player.finished.connect(_loop.bind(audio_player))
-	elif audio_player.finished.is_connected(_loop):
+	elif not enable and audio_player.finished.is_connected(_loop):
 		audio_player.finished.disconnect(_loop)
 
 
