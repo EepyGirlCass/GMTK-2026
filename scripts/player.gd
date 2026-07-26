@@ -46,6 +46,17 @@ var blood_particle : PackedScene
 var slow_mo_jump : bool = false
 
 var health_bar_tween : Tween
+var viewmodel_tween : Tween
+var timer_tween : Tween
+var camera_tween : Tween
+
+
+var weapon_viewmodels : Array = [
+	preload("res://assets/stock_shotgun_viewmodel_atlas.png"),
+	preload("res://assets/stock_nailgun_viewmodel_atlas.png"),
+	preload("res://assets/pistol_viewmodel_atlas.png"),
+	preload("res://assets/rocket_launcher_viewmodel_atlas.png"),
+]
 
 func _ready() -> void:
 	particles = get_node("/root/Main/Particles")
@@ -61,7 +72,12 @@ func _ready() -> void:
 	update_dash_ability(abilities_controller.dash_ability_values[abilities_controller.current_dash]["amount"],
 	abilities_controller.dash_ability_values[abilities_controller.current_dash]["cooldown"] )
 	update_melee_ability(abilities_controller.melee_ability_values[abilities_controller.current_melee]["cooldown"])
+	var viewmodel := AtlasTexture.new()
 	
+	viewmodel.region = Rect2(0, 133.0, 64, 64)
+	player_ui.weapon_sprite.texture = viewmodel
+	
+	viewmodel.atlas = weapon_viewmodels[0]
 	add_weapon(Weapon.Shotgun)
 	add_weapon(Weapon.Nailgun)
 	add_weapon(Weapon.Revolver)
@@ -81,7 +97,7 @@ func _physics_process(delta: float) -> void:
 	
 	time_drain_multiplier = 1
 	if health >= 100:
-		time_drain_multiplier = lerp(1.0, 0.25, (health - 100.0) / 300.0)
+		time_drain_multiplier = lerp(1.0, 0.25, (health - 100.0) / 200.0)
 	elif health < 100:
 		time_drain_multiplier = lerp(2.0, 1.0, health / 100.0)
 		
@@ -189,6 +205,10 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("Attack"):
 		if current_weapon.shoot():
 			change_time_with_message(-current_weapon.shoot_cost)
+			shake_viewmodel()
+			tilt_weapon_back()
+			
+			
 	if Input.is_action_pressed("tutorial"):
 		player_ui.tutorial.visible = true
 		GameTime.paused = true
@@ -252,12 +272,16 @@ func _input(event: InputEvent) -> void:
 	
 	if Input.is_action_just_pressed("Slot1"):
 		select_weapon(0)
+		set_viewmodel(0)
 	if Input.is_action_just_pressed("Slot2"):
 		select_weapon(1)
+		set_viewmodel(1)
 	if Input.is_action_just_pressed("Slot3"):
 		select_weapon(2)
+		set_viewmodel(2)
 	if Input.is_action_just_pressed("Slot4"):
 		select_weapon(3)
+		set_viewmodel(3)
 
 	if Input.is_action_just_pressed("Reload"):
 		if reload_skip: current_weapon.reload()
@@ -268,7 +292,23 @@ func _input(event: InputEvent) -> void:
 		GameTime.paused = true
 		in_menu = true
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		
+
+func set_viewmodel(weapon_index:int):
+	player_ui.weapon_sprite.scale = Vector2.ONE * .5
+	var viewmodel := player_ui.weapon_sprite.texture as AtlasTexture
+	viewmodel.atlas = weapon_viewmodels[weapon_index]
+	if viewmodel_tween: viewmodel_tween.kill()
+	viewmodel_tween = create_tween()
+	viewmodel_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	viewmodel_tween.tween_property(player_ui.weapon_sprite, "scale", Vector2.ONE, 1)
+
+func shake_viewmodel():
+	player_ui.weapon_sprite.scale = Vector2.ONE * .9
+	if viewmodel_tween: viewmodel_tween.kill()
+	viewmodel_tween = create_tween()
+	viewmodel_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE)
+	viewmodel_tween.tween_property(player_ui.weapon_sprite, "scale", Vector2.ONE, .75)
+
 func jump():
 	var current_jump_values = abilities_controller.jump_ability_values[abilities_controller.current_jump]
 	var jump_height = current_jump_values["height"]
@@ -325,6 +365,7 @@ func melee():
 	var current_melee_values := abilities_controller.melee_ability_values
 	if melee_cooldown >= melee_cooldown_max:
 		melee_cooldown = 0
+		shake_camera(3)
 		for enemy in enemies_in_melee_range:
 			if not is_instance_valid(enemy): continue
 			var killed_enemy : bool = enemy.take_damage(current_melee_values[abilities_controller.current_melee]['damage'])
@@ -370,6 +411,14 @@ func update_dash_ability(amount:int, cooldown:float):
 
 func change_timer(amount) -> void:
 	GameTime.time_timer += amount
+	player_ui.timer.scale = Vector2.ONE * .8
+	player_ui.timer.rotation_degrees = randf_range(-5, 5)
+	
+	if timer_tween: timer_tween.kill()
+	timer_tween = create_tween()
+	timer_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE)
+	timer_tween.tween_property(player_ui.timer, "scale", Vector2.ONE, .2)
+	timer_tween.parallel().tween_property(player_ui.timer, "rotation", 0, .2)
 
 func set_health(value:float):
 	health = value
@@ -383,6 +432,9 @@ func take_damage(damage:float, _is_crit : bool = false):
 	health_bar_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	health_bar_tween.tween_property(player_ui.health_bar, "value", health, 0.5)
 	health_bar_tween.parallel().tween_property(player_ui.health_bar_white, "value",health, 1.5)
+	
+	shake_camera(.5 * damage)
+	
 	
 	return health <= 0
 
@@ -484,3 +536,17 @@ func create_explosion_melee():
 func die():
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	player_ui.game_over.show()
+
+func tilt_weapon_back():
+	if current_weapon.weapon_class == 1: return #Nailguns
+	var atlas := player_ui.weapon_sprite.texture as AtlasTexture
+	atlas.region = Rect2(0, 64, 64, 64)
+	await get_tree().create_timer(.2).timeout
+	atlas.region = Rect2(0, 133, 64, 64)
+
+func shake_camera(amount:float):
+	if camera_tween: camera_tween.kill()
+	camera_tween = create_tween()
+	camera_pivot.rotation_degrees.z = randf_range(-amount, amount)
+	camera_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE)
+	camera_tween.tween_property(camera_pivot, "rotation_degrees:z", 0, 0.5)

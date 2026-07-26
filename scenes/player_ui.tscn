@@ -2,11 +2,19 @@
 
 [ext_resource type="Script" uid="uid://dwv8khx1hune1" path="res://scripts/player_ui.gd" id="1_jkj6h"]
 [ext_resource type="Texture2D" uid="uid://c62cs0p6r37b0" path="res://icon.svg" id="2_sk4pr"]
+[ext_resource type="Texture2D" uid="uid://dd7wlmsu3ktxw" path="res://assets/rocket_launcher_viewmodel_atlas.png" id="2_wsb5h"]
 [ext_resource type="Shader" uid="uid://d050avdq3lue5" path="res://scripts/shaders/reload_circle.gdshader" id="3_48xfa"]
 [ext_resource type="Texture2D" uid="uid://j510gtfw0oog" path="res://assets/storefront_500dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" id="3_bkx2g"]
 [ext_resource type="PackedScene" uid="uid://c6b8adscv5ee1" path="res://scenes/shop_ui.tscn" id="4_8isll"]
 [ext_resource type="Texture2D" uid="uid://dfqhdwyi1sxf0" path="res://assets/help_500dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" id="4_n31oh"]
 [ext_resource type="PackedScene" uid="uid://3ypv3308bhc8" path="res://scenes/menu.tscn" id="5_7ctsh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_con2f"]
+atlas = ExtResource("2_wsb5h")
+region = Rect2(0, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vjb58"]
+atlas = SubResource("AtlasTexture_con2f")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ctsh"]
 bg_color = Color(2.4065375e-06, 0.712933, 0.44271353, 1)
@@ -65,6 +73,21 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jkj6h")
 
+[node name="WeaponSprite" type="TextureRect" parent="." unique_id=1041074308]
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 576.0
+offset_top = 512.0
+offset_right = -576.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 1)
+texture = SubResource("AtlasTexture_vjb58")
+
 [node name="MeleeChargeBar" type="ProgressBar" parent="." unique_id=696702211]
 layout_mode = 1
 anchors_preset = -1
@@ -120,6 +143,8 @@ offset_left = 800.0
 offset_top = 992.0
 offset_right = -800.0
 offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Shotgun"
 label_settings = SubResource("LabelSettings_82y3s")
 horizontal_alignment = 1
@@ -207,6 +232,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -64.0
+offset_right = -64.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -274,6 +301,7 @@ offset_right = -128.0
 offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 label_settings = SubResource("LabelSettings_guxnq")
 horizontal_alignment = 1
 vertical_alignment = 1

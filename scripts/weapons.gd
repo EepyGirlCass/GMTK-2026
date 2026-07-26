@@ -66,6 +66,11 @@ func get_reload_progress() -> float:
 # return reload started
 func start_reload() -> bool:
 	# no reload
+	
+	if weapon_owner is Player:
+		if weapon_owner.is_sliding and weapon_owner.reload_skip:
+			return reload()
+	
 	if reload_amount == 0:
 		return false
 	

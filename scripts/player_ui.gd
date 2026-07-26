@@ -5,6 +5,7 @@ extends Control
 @onready var melee_charge_bar: ProgressBar = $MeleeChargeBar
 
 @onready var weapon_label: Label = $WeaponLabel
+@onready var weapon_sprite: TextureRect = $WeaponSprite
 
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var timer: Label = $Timer

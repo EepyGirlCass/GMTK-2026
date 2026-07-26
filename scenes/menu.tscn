@@ -89,6 +89,7 @@ text = "Quit
 "
 
 [node name="ControlsPage" type="MarginContainer" parent="PanelContainer" unique_id=1524068420]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
