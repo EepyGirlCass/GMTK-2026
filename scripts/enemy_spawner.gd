@@ -6,7 +6,8 @@ var next_wave_time:float
 
 var enemy_types : Dictionary[GDScript, int] = {
 	Fodder: 20,
-	Ranger: 20,
+	Ranger: 10,
+	Soldier: 1,
 	Tank: 1
 }
 

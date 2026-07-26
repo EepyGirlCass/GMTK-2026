@@ -10,12 +10,25 @@ const DAMAGE_NUMBER = preload("uid://dgmllihookwy1")
 var body_collider: CollisionShape3D
 var head_collider: CollisionShape3D
 var sprite: BillboardSprite3D
+var weapon_sprite: BillboardSprite3D
 var shadow: Sprite3D
 
 var time_reward : float = 1
+func set_weapon(index: int):
+	current_weapon_idx = index
+	if "sprite_image" in current_weapon:
+		if not weapon_sprite:
+			weapon_sprite = BillboardSprite3D.new()
+			bullet_start_node.add_child(weapon_sprite)
+			weapon_sprite.global_position = bullet_start
+			weapon_sprite.global_rotation = bullet_start_node.global_rotation
+		else:
+			weapon_sprite.show()
+		weapon_sprite.texture = current_weapon.sprite_image
+	elif weapon_sprite:
+		weapon_sprite.hide()
 
 static var particles: Node3D
-
 
 
 #region AI
@@ -114,11 +127,13 @@ func do_ai(_delta: float) -> void:
 
 func _ready() -> void:
 	#sorry cass
+	await get_tree().process_frame
 	particles = get_node("/root/Main/Particles")
 	
 	bullet_start_node = Node3D.new()
 	add_child(bullet_start_node)
-	bullet_start_node.global_position = global_position + Vector3(0, 0, -0.5)
+	bullet_start_node.set_deferred("global_position", global_position + Vector3(0, 0.75, -0.75))
+	bullet_start_node.look_at_from_position(Vector3.ZERO, Vector3.BACK)
 	visual_bullet_start_node = bullet_start_node
 	
 	nav_agent = NavigationAgent3D.new()

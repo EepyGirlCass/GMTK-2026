@@ -178,7 +178,7 @@ func fire_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.INF
 			gun_tracer.end_pos = result.position
 		else:
 			gun_tracer.end_pos = ray_end
-		weapon_owner.get_node("../Particles").add_child(gun_tracer)
+		GlobalPlayer.player.get_node("../Particles").add_child(gun_tracer)
 
 
 func shoot_projectile(direction_override: Vector3 = Vector3.INF) -> bool:
@@ -296,7 +296,7 @@ class Shotgun extends Weapon:
 		weapon_icon_path = "res://icon.svg"
 		purchased = true
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
-		sprite_image = preload("res://assets/sounds/shotgun_atlas.png")
+		sprite_image = preload("res://assets/shotgun_atlas.png")
 		
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_hitscan(true, direction_override)
@@ -326,7 +326,7 @@ class Slugger extends Weapon:
 		weapon_icon_path = "res://icon.svg"
 		purchased = false
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
-		sprite_image = preload("res://assets/sounds/shotgun_atlas.png")
+		sprite_image = preload("res://assets/shotgun_atlas.png")
 		
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_hitscan(true, direction_override)
@@ -383,6 +383,7 @@ class Nailgun extends Weapon:
 		weapon_icon_path = "res://icon.svg"
 		
 		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
+		sprite_image = preload("res://assets/nailgun_atlas.png")
 		
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_projectile(direction_override)
@@ -439,6 +440,7 @@ class Revolver extends Weapon:
 		weapon_icon_path = "res://icon.svg"
 		purchased = true
 		fire_sound = preload("res://assets/sounds/shotgun_shoot.wav")
+		sprite_image = preload("res://assets/pistol_atlas.png")
 		
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_hitscan(true, direction_override)
@@ -526,6 +528,7 @@ class RocketLauncher extends Weapon:
 		weapon_icon_path = "res://icon.svg"
 		
 		fire_sound = preload("res://assets/sounds/syringegun_shoot.wav")
+		sprite_image = preload("res://assets/rocket_launcher_atlas.png")
 	func shoot(direction_override: Vector3 = Vector3.INF):
 		return shoot_projectile(direction_override)
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6hjqh63q5nnj"
-path="res://.godot/imported/rocket_launcher_atlas.png-a8bc1467221cd90023d316af26bf018b.ctex"
+uid="uid://db3csjn5ubrmw"
+path="res://.godot/imported/nailgun_atlas.png-6484152b50761deba1ae60e81410bead.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sounds/rocket_launcher_atlas.png"
-dest_files=["res://.godot/imported/rocket_launcher_atlas.png-a8bc1467221cd90023d316af26bf018b.ctex"]
+source_file="res://assets/nailgun_atlas.png"
+dest_files=["res://.godot/imported/nailgun_atlas.png-6484152b50761deba1ae60e81410bead.ctex"]
 
 [params]
 

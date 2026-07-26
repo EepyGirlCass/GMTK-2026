@@ -15,7 +15,8 @@ var weapons: Array[Weapon] = []
 
 var weapon_equip_list : Dictionary
 
-var current_weapon_idx: int = 0
+var current_weapon_idx: int = 0: set = set_weapon
+func set_weapon(index: int): current_weapon_idx = index
 var current_weapon: Weapon:
 	get: return weapons[current_weapon_idx]
 

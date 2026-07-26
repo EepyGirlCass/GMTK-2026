@@ -5,7 +5,7 @@ func _init(spawn_position: Vector3 = Vector3.INF):
 	if spawn_position != Vector3.INF:
 		set_deferred("global_position", spawn_position)
 	
-	speed = 300
+	speed = 400
 	health = 10
 	
 	too_close_range = 10
@@ -29,7 +29,7 @@ func _process(delta: float) -> void:
 			sprite.set_animation(&"walk")
 
 func _ready() -> void:
-	super()
+	await super()
 	
 	add_weapon(Weapon.OrbShooter)
 	current_weapon.shoot_cooldown += randf_range(-0.2, 0.2)

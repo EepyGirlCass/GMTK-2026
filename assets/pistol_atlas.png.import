@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://db3csjn5ubrmw"
-path="res://.godot/imported/nailgun_atlas.png-28ee9730047d149f73604911c085d72e.ctex"
+uid="uid://b6w8iflc62f6i"
+path="res://.godot/imported/pistol_atlas.png-e8cae3bc2336bd3259926baccc9d1f8a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sounds/nailgun_atlas.png"
-dest_files=["res://.godot/imported/nailgun_atlas.png-28ee9730047d149f73604911c085d72e.ctex"]
+source_file="res://assets/pistol_atlas.png"
+dest_files=["res://.godot/imported/pistol_atlas.png-e8cae3bc2336bd3259926baccc9d1f8a.ctex"]
 
 [params]
 

@@ -27,7 +27,7 @@ func _process(delta: float) -> void:
 			sprite.set_animation(&"walk")
 
 func _ready() -> void:
-	super()
+	await super()
 	
 	add_weapon(Weapon.EnemyMelee)
 	target = GlobalPlayer.player

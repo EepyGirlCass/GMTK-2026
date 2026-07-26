@@ -4,7 +4,7 @@ extends Enemy
 func _init(spawn_position: Vector3 = Vector3.INF):
 	if spawn_position != Vector3.INF:
 		set_deferred("global_position", spawn_position + Vector3.UP)
-	speed = 500
+	speed = 100
 	health = 500
 	
 	too_close_range = 3
@@ -28,7 +28,7 @@ func _process(delta: float) -> void:
 			sprite.set_animation(&"walk")
 
 func _ready() -> void:
-	super()
+	await super()
 	
 	add_weapon(Weapon.EnemyMelee)
 	current_weapon.melee_range = 5
