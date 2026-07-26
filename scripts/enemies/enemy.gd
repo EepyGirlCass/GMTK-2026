@@ -118,6 +118,19 @@ func do_ai(_delta: float) -> void:
 		if target_distance < attack_range:
 			attack()
 
+
+func has_target_los() -> bool:
+	if not target: return false
+	var space_state := get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(global_position, target.global_position)
+	query.exclude = [self] # Don't shoot yourself
+	
+	var result = space_state.intersect_ray(query)
+	if result:
+		return result.collider == target
+	return false
+
+
 @abstract func attack() -> void
 # current_weapon.shoot(target_direction + target.velocity * aim_lead)
 

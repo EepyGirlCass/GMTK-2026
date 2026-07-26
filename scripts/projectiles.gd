@@ -138,8 +138,8 @@ class Rocket extends Projectile:
 	static var explosion_scene : PackedScene = preload("uid://b1n131e3hgrlh")
 	
 	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
-		texture = preload("res://assets/pellet_atlas.png")
-		sprite_tile_size = Vector2i(32, 32)
+		texture = preload("res://assets/rocket_projectile_atlas.png")
+		sprite_tile_size = Vector2i(64, 64)
 		
 		Weapon.projectiles.add_child.call_deferred(self)
 		
@@ -178,8 +178,8 @@ class AirshotRocket extends Projectile:
 	var explosion_size : float = 5
 	var is_airshot : bool = false
 	func _init(weapon_owner : Weapon, direction : Vector3) -> void:
-		texture = preload("res://assets/pellet_atlas.png")
-		sprite_tile_size = Vector2i(32, 32)
+		texture = preload("res://assets/rocket_projectile_atlas.png")
+		sprite_tile_size = Vector2i(64, 64)
 		
 		Weapon.projectiles.add_child.call_deferred(self)
 		

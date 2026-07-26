@@ -97,6 +97,7 @@ func do_ai(_delta: float) -> void:
 			attack()
 
 func attack() -> void:
+	if not has_target_los(): return
 	if current_weapon_idx == 1: # nailgun
 		current_weapon.shoot((get_projectile_direction() + target_direction) / 2)
 	else:

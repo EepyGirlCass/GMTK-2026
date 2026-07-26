@@ -46,5 +46,6 @@ func _ready() -> void:
 	sprite.modulate = Color.REBECCA_PURPLE
 
 func attack() -> void:
+	if not has_target_los(): return
 	#current_weapon.shoot(target_direction + target.velocity * aim_lead)
 	current_weapon.shoot(get_projectile_direction())
