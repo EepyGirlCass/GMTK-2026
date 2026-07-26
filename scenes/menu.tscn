@@ -276,6 +276,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_vertical = 4
+value = 100.0
 
 [node name="Misc" type="HBoxContainer" parent="PanelContainer/SoundPage/PanelContainer/MarginContainer/VBoxContainer" unique_id=2108556913]
 layout_mode = 2
@@ -294,6 +295,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_vertical = 4
+value = 100.0
 
 [node name="CloseSounds" type="Button" parent="PanelContainer/SoundPage/PanelContainer/MarginContainer/VBoxContainer" unique_id=211270454]
 layout_mode = 2

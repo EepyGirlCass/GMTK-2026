@@ -89,10 +89,11 @@ func _ready() -> void:
 	add_weapon(Weapon.Revolver)
 	add_weapon(Weapon.RocketLauncher)
 	GameTime.time_timer = 120
+	#if not GlobalPlayer.has_seen_tutorial:
 	toggle_tutorial()
+	GlobalPlayer.has_seen_tutorial = true
 
 func _physics_process(delta: float) -> void:
-	
 	if tutorial_open: return
 	
 	health = clamp(health, 0, 400)
@@ -220,6 +221,7 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	update_ui()
 	if in_menu: return
+	if tutorial_open: return
 	if Input.is_action_pressed("Attack"):
 		if current_weapon.shoot():
 			change_time_with_message(-current_weapon.shoot_cost)
@@ -243,6 +245,7 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("tutorial"):
 		toggle_tutorial()
 	if tutorial_open: return
+	
 	
 	if in_menu:
 		if Input.is_action_just_pressed("OpenShop"):

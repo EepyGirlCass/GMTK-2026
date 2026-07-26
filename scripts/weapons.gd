@@ -34,6 +34,7 @@ var can_shoot_time: float = 0
 var started_reload_time: float = 0
 var finished_reload_time: float = 0
 var reloading: bool = false
+var sound_source: AudioStreamPlayer3D
 
 var weapon_owner: Character
 static var particles: Node3D
@@ -49,6 +50,13 @@ func _ready():
 	particles = get_node("/root/Main/Particles")
 	projectiles = get_node("/root/Main/Projectiles")
 	blood_particle = preload("res://scenes/blood_particle.tscn")
+	
+	sound_source = AudioStreamPlayer3D.new()
+	add_child(sound_source)
+	AudioController.gun_players.append(sound_source)
+	sound_source.bus = "WeaponSounds"
+	sound_source.volume_linear = AudioController.gun_volume
+	sound_source.attenuation_model = AudioStreamPlayer3D.ATTENUATION_DISABLED
 
 func _process(_delta: float) -> void:
 	if GameTime.time > finished_reload_time and reloading:
@@ -56,7 +64,11 @@ func _process(_delta: float) -> void:
 		# auto restart incremental reloads
 		if not reload():
 			start_reload()
-	
+
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		AudioController.gun_players.erase(sound_source)
+
 
 func get_reload_progress() -> float:
 	if not reloading: return 0
@@ -113,7 +125,8 @@ func shoot_hitscan(draw_tracer := true, direction_override: Vector3 = Vector3.IN
 			return false
 	
 	can_shoot_time = GameTime.time + shoot_cooldown
-	AudioController.play_sound(AudioController.AudioChannel.PLAYER, fire_sound )
+	sound_source.stream = fire_sound
+	sound_source.play()
 	ammo_clip -= 1
 	for i in range(bullet_amount):
 		fire_hitscan(draw_tracer, direction_override)
@@ -208,7 +221,8 @@ func shoot_projectile(direction_override: Vector3 = Vector3.INF) -> bool:
 			return false
 	
 	can_shoot_time = GameTime.time + shoot_cooldown
-	AudioController.play_sound(AudioController.AudioChannel.PLAYER, fire_sound)
+	sound_source.stream = fire_sound
+	sound_source.play()
 	
 	ammo_clip -= 1
 	for i in range(bullet_amount):

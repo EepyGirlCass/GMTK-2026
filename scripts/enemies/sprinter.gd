@@ -25,7 +25,7 @@ func _ready() -> void:
 	sprite.sprite_tile_size = Vector2i(256, 512)
 	sprite.animations[&"walk"] = 8
 	sprite.texture = preload("res://assets/skeleton_atlas.png")
-	sprite.framerate = 8
+	sprite.framerate = 16
 	sprite.set_animation(&"walk")
 	sprite.pixel_size = .005
 	sprite.modulate = Color.ORANGE

@@ -10,6 +10,8 @@ enum AudioChannel {
 }
 
 var _pause_positions: Array[float] # TODO: use stream_paused instead
+var gun_players: Array[AudioStreamPlayer3D] = []
+var gun_volume: float = 0.75
 @onready var filter_low_pass := AudioEffectLowPassFilter.new()
 
 func _ready() -> void:
@@ -20,7 +22,14 @@ func _ready() -> void:
 		var audio_player := AudioStreamPlayer.new()
 		audio_player.name = "AudioStreamPlayerChannel" + channel.to_pascal_case()
 		add_child(audio_player)
-		
+	
+	
+	AudioServer.add_bus()
+	var id = AudioServer.bus_count - 1
+	AudioServer.set_bus_name(id, "WeaponSounds")
+	AudioServer.set_bus_send(id, "Master")
+	AudioServer.add_bus_effect(id, filter_low_pass)
+	
 	for channel_idx: AudioChannel in AudioChannel.values():
 		set_effects(channel_idx, [filter_low_pass])
 	filter_low_pass.cutoff_hz = 20_000
@@ -30,11 +39,24 @@ func _physics_process(_delta: float) -> void:
 		if channel_idx == AudioChannel.MUSIC: continue
 		var channel = get_audio_stream_player(channel_idx)
 		channel.pitch_scale = clampf(GameTime.time_scale, 0.00001, 4)
+	for channel: AudioStreamPlayer3D in gun_players:
+		if not channel: continue
+		channel.pitch_scale = clampf(GameTime.time_scale, 0.00001, 4)
 	
 	if GameTime.paused:
 		filter_low_pass.cutoff_hz = 2_000
 	else:
 		filter_low_pass.cutoff_hz = 20_000 * clampf(pow(GameTime.time_scale * GameTime.time_scale_timer, 6), 0, 1)
+
+func set_gun_volume(volume: float, linear := true) -> void:
+	gun_volume = volume * 0.75
+	for audio_player in gun_players:
+		if not audio_player: continue
+		if linear:
+			audio_player.volume_linear = volume * 0.75
+		else:
+			audio_player.volume_db = volume * 0.75
+
 
 
 func play_sound(

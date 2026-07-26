@@ -46,3 +46,4 @@ func _on_music_slider_value_changed(value: float) -> void:
 
 func _on_misc_slider_value_changed(value: float) -> void:
 	AudioController.set_volume(AudioController.AudioChannel.PLAYER, value * .01)
+	AudioController.set_gun_volume(value * .01)
