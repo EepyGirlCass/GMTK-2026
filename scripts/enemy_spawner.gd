@@ -7,6 +7,7 @@ var next_wave_time:float
 var enemy_types : Dictionary[GDScript, int] = {
 	Fodder: 20,
 	Ranger: 2,
+	Sprinter: 3,
 	Soldier: 0,
 	Tank: 0
 }
@@ -15,49 +16,56 @@ var max_enemies : int = 25
 
 func _process(_delta: float) -> void:
 	if GameTime.time >= next_wave_time: spawn_wave()
-	if GameTime.time >= 600:
+	if GameTime.time >= 240:
 		enemy_types = {
 			Fodder: 20,
 			Ranger: 20,
+			Sprinter: 10,
+			
 			Soldier: 5,
 			Tank: 3
 		}
 		max_enemies = 50
-	elif GameTime.time >= 300:
-		enemy_types = {
-			Fodder: 40,
-			Ranger: 20,
-			Soldier: 2,
-			Tank: 2
-		}
-		max_enemies = 40
 	elif GameTime.time >= 180:
 		enemy_types = {
 			Fodder: 40,
 			Ranger: 20,
+			Sprinter: 10,
 			Soldier: 2,
-			Tank: 1
+			Tank: 2
 		}
-		max_enemies = 35
+		max_enemies = 40
 	elif GameTime.time >= 120:
 		enemy_types = {
 			Fodder: 40,
 			Ranger: 20,
-			Soldier: 1,
+			Sprinter: 10,
+			Soldier: 2,
 			Tank: 1
 		}
-		max_enemies = 30
+		max_enemies = 35
 	elif GameTime.time >= 60:
 		enemy_types = {
 			Fodder: 40,
 			Ranger: 20,
+			Sprinter: 5,
 			Soldier: 1,
-			Tank: 0
+			Tank: 1
 		}
+		max_enemies = 30
 	elif GameTime.time >= 30:
 		enemy_types = {
 			Fodder: 40,
 			Ranger: 20,
+			Sprinter: 5,
+			Soldier: 1,
+			Tank: 0
+		}
+	elif GameTime.time >= 15:
+		enemy_types = {
+			Fodder: 40,
+			Ranger: 20,
+			Sprinter: 5,
 			Soldier: 0,
 			Tank: 1
 		}
